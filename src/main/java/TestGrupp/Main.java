@@ -17,5 +17,5 @@ public class Main {
         }
     }
 
-    // :D
+    // :D fuck off hihi
 }
