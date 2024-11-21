@@ -6,7 +6,7 @@ import TestGrupp.View.Panel;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        Panel view = new Panel();
+        Panel view = new Panel("Cosmic Shooter");
 
     }
 }

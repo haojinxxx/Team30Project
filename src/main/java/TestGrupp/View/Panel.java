@@ -8,14 +8,19 @@ import java.util.Random;
 
 public class Panel extends JFrame {
 
-    public Panel() {
+    public Panel(String title) {
 
-        setTitle("Cosmic shooter");
+        setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 400);
-        setBackground(Color.YELLOW);
+        setSize(900, 600);
+        setBackground(Color.black);
+        setLocationRelativeTo(null);
+        setVisible(true);
 
     }
 
+    public void updateFrame() {
+
+    }
 
 }
