@@ -13,6 +13,7 @@ public class Panel extends JFrame {
         setTitle("Cosmic shooter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
+        setBackground(Color.YELLOW);
 
     }
 
