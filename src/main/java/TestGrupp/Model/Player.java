@@ -1,7 +1,8 @@
 package TestGrupp.Model;
 
 public class Player implements IHealth {
+    Healthbar hp;
     public Player() {
-        Healthbar hp = new Healthbar();
+        hp = new Healthbar();
     }
 }
