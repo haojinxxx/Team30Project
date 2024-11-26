@@ -15,32 +15,9 @@ public class Panel extends JFrame {
         getContentPane().setBackground(Color.black);
 
 
-/*
-        // Example of adding components to the layout
-        add(new JButton("North"), BorderLayout.NORTH);
-        add(new JButton("South"), BorderLayout.SOUTH);
-        add(new JButton("East"), BorderLayout.EAST);
-        add(new JButton("West"), BorderLayout.WEST);
-        add(new JButton("Center"), BorderLayout.CENTER);
-*/
-
-        // Create a panel for inventory and health display
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridBagLayout());
-        bottomPanel.setBackground(Color.darkGray);
-        bottomPanel.setPreferredSize(new Dimension(900, 120));
-
-
-        // Create and customize label
-        JLabel healthLabel = new JLabel("HP");
-        healthLabel.setForeground(Color.red);
-        bottomPanel.add(healthLabel);
-
-
-        // Add the bottom panel to the frame
+        // Create and add the bottom panel to the frame
+        BottomPanel bottomPanel = new BottomPanel();
         add(bottomPanel, BorderLayout.SOUTH);
-
-
 
 
         // Set the frame to full screen
