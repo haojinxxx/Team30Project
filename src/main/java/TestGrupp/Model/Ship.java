@@ -12,7 +12,7 @@ public class Ship extends GameObject{
     private double angle;
     private Healthbar healthBar;
 
-    private List<ShipProjectile> projectiles;
+    private List<Projectile> shipProjectiles;
 
 
     private Ship() {
@@ -23,7 +23,7 @@ public class Ship extends GameObject{
         this.acceleration = 0.2;
         this.angle = 0; // Initial angle
         this.healthBar = new Healthbar(100);
-        this.projectiles = new ArrayList<>();
+        this.shipProjectiles = new ArrayList<>();
     }
 
 
@@ -54,7 +54,7 @@ public class Ship extends GameObject{
 
     public void shootProjectile() {
         double projectileSpeed = 15;
-        projectiles.add(new ShipProjectile(x, y, angle, projectileSpeed));
+        shipProjectiles.add(new Projectile(x, y, angle, projectileSpeed));
     }
 
     public void takeDamage(int damage) {
@@ -74,11 +74,11 @@ public class Ship extends GameObject{
     }
 
 
-    
+
     //retrieve all projectiles that has been fired
     //useful when rendering/updating position
-    public List<ShipProjectile> getProjectiles() {
-        return projectiles;
+    public List<Projectile> getProjectiles() {
+        return shipProjectiles;
     }
 
 

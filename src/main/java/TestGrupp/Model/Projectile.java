@@ -1,11 +1,11 @@
 package TestGrupp.Model;
 
-public class ShipProjectile {
+public class Projectile {
     private double x, y;
     private double speed;
     private double angle;
 
-    public ShipProjectile(double x, double y, double angle, double speed) {
+    public Projectile(double x, double y, double angle, double speed) {
         this.x = x;
         this.y = y;
         this.angle = angle;
