@@ -11,6 +11,7 @@ public class Ship extends GameObject{
     private double acceleration;
     private double angle;
     private Healthbar healthBar;
+    boolean hasShield;
 
     private List<Projectile> shipProjectiles;
 
@@ -24,6 +25,7 @@ public class Ship extends GameObject{
         this.angle = 0; // Initial angle
         this.healthBar = new Healthbar(100);
         this.shipProjectiles = new ArrayList<>();
+        this.hasShield = false;
     }
 
 
@@ -58,7 +60,9 @@ public class Ship extends GameObject{
     }
 
     public void takeDamage(int damage) {
-        healthBar.removeHealth(damage);
+        if(!hasShield) {
+            healthBar.removeHealth(damage);
+        }
     }
 
     public void addHealth(int health) {
