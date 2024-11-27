@@ -9,7 +9,7 @@ public class Panel extends JFrame {
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(900, 600));
+        setMinimumSize(new Dimension(1000, 800));
 
         // Set the background color of the content pane
         getContentPane().setBackground(Color.black);
