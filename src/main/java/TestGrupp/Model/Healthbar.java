@@ -1,6 +1,6 @@
 package TestGrupp.Model;
 
-public class Healthbar implements IHealth {
+public class Healthbar {
 
     public Healthbar(int health) {
         healthAmmount = health;
