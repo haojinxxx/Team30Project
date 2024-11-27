@@ -12,17 +12,17 @@ public class HealthBarView extends JPanel {
 
         // Create health bar label
         JLabel healthBarLabel = new JLabel("HP");
-        healthBarLabel.setForeground(Color.gray);
+        healthBarLabel.setForeground(Color.decode("#9D9EF8"));
         healthBarLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
 
         // Create health bar
         JProgressBar healthBar = new JProgressBar();
         healthBar.setValue(200);
-        healthBar.setForeground(Color.RED);
-        healthBar.setBackground(Color.BLACK);
+        healthBar.setForeground(Color.decode("#BE4343"));
+        healthBar.setBackground(Color.decode("#5B2B2B"));
         healthBar.setPreferredSize(new Dimension(600, 25));
-        healthBar.setMinimumSize(new Dimension(280, 25));
+        healthBar.setMinimumSize(new Dimension(300, 25));
 
 
         // Add components to the panel with specific positions

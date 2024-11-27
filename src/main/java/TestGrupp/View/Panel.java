@@ -19,6 +19,10 @@ public class Panel extends JFrame {
         BottomPanel bottomPanel = new BottomPanel();
         add(bottomPanel, BorderLayout.SOUTH);
 
+        // Create and add the spaceship panel to the frame
+        SpaceShipView spaceShipView = new SpaceShipView();
+        add(spaceShipView, BorderLayout.CENTER);
+
 
         // Set the frame to full screen
         // Needs to be done last, after adding components
