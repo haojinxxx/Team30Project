@@ -3,70 +3,60 @@ package TestGrupp.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ship extends GameObject{
+public class PlayerShip extends GameObject{
 
     private double x, y; // position
     private double speed;
     private double maxSpeed;
     private double acceleration;
     private double angle;
-    private Healthbar healthBar;
+    private HealthComponent health;
+    private PhysicsComponent physics;
     boolean hasShield;
 
     private List<Projectile> shipProjectiles;
 
 
-    private Ship() {
-        this.x = 0;
-        this.y = 0;
-        this.speed = 0; // default speed
-        this.maxSpeed = 10;
-        this.acceleration = 0.2;
-        this.angle = 0; // Initial angle
-        this.healthBar = new Healthbar(100);
+    private PlayerShip() {
+        super(0, 0,0,0,0);
+        this.health = new HealthComponent(100);
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
+        this.physics = new PhysicsComponent();
     }
 
 
-    public void move (char direction) {
+    public void move(char direction) {
         switch (direction) {
             case 'w':
-                if (speed < maxSpeed) {
-                    speed = speed + acceleration;
-                }
+                physics.setAcceleration(0.2);
                 break;
             case 's':
-                if (speed > 0) {
-                    speed = speed - acceleration;
-                }
+                physics.setAcceleration(-0.2);
                 break;
             case 'a':
-                angle = angle-5; // Left
+                getTransform().setRotation(getTransform().getRotation() - 5);
                 break;
             case 'd':
-                angle = angle+5; // Right
+                getTransform().setRotation(getTransform().getRotation() + 5);
                 break;
         }
-
-        // Update position based on angle
-        x += speed * Math.cos(Math.toRadians(angle));
-        y += speed * Math.sin(Math.toRadians(angle));
+        physics.update(1.0f, getTransform());
     }
 
     public void shootProjectile() {
         double projectileSpeed = 15;
-        shipProjectiles.add(new Projectile(x, y, angle, projectileSpeed));
+        shipProjectiles.add(new Projectile((float) x, (float) y, (float) angle, 1.0f, 1.0f, projectileSpeed, 10));
     }
 
     public void takeDamage(int damage) {
         if(!hasShield) {
-            healthBar.removeHealth(damage);
+            health.removeHealth(damage);
         }
     }
 
     public void addHealth(int health) {
-        healthBar.addHealth(health);
+        this.health.addHealth(health);
     }
 
     public double getX() {
