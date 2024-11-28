@@ -1,15 +1,15 @@
 package TestGrupp.Model;
 import java.awt.geom.Rectangle2D;
 public class TransformComponent {
-    private float x;
-    private float y;
-    private float rotation;
-    private float scaleX;
-    private float scaleY;
+    private double x;
+    private double y;
+    private double rotation;
+    private double scaleX;
+    private double scaleY;
 
 
 
-    public TransformComponent(float x, float y, float rotation, float scaleX, float scaleY) {
+    public TransformComponent(double x, double y, double rotation, double scaleX, double scaleY) {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
@@ -19,48 +19,48 @@ public class TransformComponent {
 
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public float getRotation() {
+    public double getRotation() {
         return rotation;
     }
 
-    public void setRotation(float rotation) {
+    public void setRotation(double rotation) {
         this.rotation = rotation;
     }
 
-    public float getScaleX() {
+    public double getScaleX() {
         return scaleX;
     }
 
-    public void setScaleX(float scaleX) {
+    public void setScaleX(double scaleX) {
         this.scaleX = scaleX;
     }
 
-    public float getScaleY() {
+    public double getScaleY() {
         return scaleY;
     }
 
-    public void setScaleY(float scaleY) {
+    public void setScaleY(double scaleY) {
         this.scaleY = scaleY;
     }
 
     public Rectangle2D.Float getBoundingBox() {
-        return new Rectangle2D.Float(x, y, scaleX, scaleY);
+        return new Rectangle2D.Float((float) x, (float) y, (float) scaleX, (float) scaleY);
     }
 
 }

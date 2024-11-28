@@ -2,10 +2,10 @@ package TestGrupp.Model;
 
 public class PhysicsComponent {
     private float velocityX;
-    private float velocityY;
-    private float acceleration;
-    private float friction;
-    private float maxSpeed;
+    private double velocityY;
+    private double acceleration;
+    private double friction;
+    private double maxSpeed;
 
     public PhysicsComponent() {
         this.velocityX = 0;
@@ -15,61 +15,61 @@ public class PhysicsComponent {
         this.maxSpeed = 10.0f; // Default max speed
     }
 
-    public float getVelocityX() {
+    public double getVelocityX() {
         return velocityX;
     }
 
-    public void setVelocityX(float velocityX) {
+    public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
     }
 
-    public float getVelocityY() {
+    public double getVelocityY() {
         return velocityY;
     }
 
-    public void setVelocityY(float velocityY) {
+    public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 
-    public float getAcceleration() {
+    public double getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(float acceleration) {
+    public void setAcceleration(double acceleration) {
         this.acceleration = acceleration;
     }
 
-    public float getFriction() {
+    public double getFriction() {
         return friction;
     }
 
-    public void setFriction(float friction) {
+    public void setFriction(double friction) {
         this.friction = friction;
     }
 
-    public float getMaxSpeed() {
+    public double getMaxSpeed() {
         return maxSpeed;
     }
 
-    public void setMaxSpeed(float maxSpeed) {
+    public void setMaxSpeed(double maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
 
-    public void update(float deltaTime, TransformComponent transform) {
-        float radians = (float) Math.toRadians(transform.getRotation());
-        velocityX += (float) (acceleration * Math.cos(radians) * deltaTime);
-        velocityY += (float) (acceleration * Math.sin(radians) * deltaTime);
+    public void update(double deltaTime, TransformComponent transform) {
+        double radians = (double) Math.toRadians(transform.getRotation());
+        velocityX += (double) (acceleration * Math.cos(radians) * deltaTime);
+        velocityY += (double) (acceleration * Math.sin(radians) * deltaTime);
 
         // Apply friction
         velocityX *= friction;
         velocityY *= friction;
 
         // Calculate the current speed
-        float currentSpeed = (float) Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+        double currentSpeed = (double) Math.sqrt(velocityX * velocityX + velocityY * velocityY);
 
         // Limit the speed to maxSpeed
         if (currentSpeed > maxSpeed) {
-            float scale = maxSpeed / currentSpeed;
+            double scale = maxSpeed / currentSpeed;
             velocityX *= scale;
             velocityY *= scale;
         }
