@@ -5,34 +5,35 @@ import java.awt.*;
 
 public class Panel extends JFrame {
 
+    private final int widthScreen;
+    private final int heightScreen;
+    private final int shipSquareDimension;
+    private final int margin;
+
     public Panel(String title) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.widthScreen = screenSize.width;
+        this.heightScreen = screenSize.height;
+        this.shipSquareDimension = (int) (0.05 * widthScreen);  // 5% of the screen width
+        this.margin = 30;
+
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(1000, 800));
+        setSize(widthScreen, heightScreen);
+        setResizable(false);
+        setLocationRelativeTo(null);  // Center the frame
 
         // Set the background color of the content pane
         getContentPane().setBackground(Color.black);
 
-
         // Create and add the bottom panel to the frame
-        BottomPanel bottomPanel = new BottomPanel();
+        BottomPanel bottomPanel = new BottomPanel(widthScreen, margin);
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Create and add the spaceship panel to the frame
-        SpaceShipView spaceShipView = new SpaceShipView();
+        SpaceShipView spaceShipView = new SpaceShipView(shipSquareDimension);
         add(spaceShipView, BorderLayout.CENTER);
-
-
-        // Set the frame to full screen
-        // Needs to be done last, after adding components
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        if (gd.isFullScreenSupported()) {
-            gd.setFullScreenWindow(this);
-        } else {
-            System.err.println("Full screen not supported");
-            setSize(900, 600); // Fallback to a default size
-        }
 
         setVisible(true);
     }

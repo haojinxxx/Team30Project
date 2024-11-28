@@ -5,21 +5,21 @@ import java.awt.*;
 
 public class BottomPanel extends JPanel {
 
-    public BottomPanel() {
+    public BottomPanel(int widthScreen, int margin) {
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
         setBackground(Color.decode("#47406A"));
-        setPreferredSize(new Dimension(900, 120));
+        setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));
+        //setSize(new Dimension(width, 120));
 
         // Create and add the Healthbar and PowerUp panels to the bottom panel
-        HealthBarView healthBarView = new HealthBarView();
-        PowerUpView powerUpView = new PowerUpView();
+        HealthBarView healthBarView = new HealthBarView(margin);
+        PowerUpView powerUpView = new PowerUpView(margin, widthScreen);
 
 
         add(healthBarView, BorderLayout.CENTER);
         add(powerUpView, BorderLayout.EAST);
 
-        setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));
 
     }
 }
