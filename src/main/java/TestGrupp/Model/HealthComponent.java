@@ -1,8 +1,8 @@
 package TestGrupp.Model;
 
-public class Healthbar {
+public class HealthComponent {
 
-    public Healthbar(int health) {
+    public HealthComponent(int health) {
         healthAmmount = health;
     }
     public int healthAmmount;
@@ -12,5 +12,9 @@ public class Healthbar {
     }
     public void removeHealth(int healthRemoved) {
         healthAmmount -= healthRemoved;
+    }
+
+    public int getHealth() {
+        return healthAmmount;
     }
 }
