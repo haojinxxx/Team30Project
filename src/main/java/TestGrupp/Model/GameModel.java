@@ -1,5 +1,5 @@
 package TestGrupp.Model;
 
 public class GameModel {
-    ship player;
+    public Ship player;
 }

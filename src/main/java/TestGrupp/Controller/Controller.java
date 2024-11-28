@@ -1,5 +1,6 @@
 package TestGrupp.Controller;
 
+import TestGrupp.Model.GameModel;
 import java.awt.*;
 import java.awt.event.*;
 import TestGrupp.View.Panel;
@@ -17,9 +18,10 @@ public class Controller {
     Action rightAction;
     public Controller(GameModel gm, Panel panel) {
 
-     this.gm = gm;
-     this.panel = panel;
+        this.gm = gm;
+        this.panel = panel;
 
+     /*
      upAction = new upAction();
      leftAction = new leftAction();
      rightAction = new rightAction();
@@ -33,20 +35,6 @@ public class Controller {
 
     }
 
-/*
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_W) {
-
-        }
-        if (key == KeyEvent.VK_A) {
-
-        }
-        if (key == KeyEvent.VK_D) {
-
-        }
-    */
 
 
     class upAction extends AbstractAction {
@@ -70,4 +58,5 @@ public class Controller {
 
 }
 
-
+*/}
+}
