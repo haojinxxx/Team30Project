@@ -6,7 +6,7 @@ public abstract class GameObject {
     private TransformComponent transform;
     private PhysicsComponent physics;
 
-    public GameObject(float initialX, float initialY, float rotation, float scaleX, float scaleY) {
+    public GameObject(double initialX, double initialY, double rotation, double scaleX, double scaleY) {
         this.id = System.identityHashCode(this);
         this.active = true;
         this.transform = new TransformComponent(initialX, initialY, rotation, scaleX, scaleY);

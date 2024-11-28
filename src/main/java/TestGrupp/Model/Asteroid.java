@@ -7,15 +7,18 @@ public class Asteroid extends GameObject {
     private GameModel gameModel;
 
     // Constructor
-    public Asteroid(float initialX, float initialY, float rotation, float scaleX, float scaleY, float speed, int health, int childAsteroids) {
+    public Asteroid(double initialX, double initialY, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids) {
         super(initialX,initialY,rotation,scaleX,scaleY);
         this.childAsteroids = childAsteroids;
+
         TransformComponent transform = this.getTransform();
         transform.setX(initialX);
         transform.setY(initialY);
         transform.setRotation(rotation);
-        float angle = this.getTransform().getRotation();
+        double angle = this.getTransform().getRotation();
+
         this.health = new HealthComponent(health);
+
         this.physics = new PhysicsComponent();
         this.physics.setVelocityX((float) (speed * Math.cos(Math.toRadians(angle))));
         this.physics.setVelocityY((float) (speed * Math.sin(Math.toRadians(angle))));
