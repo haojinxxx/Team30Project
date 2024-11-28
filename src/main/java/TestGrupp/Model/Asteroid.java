@@ -7,8 +7,8 @@ public class Asteroid extends GameObject {
     private GameModel gameModel;
 
     // Constructor
-    public Asteroid(float initialX, float initialY, float rotation, float scaleX, float scaleY, double speed, int health, int childAsteroids) {
-        super();
+    public Asteroid(float initialX, float initialY, float rotation, float scaleX, float scaleY, float speed, int health, int childAsteroids) {
+        super(initialX,initialY,rotation,scaleX,scaleY);
         this.childAsteroids = childAsteroids;
         TransformComponent transform = this.getTransform();
         transform.setX(initialX);
