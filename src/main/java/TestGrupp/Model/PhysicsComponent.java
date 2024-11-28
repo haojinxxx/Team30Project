@@ -3,15 +3,16 @@ package TestGrupp.Model;
 public class PhysicsComponent {
     private float velocityX;
     private float velocityY;
-    private float forwardAcceleration;
-
+    private float acceleration;
     private float friction;
+    private float maxSpeed;
+
     public PhysicsComponent() {
         this.velocityX = 0;
         this.velocityY = 0;
-        this.forwardAcceleration = 0;
+        this.acceleration = 0;
         this.friction = 0.98f;
-
+        this.maxSpeed = 10.0f; // Default max speed
     }
 
     public float getVelocityX() {
@@ -30,12 +31,12 @@ public class PhysicsComponent {
         this.velocityY = velocityY;
     }
 
-    public float getForwardAcceleration() {
-        return forwardAcceleration;
+    public float getAcceleration() {
+        return acceleration;
     }
 
-    public void setForwardAcceleration(float forwardAcceleration) {
-        this.forwardAcceleration = forwardAcceleration;
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
     }
 
     public float getFriction() {
@@ -46,15 +47,32 @@ public class PhysicsComponent {
         this.friction = friction;
     }
 
+    public float getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(float maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
 
     public void update(float deltaTime, TransformComponent transform) {
-
         float radians = (float) Math.toRadians(transform.getRotation());
-        velocityX += (float) (forwardAcceleration * Math.cos(radians) * deltaTime);
-        velocityY += (float) (forwardAcceleration * Math.sin(radians) * deltaTime);
+        velocityX += (float) (acceleration * Math.cos(radians) * deltaTime);
+        velocityY += (float) (acceleration * Math.sin(radians) * deltaTime);
 
+        // Apply friction
         velocityX *= friction;
         velocityY *= friction;
+
+        // Calculate the current speed
+        float currentSpeed = (float) Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+
+        // Limit the speed to maxSpeed
+        if (currentSpeed > maxSpeed) {
+            float scale = maxSpeed / currentSpeed;
+            velocityX *= scale;
+            velocityY *= scale;
+        }
 
         transform.setX(transform.getX() + velocityX * deltaTime);
         transform.setY(transform.getY() + velocityY * deltaTime);
