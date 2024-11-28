@@ -23,6 +23,14 @@ public class Controller {
      upAction = new upAction();
      leftAction = new leftAction();
      rightAction = new rightAction();
+
+     gm.player.getInputMap().put(KeyStroke.getKeyStroke("W"), "up");
+     gm.player.getActionMap().put("up", upAction);
+     gm.player.getInputMap().put(KeyStroke.getKeyStroke("A"), "left");
+     gm.player.getActionMap().put("left", leftAction);
+     gm.player.getInputMap().put(KeyStroke.getKeyStroke("D"), "right");
+     gm.player.getActionMap().put("right", rightAction);
+
     }
 
 /*
