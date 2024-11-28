@@ -1,7 +1,7 @@
 package TestGrupp.Model;
 
 public class PhysicsComponent {
-    private float velocityX;
+    private double velocityX;
     private double velocityY;
     private double acceleration;
     private double friction;

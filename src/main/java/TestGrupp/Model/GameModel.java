@@ -23,7 +23,7 @@ public class GameModel {
     }
 
     // Method to create a new Asteroid
-    public void createAsteroid(float x, float y, float rotation, float scaleX, float scaleY, double speed, int health, int childAsteroids) {
+    public void createAsteroid(double x, double y, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids) {
         Asteroid asteroid = new Asteroid(x, y, rotation, scaleX, scaleY, speed, health, childAsteroids);
         addGameObject(asteroid);
     }

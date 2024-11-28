@@ -15,7 +15,7 @@ public class EnemyShip extends GameObject {
         this.getTransform().setY(initialY);
         this.getTransform().setRotation(rotation);
 
-        float angle = this.getTransform().getRotation();
+        double angle = this.getTransform().getRotation();
         this.health = new HealthComponent(health);
 
         this.physics = new PhysicsComponent();
