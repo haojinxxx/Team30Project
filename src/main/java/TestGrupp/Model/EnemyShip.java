@@ -9,8 +9,8 @@ public class EnemyShip extends GameObject {
 
 
     // Constructor
-    public EnemyShip(float initialX, float initialY, float rotation, double maxSpeed, int health) {
-        super();
+    public EnemyShip(float initialX, float initialY, float rotation, float maxSpeed, int health) {
+        super(initialX, initialY, rotation, maxSpeed, health);
         this.getTransform().setX(initialX);
         this.getTransform().setY(initialY);
         this.getTransform().setRotation(rotation);
