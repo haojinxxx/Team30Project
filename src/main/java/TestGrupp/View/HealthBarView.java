@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class HealthBarView extends JPanel {
 
-    public HealthBarView() {
+    public HealthBarView(int margin) {
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);
         setOpaque(false); // Make the panel transparent
@@ -29,7 +29,7 @@ public class HealthBarView extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST; // Anchor to the left
 
-        gbc.insets = new Insets(0, 30, 0, 30); // Add some padding
+        gbc.insets = new Insets(0, margin, 0, 30); // Add some padding
         gbc.gridx = 0;
         add(healthBarLabel, gbc);
 
