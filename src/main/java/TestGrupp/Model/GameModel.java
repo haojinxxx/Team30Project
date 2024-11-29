@@ -22,9 +22,23 @@ public class GameModel {
         return gameObjects;
     }
 
-    // Method to create a new Asteroid
+    public void update(double deltaTime) {
+        for (GameObject gameObject : gameObjects) {
+            if (!gameObject.isActive()) {
+                removeGameObject(gameObject);
+            }
+
+            gameObject.update(deltaTime);
+
+            // When we decide on when we want to spawn enemies and such (like a check for how many enemies there currently are and if we want more
+            // we can add that here.
+        }
+    }
+
     public void createAsteroid(double x, double y, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids) {
         Asteroid asteroid = new Asteroid(x, y, rotation, scaleX, scaleY, speed, health, childAsteroids);
         addGameObject(asteroid);
     }
+
+
 }
