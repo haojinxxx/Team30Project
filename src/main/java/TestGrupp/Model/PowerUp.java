@@ -11,30 +11,32 @@ public class PowerUp extends GameObject {
 
 
     public PowerUp(double x, double y, String type) {
+        super(x,y,0,1,1);
+
         this.x = x;
         this.y = y;
         this.type = type;
     }
 
-    public void activatePowerUp(Ship ship) {
+    public void activatePowerUp(PlayerShip playerShip) {
         switch (type) {
             case "shield":
-                shieldPowerUp(ship);
+                shieldPowerUp(playerShip);
                 break;
             case "health":
-                healthPowerUp(ship);
+                healthPowerUp(playerShip);
                 break;
         }
     }
 
     //Shield powerup
-    public void shieldPowerUp(Ship ship) {
-        ship.hasShield = true;
-        startPowerUpTimer(() -> ship.hasShield = false, 10000);
+    public void shieldPowerUp(PlayerShip playerShip) {
+        playerShip.hasShield = true;
+        startPowerUpTimer(() -> playerShip.hasShield = false, 10000);
     }
     //Health powerup
-    public void healthPowerUp(Ship ship) {
-        ship.addHealth(20);
+    public void healthPowerUp(PlayerShip playerShip) {
+        playerShip.addHealth(20);
     }
     //Timer for powerup
     public void startPowerUpTimer(Runnable task, long duration) {
