@@ -25,7 +25,8 @@ public class EnemyShip extends GameObject {
     }
 
     // Methods
-    public void move(float deltaTime) {
+    public void update(double deltaTime) {
+        super.update(deltaTime);
         physics.update(deltaTime, this.getTransform());
     }
 
