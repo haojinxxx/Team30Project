@@ -30,7 +30,7 @@ public class Asteroid extends GameObject {
     }
 
     // Methods
-    public void move(float deltaTime) {
+    public void uppdate(float deltaTime) {
         physics.update(deltaTime, this.getTransform());
     }
 
