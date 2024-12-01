@@ -3,13 +3,16 @@ package TestGrupp.View;
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.event.*;
+
 public class Panel extends JFrame {
 
     private final int widthScreen;
     private final int heightScreen;
     private final int shipSquareDimension;
     private final int margin;
-
+    public SpaceShipView spaceShipView;
+    BottomPanel bottomPanel;
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
@@ -28,11 +31,11 @@ public class Panel extends JFrame {
         getContentPane().setBackground(Color.black);
 
         // Create and add the bottom panel to the frame
-        BottomPanel bottomPanel = new BottomPanel(widthScreen, margin);
+        bottomPanel = new BottomPanel(widthScreen, margin);
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Create and add the spaceship panel to the frame
-        SpaceShipView spaceShipView = new SpaceShipView(shipSquareDimension);
+        spaceShipView = new SpaceShipView(shipSquareDimension);
         add(spaceShipView, BorderLayout.CENTER);
 
         setVisible(true);
@@ -41,4 +44,5 @@ public class Panel extends JFrame {
     public void updateFrame() {
         // Update frame logic
     }
+
 }

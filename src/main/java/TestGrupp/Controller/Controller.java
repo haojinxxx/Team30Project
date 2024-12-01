@@ -7,7 +7,7 @@ import TestGrupp.View.Panel;
 import TestGrupp.Model.GameModel;
 import javax.swing.*;
 
-public class Controller {
+public class Controller implements KeyListener{
     //a basic controller that handles KEYBOARD input
 
     GameModel gm;
@@ -20,6 +20,7 @@ public class Controller {
 
         this.gm = gm;
         this.panel = panel;
+        this.panel.addKeyListener(this);
 
      /*
      upAction = new upAction();
@@ -39,7 +40,7 @@ public class Controller {
 
     class upAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
-            gm.player.move();
+
         }
     }
 
@@ -59,4 +60,32 @@ public class Controller {
 }
 
 */}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+   @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (key == KeyEvent.VK_LEFT) {
+
+        }
+        if (key == KeyEvent.VK_RIGHT) {
+
+        }
+        if (key == KeyEvent.VK_UP) {
+            panel.spaceShipView.setLocation(panel.spaceShipView.getX() - 10, panel.spaceShipView.getY());
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    public void update() {
+        panel.repaint();
+    }
 }
