@@ -20,8 +20,8 @@ public class PhysicsComponent {
         return velocity;
     }
 
-    public void setVelocity(double x, double y) {
-        this.velocity.set(x, y);
+    public void setVelocity(Vector2d velocity) {
+        this.velocity.set(velocity);
     }
 
     // Getter and Setter for Acceleration

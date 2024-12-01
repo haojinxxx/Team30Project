@@ -4,13 +4,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class TransformComponent {
-    private Point2D position;  // Position represented by Point2D
-    private double rotation;  // Rotation in degrees or radians (your choice)
-    private double scaleX;    // Scale factor in the x-direction
-    private double scaleY;    // Scale factor in the y-direction
+    private Point2D position;
+    private double rotation;
+    private double scaleX;
+    private double scaleY;
 
     public TransformComponent(double x, double y, double rotation, double scaleX, double scaleY) {
-        this.position = new Point2D.Double(x, y);  // Initialize position using Point2D
+        this.position = new Point2D.Double(x, y);
         this.rotation = rotation;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
