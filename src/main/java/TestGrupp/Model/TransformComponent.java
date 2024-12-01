@@ -1,39 +1,45 @@
 package TestGrupp.Model;
+
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 public class TransformComponent {
-    private double x;
-    private double y;
-    private double rotation;
-    private double scaleX;
-    private double scaleY;
-
-
+    private Point2D position;  // Position represented by Point2D
+    private double rotation;  // Rotation in degrees or radians (your choice)
+    private double scaleX;    // Scale factor in the x-direction
+    private double scaleY;    // Scale factor in the y-direction
 
     public TransformComponent(double x, double y, double rotation, double scaleX, double scaleY) {
-        this.x = x;
-        this.y = y;
+        this.position = new Point2D.Double(x, y);  // Initialize position using Point2D
         this.rotation = rotation;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
+    }
 
+    public Point2D getPosition() {
+        return position;
+    }
 
+    public void setPosition(double x, double y) {
+        this.position.setLocation(x, y);
     }
 
     public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
+        return position.getX();
     }
 
     public double getY() {
-        return y;
+        return position.getY();
+    }
+
+    public void setX(double x) {
+        this.position.setLocation(x, position.getY());
     }
 
     public void setY(double y) {
-        this.y = y;
+        this.position.setLocation(position.getX(), y);
     }
+
 
     public double getRotation() {
         return rotation;
@@ -60,7 +66,11 @@ public class TransformComponent {
     }
 
     public Rectangle2D.Float getBoundingBox() {
-        return new Rectangle2D.Float((float) x, (float) y, (float) scaleX, (float) scaleY);
+        return new Rectangle2D.Float(
+                (float) position.getX(),
+                (float) position.getY(),
+                (float) scaleX,
+                (float) scaleY
+        );
     }
-
 }
