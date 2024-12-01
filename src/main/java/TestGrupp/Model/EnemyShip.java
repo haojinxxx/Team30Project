@@ -7,7 +7,6 @@ public class EnemyShip extends GameObject {
     private HealthComponent health;
     private PhysicsComponent physics;
 
-
     // Constructor
     public EnemyShip(float initialX, float initialY, float rotation, float maxSpeed, int health) {
         super(initialX, initialY, rotation, maxSpeed, health);
@@ -19,9 +18,8 @@ public class EnemyShip extends GameObject {
         this.health = new HealthComponent(health);
 
         this.physics = new PhysicsComponent();
-        this.physics.setVelocityX((float) (maxSpeed * Math.cos(Math.toRadians(angle))));
-        this.physics.setVelocityY((float) (maxSpeed * Math.sin(Math.toRadians(angle))));
-
+        this.physics.setVelocity((float) (maxSpeed * Math.cos(Math.toRadians(angle))),
+                (float) (maxSpeed * Math.sin(Math.toRadians(angle))));
     }
 
     // Methods
@@ -36,5 +34,4 @@ public class EnemyShip extends GameObject {
             this.setActive(false);
         }
     }
-
 }
