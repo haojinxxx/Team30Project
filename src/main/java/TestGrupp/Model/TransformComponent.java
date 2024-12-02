@@ -1,27 +1,27 @@
 package TestGrupp.Model;
 
-import java.awt.geom.Point2D;
+import javax.vecmath.Point2d;
 import java.awt.geom.Rectangle2D;
 
 public class TransformComponent {
-    private Point2D position;
+    private Point2d position;
     private double rotation;
     private double scaleX;
     private double scaleY;
 
-    public TransformComponent(double x, double y, double rotation, double scaleX, double scaleY) {
-        this.position = new Point2D.Double(x, y);
+    public TransformComponent(Point2d position, double rotation, double scaleX, double scaleY) {
+        this.position = position;
         this.rotation = rotation;
         this.scaleX = scaleX;
         this.scaleY = scaleY;
     }
 
-    public Point2D getPosition() {
+    public Point2d getPosition() {
         return position;
     }
 
-    public void setPosition(double x, double y) {
-        this.position.setLocation(x, y);
+    public void setPosition(Point2d position) {
+        this.position.set(position);
     }
 
     public double getX() {
@@ -33,13 +33,12 @@ public class TransformComponent {
     }
 
     public void setX(double x) {
-        this.position.setLocation(x, position.getY());
+        this.position.set(x, position.getY());
     }
 
     public void setY(double y) {
-        this.position.setLocation(position.getX(), y);
+        this.position.set(position.getX(), y);
     }
-
 
     public double getRotation() {
         return rotation;
