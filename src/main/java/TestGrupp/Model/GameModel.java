@@ -1,12 +1,16 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameModel {
+public class GameModel implements GameEventListener {
     private List<GameObject> gameObjects;
 
-    public GameModel() {
+    private CollisionManager collisionManager;
+
+    public GameModel(GameEventListener listener) {
         this.gameObjects = new ArrayList<>();
     }
 
@@ -23,21 +27,40 @@ public class GameModel {
     }
 
     public void update(double deltaTime) {
-        for (GameObject gameObject : gameObjects) {
+        for (GameObject gameObject : new ArrayList<>(gameObjects)) {
             if (!gameObject.isActive()) {
                 removeGameObject(gameObject);
             }
-
             gameObject.update(deltaTime);
 
-            // When we decide on when we want to spawn enemies and such (like a check for how many enemies there currently are and if we want more
-            // we can add that here.
+
         }
+        collisionManager.update(gameObjects); // When this has been properly implemented only the collidible objects in the game will be sent to the collision manager
     }
 
-    public void createAsteroid(double x, double y, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids) {
-        Asteroid asteroid = new Asteroid(x, y, rotation, scaleX, scaleY, speed, health, childAsteroids);
+    public void spawnAsteroid(Point2d position, int childAsteroids) {
+        double speed = 0.5;
+        int health = 10;
+
+        Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
         addGameObject(asteroid);
+    }
+
+
+    public void onAsteroidDestroyed(Point2d position, int childAsteroids) {
+        for (int i = 0; i < childAsteroids; i++) {
+            spawnAsteroid(position, childAsteroids);
+        }
+
+    }
+
+    public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage) {
+        Projectile projectile = new Projectile(position,rotation, velocity,1,1 ,speed, damage, this);
+        addGameObject(projectile);
+    }
+
+    public void onEnemyDestroyed(EnemyShip enemy) {
+        removeGameObject(enemy);
     }
 
 
