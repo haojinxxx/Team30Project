@@ -40,5 +40,10 @@ public class GameModel {
         addGameObject(asteroid);
     }
 
+    public void createEnemyShip(double x, double y, double rotation, double maxSpeed, int health) {
+        EnemyShip enemyShip = new EnemyShip(x, y, rotation, maxSpeed, health); // Adjust parameters as needed
+        addGameObject(enemyShip);
+    }
+
 
 }

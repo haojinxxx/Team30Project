@@ -1,6 +1,6 @@
 package TestGrupp.Model;
 
-public class Asteroid extends GameObject {
+public class Asteroid extends GameObject implements Enemy{
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
@@ -44,5 +44,10 @@ public class Asteroid extends GameObject {
             }
             this.setActive(false);
         }
+    }
+
+    @Override
+    public void spawn(GameModel gameModel, double x, double y) {
+        gameModel.createAsteroid(x, y, Math.random() * 360, 1, 1, 1, 10, 0);
     }
 }

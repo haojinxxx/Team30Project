@@ -1,6 +1,6 @@
 package TestGrupp.Model;
 
-public class EnemyShip extends GameObject {
+public class EnemyShip extends GameObject implements Enemy {
     // Fields
     private double speed;
 
@@ -9,7 +9,7 @@ public class EnemyShip extends GameObject {
 
 
     // Constructor
-    public EnemyShip(float initialX, float initialY, float rotation, float maxSpeed, int health) {
+    public EnemyShip(double initialX, double initialY, double rotation, double maxSpeed, int health) {
         super(initialX, initialY, rotation, maxSpeed, health);
         this.getTransform().setX(initialX);
         this.getTransform().setY(initialY);
@@ -19,8 +19,8 @@ public class EnemyShip extends GameObject {
         this.health = new HealthComponent(health);
 
         this.physics = new PhysicsComponent();
-        this.physics.setVelocityX((float) (maxSpeed * Math.cos(Math.toRadians(angle))));
-        this.physics.setVelocityY((float) (maxSpeed * Math.sin(Math.toRadians(angle))));
+        this.physics.setVelocityX(maxSpeed * Math.cos(Math.toRadians(angle)));
+        this.physics.setVelocityY(maxSpeed * Math.sin(Math.toRadians(angle)));
 
     }
 
@@ -35,6 +35,13 @@ public class EnemyShip extends GameObject {
         if (this.health.getHealth() <= 0) {
             this.setActive(false);
         }
+    }
+
+
+
+    @Override
+    public void spawn(GameModel gameModel, double x, double y) {
+        gameModel.createEnemyShip(x, y, Math.random() * 360, 1, 100);
     }
 
 }
