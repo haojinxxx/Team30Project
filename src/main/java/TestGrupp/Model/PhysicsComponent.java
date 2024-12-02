@@ -1,5 +1,6 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
 public class PhysicsComponent {
@@ -68,8 +69,9 @@ public class PhysicsComponent {
         }
 
         // Update position using velocity
-        double newX = transform.getX() + velocity.x * deltaTime;
-        double newY = transform.getY() + velocity.y * deltaTime;
-        transform.setPosition(newX, newY);
+        Point2d position = transform.getPosition();
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
+        transform.setPosition(position);
     }
 }
