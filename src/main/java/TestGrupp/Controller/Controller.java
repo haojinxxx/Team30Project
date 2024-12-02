@@ -22,6 +22,9 @@ public class Controller implements KeyListener{
         this.panel = panel;
         this.panel.addKeyListener(this);
 
+        this.panel.setFocusable(true);
+        this.panel.requestFocusInWindow();
+
      /*
      upAction = new upAction();
      leftAction = new leftAction();
@@ -66,17 +69,20 @@ public class Controller implements KeyListener{
 
     }
 
-   @Override
+    @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-
+            panel.spaceShipView.setLocation(panel.spaceShipView.getX() - 10, panel.spaceShipView.getY());
         }
         if (key == KeyEvent.VK_RIGHT) {
-
+            panel.spaceShipView.setLocation(panel.spaceShipView.getX() + 10, panel.spaceShipView.getY());
         }
         if (key == KeyEvent.VK_UP) {
-            panel.spaceShipView.setLocation(panel.spaceShipView.getX() - 10, panel.spaceShipView.getY());
+            panel.spaceShipView.setLocation(panel.spaceShipView.getX(), panel.spaceShipView.getY() - 10);
+        }
+        if (key == KeyEvent.VK_DOWN) {
+            panel.spaceShipView.setLocation(panel.spaceShipView.getX(), panel.spaceShipView.getY() + 10);
         }
     }
 
