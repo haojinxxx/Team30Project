@@ -1,48 +1,48 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
+
 public class Asteroid extends GameObject {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
-    private GameModel gameModel;
+    private GameEventListener listener;
 
     // Constructor
-    public Asteroid(double initialX, double initialY, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids) {
-        super(initialX,initialY,rotation,scaleX,scaleY);
+    public Asteroid(Point2d position, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids, GameEventListener listener) {
+        super(position, rotation, scaleX, scaleY, listener);
         this.childAsteroids = childAsteroids;
+        this.listener = listener;
 
         TransformComponent transform = this.getTransform();
-        transform.setX(initialX);
-        transform.setY(initialY);
+        transform.setPosition(position);
         transform.setRotation(rotation);
         double angle = this.getTransform().getRotation();
 
         this.health = new HealthComponent(health);
 
         this.physics = new PhysicsComponent();
-        this.physics.setVelocityX((float) (speed * Math.cos(Math.toRadians(angle))));
-        this.physics.setVelocityY((float) (speed * Math.sin(Math.toRadians(angle))));
-    }
-
-    // Set the GameModel instance
-    public void setGameModel(GameModel gameModel) {
-        this.gameModel = gameModel;
+        this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
     }
 
     // Methods
-    public void uppdate(float deltaTime) {
+    public void update(float deltaTime) {
         physics.update(deltaTime, this.getTransform());
     }
 
     public void takeDamage(int damage) {
         this.health.removeHealth(damage);
         if (this.health.getHealth() <= 0) {
-            for (int i = 0; i < childAsteroids; i++) {
-                if (gameModel != null) {
-                    gameModel.createAsteroid(this.getTransform().getX(), this.getTransform().getY(), (float) Math.random() * 360, 1, 1, 1, 10, 0);
-                }
-            }
-            this.setActive(false);
+            destroy();
         }
+    }
+    public void destroy() {
+        for (int i = 0; i < childAsteroids; i++) {
+            if (listener != null) {
+                listener.onAsteroidDestroyed(this.getTransform().getPosition(), childAsteroids);
+            }
+        }
+        this.setActive(false);
     }
 }
