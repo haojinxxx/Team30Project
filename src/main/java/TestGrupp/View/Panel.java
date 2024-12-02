@@ -11,7 +11,11 @@ public class Panel extends JFrame {
     private final int heightScreen;
     private final int shipSquareDimension;
     private final int margin;
-    public SpaceShipView spaceShipView;
+    private SpaceShipView spaceShipView;
+
+
+    private Image backGroundImage;
+
     BottomPanel bottomPanel;
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -26,6 +30,8 @@ public class Panel extends JFrame {
         setSize(widthScreen, heightScreen);
         setResizable(false);
         setLocationRelativeTo(null);  // Center the frame
+
+
 
         // Set the background color of the content pane
         getContentPane().setBackground(Color.black);
@@ -44,5 +50,12 @@ public class Panel extends JFrame {
     public void updateFrame() {
         // Update frame logic
     }
+
+
+    public SpaceShipView getSpaceShipView() {
+        return this.spaceShipView; //not secure?
+    }
+
+
 
 }
