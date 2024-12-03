@@ -10,7 +10,7 @@ public class GameModel implements GameEventListener {
 
     private CollisionManager collisionManager;
 
-    public GameModel(GameEventListener listener) {
+    public GameModel() {
         this.gameObjects = new ArrayList<>();
     }
 
