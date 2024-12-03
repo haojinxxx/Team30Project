@@ -53,7 +53,7 @@ public class Panel extends JFrame {
 
 
     public SpaceShipView getSpaceShipView() {
-        return this.spaceShipView; //not secure?
+        return spaceShipView; //not secure?
     }
 
 
