@@ -2,8 +2,8 @@ package TestGrupp.Model;
 
 public class healthPowerUp extends PowerUp {
 
-    public healthPowerUp(double x, double y) {
-        super(x, y);
+    public healthPowerUp(double xPos, double yPos) {
+        super(xPos, yPos);
     }
 
     public void powerUp(PlayerShip playerShip) {

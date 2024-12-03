@@ -2,8 +2,8 @@ package TestGrupp.Model;
 
 public class shieldPowerUp extends PowerUp {
 
-    public shieldPowerUp(double x, double y) {
-        super(x, y);
+    public shieldPowerUp(double xPos, double yPos) {
+        super(xPos, yPos);
     }
 
     public void powerUp(PlayerShip playerShip) {
