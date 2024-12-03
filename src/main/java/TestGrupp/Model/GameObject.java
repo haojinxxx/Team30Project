@@ -6,7 +6,7 @@ public abstract class GameObject {
     protected GameEventListener listener;
     private int id;
     private boolean active;
-
+    private Point2d position;
     private boolean collidible;
     private TransformComponent transform;
     //private PhysicsComponent physics;
@@ -16,6 +16,7 @@ public abstract class GameObject {
         this.active = true;
         this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
         this.listener = listener;
+        this.position = position;
     }
 
     public int getId() {
@@ -40,6 +41,14 @@ public abstract class GameObject {
 
     public TransformComponent getTransform() {
         return transform;
+    }
+
+    protected double getX() {
+        return position.getX();
+    }
+
+    protected double getY() {
+        return position.getY();
     }
 
     public void update(double deltaTime) {

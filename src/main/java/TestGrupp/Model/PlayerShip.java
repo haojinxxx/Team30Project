@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PlayerShip extends GameObject{
 
-    private double x, y; // position
+
     private double speed;
     private double maxSpeed;
     private double acceleration;
@@ -25,26 +25,7 @@ public class PlayerShip extends GameObject{
         this.physics = new PhysicsComponent();
     }
 
-/* Deprecated for the time being
-    public void move(char direction) {
-        switch (direction) {
-            case 'w':
-                physics.setAcceleration(0.2);
-                break;
-            case 's':
-                physics.setAcceleration(-0.2);
-                break;
-            case 'a':
-                getTransform().setRotation(getTransform().getRotation() - 5);
-                break;
-            case 'd':
-                getTransform().setRotation(getTransform().getRotation() + 5);
-                break;
-        }
-        physics.update(1.0f, getTransform());
-    }
-
-
+/*
     public void shootProjectile() {
         double projectileSpeed = 15;
         shipProjectiles.add(new Projectile((float) x, (float) y, (float) angle, 1.0f, 1.0f, speed, projectileSpeed, 10));
@@ -60,13 +41,9 @@ public class PlayerShip extends GameObject{
         this.health.addHealth(health);
     }
 
-    public double getX() {
-        return x;
-    }
 
-    public double getY() {
-        return y;
-    }
+
+
 
 
 
