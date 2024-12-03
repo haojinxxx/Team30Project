@@ -1,44 +1,40 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
+
 public class PhysicsComponent {
-    private double velocityX;
-    private double velocityY;
-    private double acceleration;
-    private double friction;
-    private double maxSpeed;
+    private Vector2d velocity;      // Represents velocity as a 2D vector
+    private Vector2d acceleration; // Represents acceleration as a 2D vector
+    private double friction;       // Friction coefficient
+    private double maxSpeed;       // Maximum speed limit
 
     public PhysicsComponent() {
-        this.velocityX = 0;
-        this.velocityY = 0;
-        this.acceleration = 0;
-        this.friction = 0.98f;
-        this.maxSpeed = 10.0f; // Default max speed
+        this.velocity = new Vector2d(0, 0);       // Initial velocity
+        this.acceleration = new Vector2d(0, 0);  // Initial acceleration
+        this.friction = 0.98;                    // Default friction
+        this.maxSpeed = 10.0;                    // Default max speed
     }
 
-    public double getVelocityX() {
-        return velocityX;
+    // Getter and Setter for Velocity
+    public Vector2d getVelocity() {
+        return velocity;
     }
 
-    public void setVelocityX(double velocityX) {
-        this.velocityX = velocityX;
+    public void setVelocity(Vector2d velocity) {
+        this.velocity.set(velocity);
     }
 
-    public double getVelocityY() {
-        return velocityY;
-    }
-
-    public void setVelocityY(double velocityY) {
-        this.velocityY = velocityY;
-    }
-
-    public double getAcceleration() {
+    // Getter and Setter for Acceleration
+    public Vector2d getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(double acceleration) {
-        this.acceleration = acceleration;
+    public void setAcceleration(double x, double y) {
+        this.acceleration.set(x, y);
     }
 
+    // Getter and Setter for Friction
     public double getFriction() {
         return friction;
     }
@@ -47,6 +43,7 @@ public class PhysicsComponent {
         this.friction = friction;
     }
 
+    // Getter and Setter for Max Speed
     public double getMaxSpeed() {
         return maxSpeed;
     }
@@ -55,26 +52,26 @@ public class PhysicsComponent {
         this.maxSpeed = maxSpeed;
     }
 
+    // Update method
     public void update(double deltaTime, TransformComponent transform) {
-        double radians = (double) Math.toRadians(transform.getRotation());
-        velocityX += (double) (acceleration * Math.cos(radians) * deltaTime);
-        velocityY += (double) (acceleration * Math.sin(radians) * deltaTime);
+        // Apply acceleration to velocity
+        Vector2d scaledAcceleration = new Vector2d(acceleration);
+        scaledAcceleration.scale(deltaTime);  // acceleration * deltaTime
+        velocity.add(scaledAcceleration);    // velocity += acceleration * deltaTime
 
-        // Apply friction
-        velocityX *= friction;
-        velocityY *= friction;
+        // Apply friction to velocity
+        velocity.scale(friction);
 
-        // Calculate the current speed
-        double currentSpeed = (double) Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-
-        // Limit the speed to maxSpeed
+        // Limit speed to maxSpeed
+        double currentSpeed = velocity.length();
         if (currentSpeed > maxSpeed) {
-            double scale = maxSpeed / currentSpeed;
-            velocityX *= scale;
-            velocityY *= scale;
+            velocity.scale(maxSpeed / currentSpeed);  // Scale velocity down to maxSpeed
         }
 
-        transform.setX(transform.getX() + velocityX * deltaTime);
-        transform.setY(transform.getY() + velocityY * deltaTime);
+        // Update position using velocity
+        Point2d position = transform.getPosition();
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
+        transform.setPosition(position);
     }
 }

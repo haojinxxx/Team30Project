@@ -1,24 +1,37 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+
 public abstract class GameObject {
+    protected GameEventListener listener;
     private int id;
     private boolean active;
+
+    private boolean collidible;
     private TransformComponent transform;
     //private PhysicsComponent physics;
 
-    public GameObject(double initialX, double initialY, double rotation, double scaleX, double scaleY) {
+    public GameObject(Point2d position, double rotation, double scaleX, double scaleY, GameEventListener listener) {
         this.id = System.identityHashCode(this);
         this.active = true;
-        this.transform = new TransformComponent(initialX, initialY, rotation, scaleX, scaleY);
-        //this.physics = new PhysicsComponent();
+        this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
+        this.listener = listener;
     }
 
     public int getId() {
         return id;
     }
 
+    public GameEventListener getListener() {
+        return listener;
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    public boolean isCollidible() {
+        return collidible;
     }
 
     public void setActive(boolean active) {
@@ -29,12 +42,6 @@ public abstract class GameObject {
         return transform;
     }
 
-    /*
-    public PhysicsComponent getPhysics() {
-        return physics;
-    }*/
-
-    // Main update method in GameObject class
     public void update(double deltaTime) {
         if (!this.isActive()) {
             return;
