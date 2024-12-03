@@ -1,11 +1,13 @@
 package TestGrupp.Model;
 
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class EnemyShip extends GameObject {
+public class EnemyShip extends GameObject implements Enemy {
     private final int projectileDamage;
     private final int firingRange;
+
     // Fields
     private double speed;
 
@@ -15,6 +17,7 @@ public class EnemyShip extends GameObject {
     private PhysicsComponent physics;
 
     // Constructor
+
     public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
         super(position, rotation, maxSpeed, health, listener);
         this.getTransform().setPosition(position);
@@ -23,10 +26,8 @@ public class EnemyShip extends GameObject {
         this.listener = listener;
         double angle = this.getTransform().getRotation();
         this.health = new HealthComponent(health);
-
         this.physics = new PhysicsComponent();
         this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
-
 
         this.collidible = true;
         this.firingRange = firingRange;
@@ -61,4 +62,13 @@ public class EnemyShip extends GameObject {
             this.setActive(false);
         }
     }
+
+
+
+
+    @Override
+    public void spawn(GameModel gameModel, double x, double y) {
+        gameModel.createEnemyShip(x, y, Math.random() * 360, 1, 100);
+    }
+
 }
