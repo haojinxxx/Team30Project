@@ -23,7 +23,7 @@ public class Controller {
 
         this.gm = gm;
         this.panel = panel;
-        this.ih = new InputHandler(this.panel);
+        this.ih = new InputHandler(this.panel, this.gm);
 
 
         this.panel.setFocusable(true);

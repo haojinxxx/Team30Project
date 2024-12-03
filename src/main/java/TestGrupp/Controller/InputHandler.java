@@ -2,36 +2,43 @@ package TestGrupp.Controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import TestGrupp.View.Panel;
+import TestGrupp.View.*;
+import TestGrupp.Model.*;
+
+import javax.vecmath.Point2d;
 
 
 public class InputHandler implements KeyListener {
-    Panel panel;
+    Panel view;
+    GameModel gm;
 
-    public InputHandler (Panel view)
+    public InputHandler (Panel view, GameModel model)
     {
-        this.panel = view;
-        this.panel.addKeyListener(this);
+        this.view = view;
+        this.gm = model;
+        this.view.addKeyListener(this);
     }
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
-    @Override
+
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-            panel.getSpaceShipView().setLocation(panel.getSpaceShipView().getX() - 10, panel.getSpaceShipView().getY());
+            gm.getPlayerShip().setPos(new Point2d(gm.getPlayerShip().getX() - 10, gm.getPlayerShip().getY()));
+            System.out.println(gm.getPlayerShip().getX());
         }
         if (key == KeyEvent.VK_RIGHT) {
-            panel.getSpaceShipView().setLocation(panel.getSpaceShipView().getX() + 10, panel.getSpaceShipView().getY());
-        }
+            gm.getPlayerShip().setPos(new Point2d(gm.getPlayerShip().getX() + 10, gm.getPlayerShip().getY()));
+            System.out.println(gm.getPlayerShip().getX());
+            }
         if (key == KeyEvent.VK_UP) {
-            panel.getSpaceShipView().setLocation(panel.getSpaceShipView().getX(), panel.getSpaceShipView().getY() - 10);
+            view.getSpaceShipView().setLocation(view.getSpaceShipView().getX(), view.getSpaceShipView().getY() - 10);
         }
         if (key == KeyEvent.VK_DOWN) {
-            panel.getSpaceShipView().setLocation(panel.getSpaceShipView().getX(), panel.getSpaceShipView().getY() + 10);
+            view.getSpaceShipView().setLocation(view.getSpaceShipView().getX(), view.getSpaceShipView().getY() + 10);
         }
     }
 

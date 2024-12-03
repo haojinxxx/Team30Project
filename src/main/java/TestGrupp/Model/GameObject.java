@@ -43,12 +43,17 @@ public abstract class GameObject {
         return transform;
     }
 
-    protected double getX() {
-        return position.getX();
+    public double getX() {
+        return getPos().getX();
     }
 
-    protected double getY() {
-        return position.getY();
+    public double getY() {
+        return getPos().getY();
+    }
+
+    public Point2d getPos() { return new Point2d(position); }
+    public void setPos(Point2d pos) {
+        position = pos;
     }
 
     public void update(double deltaTime) {
