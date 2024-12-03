@@ -15,10 +15,15 @@ public abstract class GameObject {
         this.id = System.identityHashCode(this);
         this.active = true;
         this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
+        this.listener = listener;
     }
 
     public int getId() {
         return id;
+    }
+
+    public GameEventListener getListener() {
+        return listener;
     }
 
     public boolean isActive() {

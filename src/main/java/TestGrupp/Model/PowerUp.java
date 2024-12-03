@@ -1,12 +1,13 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class PowerUp extends GameObject {
     //Constructor for powerup
-    public PowerUp(double xPos, double yPos) {
-        super(xPos,yPos,0,1,1);
+    public PowerUp(Point2d position, GameEventListener listener) {
+        super(position,0,1,1,listener);
 
     }
     //Abstract method for powerup functionality
