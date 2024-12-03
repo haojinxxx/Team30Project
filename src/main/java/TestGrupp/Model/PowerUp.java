@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public abstract class PowerUp extends GameObject {
     //Constructor for powerup
     public PowerUp(Point2d position, GameEventListener listener) {
-        super(position,0,1,1,listener);
+        super(position, 0, 1, 1, listener);
 
     }
     //Abstract method for powerup functionality
