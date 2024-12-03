@@ -3,41 +3,18 @@ package TestGrupp.Model;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PowerUp extends GameObject {
+public abstract class PowerUp extends GameObject {
+    //Constructor for powerup
+    public PowerUp(double xPos, double yPos) {
+        super(xPos,yPos,0,1,1);
 
-
-    private double x, y; //Position
-    private String type; //Type of powerup
-
-
-    public PowerUp(double x, double y, String type) {
-        super(x,y,0,1,1);
-
-        this.x = x;
-        this.y = y;
-        this.type = type;
     }
-
+    //Abstract method for powerup functionality
+    public abstract void powerUp(PlayerShip playerShip);
+    //Activates subclass own powerUp implemen
     public void activatePowerUp(PlayerShip playerShip) {
-        switch (type) {
-            case "shield":
-                shieldPowerUp(playerShip);
-                break;
-            case "health":
-                healthPowerUp(playerShip);
-                break;
+        powerUp(playerShip);
         }
-    }
-
-    //Shield powerup
-    public void shieldPowerUp(PlayerShip playerShip) {
-        playerShip.hasShield = true;
-        startPowerUpTimer(() -> playerShip.hasShield = false, 10000);
-    }
-    //Health powerup
-    public void healthPowerUp(PlayerShip playerShip) {
-        playerShip.addHealth(20);
-    }
     //Timer for powerup
     public void startPowerUpTimer(Runnable task, long duration) {
         Timer timer = new Timer();

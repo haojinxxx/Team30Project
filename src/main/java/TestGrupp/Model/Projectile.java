@@ -1,24 +1,23 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
+
 public class Projectile extends GameObject {
 
-    private double angle;
     private final PhysicsComponent physics;
     private int damage;
 
-    public Projectile(float initialX, float initialY, float rotation, float scaleX, float scaleY, double speed, int damage) {
-        super(initialX, initialY, rotation, scaleX, scaleY);
+    public Projectile(Point2d initialPosition, double rotation, Vector2d velocity, double scaleX, double scaleY, double speed, int damage, GameEventListener listener) {
+        super(initialPosition, rotation, scaleX, scaleY, listener);
         this.physics = new PhysicsComponent();
-        angle = this.getTransform().getRotation();
-        this.getTransform().setX(initialX);
-        this.getTransform().setY(initialY);
+        this.getTransform().setPosition(initialPosition);
+        this.getTransform().setRotation(rotation);
 
-
-        physics.setVelocityX((float) (speed * Math.cos(Math.toRadians(angle))));
-        physics.setVelocityY((float) (speed * Math.sin(Math.toRadians(angle))));
-
+        physics.setVelocity(velocity);
         this.damage = damage;
     }
+
     public int getDamage() {
         return damage;
     }
