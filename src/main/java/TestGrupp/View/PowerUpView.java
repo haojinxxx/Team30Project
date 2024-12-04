@@ -5,7 +5,8 @@ import java.awt.*;
 
 public class PowerUpView extends JPanel {
 
-    public PowerUpView(int margin, int widthScreen) {
+
+    public PowerUpView(int margin, int buttonWidth) {
         setLayout(new GridBagLayout());
         setOpaque(false); // Make the panel transparent
 
@@ -14,9 +15,6 @@ public class PowerUpView extends JPanel {
         JButton powerUp2 = createCustomButton("PowerUp 2");
         JButton powerUp3 = createCustomButton("PowerUp 3");
         JButton powerUp4 = createCustomButton("PowerUp 4");
-
-
-        int buttonWidth = (int) (0.08 * widthScreen);  // 8% of the screen width
 
         //Set preferred size for buttons
         Dimension buttonSize = new Dimension(buttonWidth, buttonWidth);
@@ -52,6 +50,5 @@ public class PowerUpView extends JPanel {
         button.setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));;
         return button;
     }
-
 
 }

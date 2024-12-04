@@ -3,8 +3,6 @@ package TestGrupp.View;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.*;
-
 public class Panel extends JFrame {
 
     private final int widthScreen;
@@ -12,11 +10,9 @@ public class Panel extends JFrame {
     private final int shipSquareDimension;
     private final int margin;
     private SpaceShipView spaceShipView;
-
-
-    private Image backGroundImage;
-
+    private BackgroundView backGroundView;
     BottomPanel bottomPanel;
+
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
@@ -26,24 +22,35 @@ public class Panel extends JFrame {
 
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
         setSize(widthScreen, heightScreen);
+        setUndecorated(true); // Make the frame borderless
         setResizable(false);
         setLocationRelativeTo(null);  // Center the frame
 
+        // Set the screen to full screen
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        device.setFullScreenWindow(this);
 
+        // Create a layered pane
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(widthScreen, heightScreen));
+        setContentPane(layeredPane);
 
-        // Set the background color of the content pane
-        getContentPane().setBackground(Color.black);
+        // Create and add the background panel to the layered pane
+        backGroundView = new BackgroundView(widthScreen, heightScreen);
+        backGroundView.setBounds(0, 0, widthScreen, heightScreen);
+        layeredPane.add(backGroundView, JLayeredPane.DEFAULT_LAYER);
+
+        // Create and add the spaceship panel to the layered pane
+        spaceShipView = new SpaceShipView(shipSquareDimension);
+        spaceShipView.setBounds((widthScreen - shipSquareDimension) / 2, (heightScreen - shipSquareDimension) / 2, shipSquareDimension, shipSquareDimension);
+        layeredPane.add(spaceShipView, JLayeredPane.PALETTE_LAYER);
 
         // Create and add the bottom panel to the frame
         bottomPanel = new BottomPanel(widthScreen, margin);
-        add(bottomPanel, BorderLayout.SOUTH);
-
-        // Create and add the spaceship panel to the frame
-        spaceShipView = new SpaceShipView(shipSquareDimension);
-        add(spaceShipView, BorderLayout.CENTER);
-
+        bottomPanel.setBounds(0, heightScreen - bottomPanel.getPreferredSize().height, widthScreen, bottomPanel.getPreferredSize().height);
+        layeredPane.add(bottomPanel, JLayeredPane.MODAL_LAYER);
         setVisible(true);
     }
 

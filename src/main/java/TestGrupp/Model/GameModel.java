@@ -10,8 +10,12 @@ public class GameModel implements GameEventListener {
 
     private CollisionManager collisionManager;
 
+    private PlayerShip playerShip;
+
     public GameModel() {
         this.gameObjects = new ArrayList<>();
+        this.playerShip = new PlayerShip(new Point2d(0, 0), 0, 1, 1, this);
+        addGameObject(playerShip);
     }
 
     public void addGameObject(GameObject gameObject) {
@@ -36,6 +40,11 @@ public class GameModel implements GameEventListener {
 
         }
         collisionManager.update(gameObjects); // When this has been properly implemented only the collidible objects in the game will be sent to the collision manager
+    }
+
+
+    public PlayerShip getPlayerShip() {
+        return playerShip;
     }
 
     public void spawnAsteroid(Point2d position, int childAsteroids) {
