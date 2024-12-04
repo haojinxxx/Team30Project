@@ -3,10 +3,13 @@ package TestGrupp.Model;
 public class Score {
     private int score;
     private long startTime;
+    private long lastUpdateTime;
+
 
     public Score() {
         score = 0;
         startTime = System.currentTimeMillis();
+        lastUpdateTime = startTime;
     }
 
     public void addScore(int scoreAdded) {
@@ -23,15 +26,11 @@ public class Score {
 
     public void updateScoreBasedOnTime() {
         long currentTime = System.currentTimeMillis();
-        long elapsedTime = currentTime - startTime;
-        int additionalScore = (int) (elapsedTime / 1000) / 30 * 30;
-        score += additionalScore;
-        startTime = currentTime - (elapsedTime % 30000); // Reset start time to the last 30-second mark
+        long elapsedTime = currentTime - lastUpdateTime;
+        if (elapsedTime >= 1000) {
+            int secondsPassed = (int) (elapsedTime / 1000);
+            score += secondsPassed * 10;
+            lastUpdateTime += secondsPassed * 1000;
+        }
     }
-
-    public void enemyEliminated() {
-        addScore(30);
-    }
-    
-
 }

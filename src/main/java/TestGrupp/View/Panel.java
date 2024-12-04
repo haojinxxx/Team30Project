@@ -12,6 +12,7 @@ public class Panel extends JFrame {
     private SpaceShipView spaceShipView;
     private BackgroundView backGroundView;
     BottomPanel bottomPanel;
+    private ScoreView scoreView;
 
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -52,6 +53,11 @@ public class Panel extends JFrame {
         bottomPanel.setBounds(0, heightScreen - bottomPanel.getPreferredSize().height, widthScreen, bottomPanel.getPreferredSize().height);
         layeredPane.add(bottomPanel, JLayeredPane.MODAL_LAYER);
         setVisible(true);
+
+        // Create and add the score view to the layered pane
+        scoreView = new ScoreView();
+        scoreView.setBounds(widthScreen - 200, 0, 200, 50); // Adjust the size and position as needed
+        layeredPane.add(scoreView, JLayeredPane.POPUP_LAYER);
     }
 
     public void updateFrame() {
