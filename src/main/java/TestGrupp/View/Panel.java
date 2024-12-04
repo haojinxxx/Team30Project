@@ -10,10 +10,7 @@ public class Panel extends JFrame {
     private final int shipSquareDimension;
     private final int margin;
     private SpaceShipView spaceShipView;
-
-
-    private Image backGroundImage;
-
+    private BackgroundView backGroundView;
     BottomPanel bottomPanel;
 
     public Panel(String title) {

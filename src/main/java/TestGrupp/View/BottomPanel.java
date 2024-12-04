@@ -12,9 +12,12 @@ public class BottomPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));
         //setSize(new Dimension(width, 120));
 
+        //create the dimension for the power-up buttons
+        buttonWidth = (int) (0.08 * widthScreen);   // 8% of the screen width
+
         // Create and add the Healthbar and PowerUp panels to the bottom panel
         HealthBarView healthBarView = new HealthBarView(margin);
-        PowerUpView powerUpView = new PowerUpView(margin, widthScreen);
+        PowerUpView powerUpView = new PowerUpView(margin, buttonWidth);
 
 
         add(healthBarView, BorderLayout.CENTER);
