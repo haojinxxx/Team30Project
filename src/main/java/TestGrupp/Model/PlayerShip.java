@@ -13,6 +13,7 @@ public class PlayerShip extends GameObject{
     private double angle;
     private HealthComponent health;
     private PhysicsComponent physics;
+    private TransformComponent transform;
     boolean hasShield;
 
     private List<Projectile> shipProjectiles;
@@ -23,6 +24,7 @@ public class PlayerShip extends GameObject{
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
         this.physics = new PhysicsComponent();
+        this.transform = new TransformComponent(position,rotation,scaleX,scaleY);
     }
 
 /*
@@ -37,6 +39,14 @@ public class PlayerShip extends GameObject{
         }
     }
 
+    public void move() {
+        //Make the playershop move depending on acclereation and angle using PhysicsComponent
+        physics.update(0.1, transform);
+    }
+
+    public void rotate(Double degrees) {
+        transform.setRotation(transform.getRotation() + degrees);
+    }
     public void addHealth(int health) {
         this.health.addHealth(health);
     }

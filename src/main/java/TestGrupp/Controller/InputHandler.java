@@ -27,18 +27,16 @@ public class InputHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_LEFT) {
-            gm.getPlayerShip().setPos(new Point2d(gm.getPlayerShip().getX() - 10, gm.getPlayerShip().getY()));
-            System.out.println(gm.getPlayerShip().getX());
         }
         if (key == KeyEvent.VK_RIGHT) {
             gm.getPlayerShip().setPos(new Point2d(gm.getPlayerShip().getX() + 10, gm.getPlayerShip().getY()));
-            System.out.println(gm.getPlayerShip().getX());
+           // System.out.println(gm.getPlayerShip().getX());
             }
-        if (key == KeyEvent.VK_UP) {
-            view.getSpaceShipView().setLocation(view.getSpaceShipView().getX(), view.getSpaceShipView().getY() - 10);
-        }
+        if (key == KeyEvent.VK_W) {
+            gm.getPlayerShip().move();
+            System.out.println(gm.getPlayerShip().getPos());
+            }
         if (key == KeyEvent.VK_DOWN) {
-            view.getSpaceShipView().setLocation(view.getSpaceShipView().getX(), view.getSpaceShipView().getY() + 10);
         }
     }
 

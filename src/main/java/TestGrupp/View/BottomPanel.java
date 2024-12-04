@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BottomPanel extends JPanel {
-
+    int buttonWidth;
     public BottomPanel(int widthScreen, int margin) {
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
@@ -22,4 +22,6 @@ public class BottomPanel extends JPanel {
 
 
     }
+
+    public int getButtonWidth(){return buttonWidth;}
 }
