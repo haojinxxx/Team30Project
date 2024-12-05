@@ -12,9 +12,12 @@ public class GameModel implements GameEventListener {
 
     private PlayerShip playerShip;
 
+    private Score score;
+
     public GameModel() {
         this.gameObjects = new ArrayList<>();
         this.playerShip = new PlayerShip(new Point2d(0, 0), 0, 1, 1, this);
+        this.score = new Score();
         addGameObject(playerShip);
     }
 
@@ -40,6 +43,7 @@ public class GameModel implements GameEventListener {
 
         }
         collisionManager.update(gameObjects); // When this has been properly implemented only the collidible objects in the game will be sent to the collision manager
+        score.updateScoreBasedOnTime(); //Update the score based on time
     }
 
 
@@ -64,7 +68,7 @@ public class GameModel implements GameEventListener {
         for (int i = 0; i < childAsteroids; i++) {
             spawnAsteroid(position, childAsteroids);
         }
-
+        score.addScore(50);
     }
 
     public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage) {
@@ -74,6 +78,7 @@ public class GameModel implements GameEventListener {
 
     public void onEnemyDestroyed(EnemyShip enemy) {
         removeGameObject(enemy);
+        score.addScore(100);
     }
 
 
