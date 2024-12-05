@@ -1,18 +1,15 @@
 package TestGrupp.View;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class SpaceShipView extends JPanel {
-
+public class SpaceShipSprite extends Sprite {
     private Image playerShipImage;
-    private int shipSquareDimension;
 
-    public SpaceShipView(int shipSquareDimension) {
-        this.shipSquareDimension = shipSquareDimension;
+    public SpaceShipSprite(int shipSquareDimension) {
+        super();
         setPreferredSize(new Dimension(shipSquareDimension, shipSquareDimension));
         setOpaque(false); // Make the panel transparent
         try {
@@ -26,11 +23,9 @@ public class SpaceShipView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (playerShipImage != null) {
-            int x = (getWidth() - shipSquareDimension) / 2;
-            int y = (getHeight() - shipSquareDimension) / 2;
-            g.drawImage(playerShipImage, x, y, shipSquareDimension, shipSquareDimension, this);
+            int x = (getWidth() - getWidth()) / 2;
+            int y = (getHeight() - getHeight()) / 2;
+            g.drawImage(playerShipImage, x, y, getWidth(), getHeight(), this);
         }
     }
-
-
 }

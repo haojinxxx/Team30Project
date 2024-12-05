@@ -1,6 +1,8 @@
-// src/main/java/TestGrupp/Observer/Observer.java
 package TestGrupp.Observer;
 
+import TestGrupp.Model.GameObjectDTO;
+import java.util.List;
+
 public interface Observer {
-    void update();
+    void update(List<GameObjectDTO> gameObjectDTOs);
 }

@@ -30,12 +30,12 @@ public class PlayerShip extends GameObject {
         this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
 
         // Default settings
-        this.rotationSpeed = 3.0;
+        this.rotationSpeed = 300.0;
         this.rotating = false;
         this.desiredRotation = rotation;
 
         // Movement settings
-        this.acceleration = 0.2; // Set a reasonable acceleration for the ship
+        this.acceleration = 200;
         this.maxSpeed = 10.0;    // Set the max speed for the ship
         this.movingForward = false;
         this.movingBackward = false;
@@ -61,17 +61,16 @@ public class PlayerShip extends GameObject {
     }
 
     // Update the position and handle physics updates
-
     @Override
     public void update(double deltaTime) {
-        System.out.printf("WE DO UPDATE");
         super.update(deltaTime);
+        System.out.println("update i playership");
 
         // Handle rotation (rotate towards desired angle)
         if (rotating) {
             double angleDiff = desiredRotation - transform.getRotation();
 
-            if (Math.abs(angleDiff) > rotationSpeed) {
+            if (Math.abs(angleDiff) > rotationSpeed * deltaTime) {
                 transform.setRotation(transform.getRotation() + Math.signum(angleDiff) * rotationSpeed * deltaTime);
             } else {
                 transform.setRotation(desiredRotation);
@@ -81,7 +80,6 @@ public class PlayerShip extends GameObject {
 
         // Handle movement based on input (accelerate ship forward or backward)
         if (movingForward) {
-            System.out.printf("WEE we move forward :))");
             // Move forward in the direction the ship is facing
             double moveAngle = transform.getRotation();
             double moveX = Math.cos(Math.toRadians(moveAngle)) * acceleration;

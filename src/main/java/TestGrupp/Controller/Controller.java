@@ -1,29 +1,44 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
-import TestGrupp.View.Panel;
+import TestGrupp.View.View;
+
+import javax.vecmath.Point2d;
 
 public class Controller {
     private GameModel gm;
     private InputHandler ih;
     private GameLoop loop;
-    private Panel panel;
+    private View view;
 
-    public Controller(GameModel gm, Panel panel) {
+    private Point2d screenCenter;
+
+    public Controller(GameModel gm, View view) {
         this.gm = gm;
-        this.panel = panel;
+        this.view = view;
 
         // Create InputHandler and GameLoop instances
         this.ih = new InputHandler();
-        this.loop = new GameLoop(this.gm, this.panel, this.ih);
+        this.loop = new GameLoop(this.gm, this.view, this.ih);
 
         // Set up the panel to listen for key events
-        this.panel.setFocusable(true);
-        this.panel.requestFocusInWindow();
-        this.panel.addKeyListener(this.ih);
+        this.view.setFocusable(true);
+        this.view.requestFocusInWindow();
+        this.view.addKeyListener(this.ih);
 
         // Register the panel as an observer
-        this.gm.addObserver(this.panel);
+        this.gm.addObserver(this.view);
+    }
+
+    private void initializeModelWithScreenCenter() {
+        int screenWidth = view.getScreenWidth(); // Add a getter in the View
+        int screenHeight = view.getScreenHeight(); // Add a getter in the View
+
+        int centerX = screenWidth / 2;
+        int centerY = screenHeight / 2;
+        Point2d screenCenter = new Point2d(centerX, centerY);
+
+        gm.setScreenCenter(screenCenter); // Add this method in GameModel
     }
 
     // Method to start the game loop
