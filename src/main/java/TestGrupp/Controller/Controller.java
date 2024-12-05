@@ -10,30 +10,32 @@ import javax.swing.*;
 
 
 public class Controller {
-    //a basic controller that handles KEYBOARD input
+    private GameModel gm;
+    private InputHandler ih;
+    private GameLoop loop;
+    private Panel panel;
 
-    GameModel gm;
-    InputHandler ih;
-    Panel panel;
-
-    Action upAction;
-    Action leftAction;
-    Action rightAction;
     public Controller(GameModel gm, Panel panel) {
-
         this.gm = gm;
         this.panel = panel;
-        this.ih = new InputHandler(this.panel, this.gm);
 
+        // Create InputHandler and GameLoop instances
+        this.ih = new InputHandler();
+        this.loop = new GameLoop(this.gm, this.panel, this.ih);
 
+        // Set up the panel to listen for key events
         this.panel.setFocusable(true);
         this.panel.requestFocusInWindow();
+        this.panel.addKeyListener(this.ih);
+    }
 
-   }
+    // Method to start the game loop
+    public void startGame() {
+        loop.start();  // This calls the start() method on the GameLoop instance
+    }
 
-
-
-    public void update() {
-        panel.repaint();
+    // Method to stop the game loop (if needed)
+    public void stopGame() {
+        loop.stop();
     }
 }

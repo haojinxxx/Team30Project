@@ -1,7 +1,11 @@
 package TestGrupp.View;
 
+import TestGrupp.Model.GameModelObserver;
+
 import javax.swing.*;
 import java.awt.*;
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 
 public class Panel extends JFrame {
 
@@ -54,15 +58,14 @@ public class Panel extends JFrame {
         setVisible(true);
     }
 
-    public void updateFrame() {
-        // Update frame logic
+    public void render() {
+        // update all sprites location, rotation etc.
     }
 
-
-    public SpaceShipView getSpaceShipView() {
-        return spaceShipView; //not secure?
-    }
-
-
-
+/*
+    @Override
+    public void onGameModelChanged(Point2d pos) {
+        spaceShipView.setLocation((int) pos.x, (int) pos.y);
+        spaceShipView.set
+    } */
 }

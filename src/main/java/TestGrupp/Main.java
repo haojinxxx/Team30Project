@@ -11,5 +11,6 @@ public class Main {
         Panel view = new Panel("Cosmic Shooter");
         GameModel gm = new GameModel();
         Controller controller = new Controller(gm, view);
+        controller.startGame();
     }
 }

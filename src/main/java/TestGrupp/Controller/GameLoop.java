@@ -1,15 +1,20 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
+import TestGrupp.View.Panel;
 
+import java.awt.event.KeyEvent;
 
-// I've "borrowed" boilerplate gameloop code
 public class GameLoop implements Runnable {
     private final GameModel gameModel;
+    private final Panel view;
+    private final InputHandler inputHandler;
     private boolean running;
 
-    public GameLoop(GameModel gameModel) {
+    public GameLoop(GameModel gameModel, Panel view, InputHandler inputHandler) {
         this.gameModel = gameModel;
+        this.view = view;
+        this.inputHandler = inputHandler;
         this.running = false;
     }
 
@@ -48,10 +53,35 @@ public class GameLoop implements Runnable {
     }
 
     private void update(double deltaTime) {
+        // Poll the input handler for key states
+        if (inputHandler.isKeyPressed(KeyEvent.VK_A)) {
+            // Rotate left
+            gameModel.getPlayerShip().rotate(-Math.PI / 30);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_D)) {
+            // Rotate right
+            gameModel.getPlayerShip().rotate(Math.PI / 30);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
+            // Move forward
+
+            gameModel.getPlayerShip().setMovingForward(true);
+        } else {
+            gameModel.getPlayerShip().setMovingForward(false);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_S)) {
+            // Move backward
+            gameModel.getPlayerShip().setMovingBackward(true);
+        } else {
+            gameModel.getPlayerShip().setMovingBackward(false);
+        }
+        System.out.println(gameModel.getPlayerShip().getPos());
+        // Update the game model (this will update the player ship and all its components)
         gameModel.update(deltaTime);
     }
 
     private void render() {
-        // Here we should call update on the view
+        view.render();
+        // Here you would call update on the view (if needed)
     }
 }

@@ -15,7 +15,7 @@ public class GameModel implements GameEventListener {
     public GameModel() {
         this.gameObjects = new ArrayList<>();
         this.playerShip = new PlayerShip(new Point2d(0, 0), 0, 1, 1, this);
-        addGameObject(playerShip);
+        addGameObject(this.playerShip);
     }
 
     public void addGameObject(GameObject gameObject) {
@@ -35,11 +35,12 @@ public class GameModel implements GameEventListener {
             if (!gameObject.isActive()) {
                 removeGameObject(gameObject);
             }
+            System.out.print(gameObject.getId());
             gameObject.update(deltaTime);
 
 
         }
-        collisionManager.update(gameObjects); // When this has been properly implemented only the collidible objects in the game will be sent to the collision manager
+       // collisionManager.update(gameObjects);  When this has been properly implemented only the collidible objects in the game will be sent to the collision manager
     }
 
 
