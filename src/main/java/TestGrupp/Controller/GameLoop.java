@@ -1,15 +1,23 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
+import TestGrupp.View.View;
 
+import java.awt.event.KeyEvent;
 
-// I've "borrowed" boilerplate gameloop code
 public class GameLoop implements Runnable {
     private final GameModel gameModel;
+    private final View view;
+    private final InputHandler inputHandler;
     private boolean running;
+    private final int targetFPS = 60;       // Target frames per second
+    private final int updatesPerSecond = 120; // Target updates per second (logic ticks)
+    private final double updateInterval = 1000.0 / updatesPerSecond; // Time per update in milliseconds
 
-    public GameLoop(GameModel gameModel) {
+    public GameLoop(GameModel gameModel, View view, InputHandler inputHandler) {
         this.gameModel = gameModel;
+        this.view = view;
+        this.inputHandler = inputHandler;
         this.running = false;
     }
 
@@ -24,34 +32,71 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        long lastTime = System.currentTimeMillis();
+        long lastUpdateTime = System.currentTimeMillis();
+        long lastRenderTime = System.currentTimeMillis();
+        double timeSinceLastUpdate = 0;
+
         while (running) {
-            long startTime = System.currentTimeMillis();
-            long elapsedTime = startTime - lastTime;
-            lastTime = startTime;
-            float deltaTime = elapsedTime / 1000.0f;
+            long currentTime = System.currentTimeMillis();
+            timeSinceLastUpdate += currentTime - lastUpdateTime;
+            lastUpdateTime = currentTime;
 
-            update(deltaTime);
-            render();
+            // Process updates as needed
+            while (timeSinceLastUpdate >= updateInterval) {
+                update(updateInterval / 1000.0); // Update game logic
+                timeSinceLastUpdate -= updateInterval;
+            }
 
-            int targetFPS = 60;
-            long targetTime = 1000 / targetFPS;
-            long waitTime = targetTime - (System.currentTimeMillis() - startTime);
+            // Render at the target FPS
+            if (currentTime - lastRenderTime >= 1000.0 / targetFPS) {
+                render();
+                lastRenderTime = currentTime;
+            }
+
+            // Sleep to reduce CPU usage
             try {
-                if (waitTime > 0) {
-                    Thread.sleep(waitTime);
-                }
+                Thread.sleep(1); // Small sleep to allow other threads to run
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Updates the game state and handles user input.
+     */
     private void update(double deltaTime) {
-        gameModel.update(deltaTime);
+        handleInput(); // Handle user input
+        gameModel.update(deltaTime); // Update the game logic
+        // No need to directly notify the view; the observer pattern takes care of it
     }
 
+    /**
+     * Handles user input via the InputHandler.
+     */
+    private void handleInput() {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_A)) {
+            gameModel.getPlayerShip().rotate(-Math.PI / 30);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_D)) {
+            gameModel.getPlayerShip().rotate(Math.PI / 30);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
+            gameModel.getPlayerShip().setMovingForward(true);
+        } else {
+            gameModel.getPlayerShip().setMovingForward(false);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_S)) {
+            gameModel.getPlayerShip().setMovingBackward(true);
+        } else {
+            gameModel.getPlayerShip().setMovingBackward(false);
+        }
+    }
+
+    /**
+     * Renders the game state by explicitly triggering the View to redraw.
+     */
     private void render() {
-        // Here we should call update on the view
+        view.render(); // Explicitly triggers the View to redraw
     }
 }

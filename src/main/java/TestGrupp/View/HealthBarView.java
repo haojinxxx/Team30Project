@@ -40,6 +40,5 @@ public class HealthBarView extends JPanel {
         add(healthBar, gbc);
 
 
-
     }
 }
