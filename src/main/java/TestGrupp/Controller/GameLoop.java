@@ -10,6 +10,7 @@ public class GameLoop implements Runnable {
     private final Panel view;
     private final InputHandler inputHandler;
     private boolean running;
+    private final int updatesPerRender = 5; // Number of model updates per render
 
     public GameLoop(GameModel gameModel, Panel view, InputHandler inputHandler) {
         this.gameModel = gameModel;
@@ -30,6 +31,8 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
         long lastTime = System.currentTimeMillis();
+        int updateCount = 0;
+
         while (running) {
             long startTime = System.currentTimeMillis();
             long elapsedTime = startTime - lastTime;
@@ -37,7 +40,12 @@ public class GameLoop implements Runnable {
             float deltaTime = elapsedTime / 1000.0f;
 
             update(deltaTime);
-            render();
+            updateCount++;
+
+            if (updateCount >= updatesPerRender) {
+                render();
+                updateCount = 0;
+            }
 
             int targetFPS = 60;
             long targetTime = 1000 / targetFPS;
@@ -64,7 +72,6 @@ public class GameLoop implements Runnable {
         }
         if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
             // Move forward
-
             gameModel.getPlayerShip().setMovingForward(true);
         } else {
             gameModel.getPlayerShip().setMovingForward(false);
@@ -75,13 +82,12 @@ public class GameLoop implements Runnable {
         } else {
             gameModel.getPlayerShip().setMovingBackward(false);
         }
-        System.out.println(gameModel.getPlayerShip().getPos());
+
         // Update the game model (this will update the player ship and all its components)
         gameModel.update(deltaTime);
     }
 
     private void render() {
         view.render();
-        // Here you would call update on the view (if needed)
     }
 }

@@ -1,13 +1,7 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
-import java.awt.*;
-import java.awt.event.*;
 import TestGrupp.View.Panel;
-
-import javax.swing.*;
-
-
 
 public class Controller {
     private GameModel gm;
@@ -27,6 +21,9 @@ public class Controller {
         this.panel.setFocusable(true);
         this.panel.requestFocusInWindow();
         this.panel.addKeyListener(this.ih);
+
+        // Register the panel as an observer
+        this.gm.addObserver(this.panel);
     }
 
     // Method to start the game loop

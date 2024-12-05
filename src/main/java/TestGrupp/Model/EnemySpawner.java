@@ -1,5 +1,6 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -49,31 +50,31 @@ public class EnemySpawner {
 
     // Spawn enemy on a randomly chosen edge on the screen with a random position on that edge
     private void spawnEnemy(String enemyType) {
-        double x, y;
+        Point2d pos = new Point2d();
         int edge = random.nextInt(4);
         switch (edge) {
             case 0: // Top edge
-                x = random.nextDouble() * screenWidth;
-                y = 0;
+                pos.setX(random.nextDouble() * screenWidth);
+                pos.setY(0);
                 break;
             case 1: // Bottom edge
-                x = random.nextDouble() * screenWidth;
-                y = screenHeight;
+                pos.setX(random.nextDouble() * screenWidth);
+                pos.setY(screenHeight);
                 break;
             case 2: // Left edge
-                x = 0;
-                y = random.nextDouble() * screenHeight;
+                pos.setX(0);
+                pos.setY(random.nextDouble() * screenHeight);
                 break;
             case 3: // Right edge
-                x = screenWidth;
-                y = random.nextDouble() * screenHeight;
+                pos.setX(screenWidth);
+                pos.setY(random.nextDouble() * screenHeight);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + edge);
         }
         Enemy enemy = enemyFactory.createEnemy(enemyType);
         if (enemy != null) {
-            enemy.spawn(gameModel, x, y);
+            enemy.spawn(gameModel, pos);
         }
     }
 }

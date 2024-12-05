@@ -9,6 +9,7 @@ public class EnemyShip extends GameObject implements Enemy {
     private final int firingRange;
 
     // Fields
+    private final GameEventListener listener;
     private double speed;
 
     private boolean collidible;
@@ -60,15 +61,17 @@ public class EnemyShip extends GameObject implements Enemy {
         this.health.removeHealth(damage);
         if (this.health.getHealth() <= 0) {
             this.setActive(false);
+            if (listener != null) {
+                listener.onEnemyDestroyed(this);
+            }
         }
     }
 
 
 
-
     @Override
-    public void spawn(GameModel gameModel, double x, double y) {
-        gameModel.createEnemyShip(x, y, Math.random() * 360, 1, 100);
+    public void spawn(GameModel gameModel, Point2d pos) {
+        gameModel.createEnemyShip(pos, Math.random() * 360, 1, 100);
     }
 
 }
