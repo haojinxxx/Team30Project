@@ -19,6 +19,9 @@ public class Panel extends JFrame implements Observer {
     private int margin;
 
 
+// src/main/java/TestGrupp/View/Panel.java
+
+
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
@@ -64,6 +67,7 @@ public class Panel extends JFrame implements Observer {
         // Update the view based on the model changes
         render();
     }
+
 
 
 }
