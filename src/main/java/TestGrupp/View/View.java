@@ -23,7 +23,7 @@ public class View extends JFrame implements Observer {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
         this.heightScreen = screenSize.height;
-        this.shipSquareDimension = (int) (0.05 * widthScreen);  // 5% of the screen width
+        this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
         this.margin = 30;
         this.gameObjectSprites = new HashMap<>();
 
@@ -64,12 +64,13 @@ public class View extends JFrame implements Observer {
     @Override
     public void update(List<GameObjectDTO> gameObjectDTOs) {
         Set<Integer> seenIds = new HashSet<>();
-        System.out.println("Updating view...");
+        //System.out.println("Updating view...");
         for (GameObjectDTO dto : gameObjectDTOs) {
-            System.out.printf("ID: %d, X: %f, Y: %f, Rotation: %f, SpriteType: %s\n",
-                    dto.getId(), dto.getX(), dto.getY(), dto.getRotation(), dto.getSpriteType());
+           /* System.out.printf("ID: %d, X: %f, Y: %f, Rotation: %f, SpriteType: %s\n",
+                    dto.getId(), dto.getX(), dto.getY(), dto.getRotation(), dto.getSpriteType());*/
+           // System.out.println("Updating sprite with ID: " + dto.getId() + " | Rotation: " + dto.getRotation());
             seenIds.add(dto.getId());
-            updateOrCreateSprite(dto.getId(), dto.getX(), dto.getY(), dto.getRotation(), dto.getSpriteType());
+            updateOrCreateSprite(dto.getId(), dto.getPosition().getX(), dto.getPosition().getY(), dto.getRotation(), dto.getSpriteType());
         }
 
         // Remove sprites not part of this update
@@ -81,7 +82,7 @@ public class View extends JFrame implements Observer {
     }
 
     public void render() {
-        System.out.println("Rendering view...");
+     //   System.out.println("Rendering view...");
         layeredPane.revalidate();
         layeredPane.repaint();
     }
@@ -102,7 +103,7 @@ public class View extends JFrame implements Observer {
             // Update the sprite's state
             sprite.setLocation((int) x, (int) y);
             sprite.setRotation(rotation);
-            System.out.printf("Updated sprite ID: %d to X: %f, Y: %f, Rotation: %f\n", id, x, y, rotation);
+           System.out.printf("Updated sprite ID: %d to X: %f, Y: %f, Rotation: %f\n", id, x, y, rotation);
         }
     }
 
@@ -132,7 +133,7 @@ public class View extends JFrame implements Observer {
         switch (spriteType) {
             case "PlayerShip":
                 System.out.println("Creating PlayerShip sprite...");
-                SpaceShipSprite spaceship = new SpaceShipSprite(shipSquareDimension);
+                PlayerShipSprite spaceship = new PlayerShipSprite(shipSquareDimension);
                 spaceship.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
                 return spaceship;
             default:
