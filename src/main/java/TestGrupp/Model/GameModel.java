@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import TestGrupp.Observer.Observer;
+import TestGrupp.Observer.ObserverScore;
 import TestGrupp.Observer.Subject;
 
 public class GameModel implements GameEventListener, Subject {
@@ -14,13 +15,17 @@ public class GameModel implements GameEventListener, Subject {
     private GameEventListener listener;
     private PlayerShip playerShip;
     private List<Observer> observers;
+    private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
+    private Score score;
 
     public GameModel() {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
         this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
+        this.score = new Score();
+
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
 
@@ -43,8 +48,17 @@ public class GameModel implements GameEventListener, Subject {
             observer.update(gameObjectDTOs); // Pass the DTO list to each observer
         }
     }
+    private void notifyScoreObservers(int score) {
+        for (ObserverScore observer : scoreObservers) {
+            observer.updateScore(score);
+        }
+    }
+    public void addScoreObserver(ObserverScore observer) {
+        scoreObservers.add(observer);
+    }
 
     public void update(double deltaTime) {
+        score.updateScoreBasedOnTime();
         List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
         for (GameObject gameObject : new ArrayList<>(gameObjects)) {
             if (!gameObject.isActive()) {
@@ -66,6 +80,7 @@ public class GameModel implements GameEventListener, Subject {
             ));
         }
         notifyObservers(gameObjectDTOs);
+        notifyScoreObservers(score.getScore());
     }
 
     private String determineSpriteType(GameObject gameObject) {
@@ -122,6 +137,7 @@ public class GameModel implements GameEventListener, Subject {
         for (int i = 0; i < childAsteroids; i++) {
             spawnAsteroid(position, childAsteroids);
         }
+        score.addScore(50);
         //notifyObservers(); // Notify observers of the event
     }
 
@@ -135,6 +151,7 @@ public class GameModel implements GameEventListener, Subject {
     @Override
     public void onEnemyDestroyed(EnemyShip enemy) {
         removeGameObject(enemy);
+        score.addScore(100);
         //notifyObservers(); // Notify observers of the event
     }
 }

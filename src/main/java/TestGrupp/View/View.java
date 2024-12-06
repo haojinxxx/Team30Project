@@ -2,13 +2,14 @@ package TestGrupp.View;
 
 import TestGrupp.Model.GameObjectDTO;
 import TestGrupp.Observer.Observer;
+import TestGrupp.Observer.ObserverScore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class View extends JFrame implements Observer {
+public class View extends JFrame implements Observer, ObserverScore {
     private int widthScreen;
     private int heightScreen;
     private int shipSquareDimension;
@@ -18,6 +19,7 @@ public class View extends JFrame implements Observer {
     private JLayeredPane layeredPane;
     private BackgroundView backGroundView;
     private BottomPanel bottomPanel;
+    private ScoreView scoreView;
 
     public View(String title) {
         // Initialize screen dimensions
@@ -57,10 +59,19 @@ public class View extends JFrame implements Observer {
         bottomPanel.setBounds(0, heightScreen - bottomPanel.getPreferredSize().height, widthScreen, bottomPanel.getPreferredSize().height);
         layeredPane.add(bottomPanel, JLayeredPane.MODAL_LAYER);
 
+        // Create and add the score view to the layered pane
+        scoreView = new ScoreView();
+        scoreView.setBounds(widthScreen - 200, 0, 200, 50); // Adjust the size and position as needed
+        layeredPane.add(scoreView, JLayeredPane.POPUP_LAYER);
+
         // Debugging initial setup
         System.out.println("View initialized with dimensions: " + widthScreen + "x" + heightScreen);
 
         setVisible(true);
+    }
+    @Override
+    public void updateScore(int score) {
+        scoreView.updateScore(score);
     }
 
     @Override
