@@ -75,23 +75,29 @@ public class GameLoop implements Runnable {
      * Handles user input via the InputHandler.
      */
     private void handleInput() {
+        // Rotation input (A/D keys for left/right rotation)
         if (inputHandler.isKeyPressed(KeyEvent.VK_A)) {
-            gameModel.getPlayerShip().rotate(-Math.PI / 30);
+            gameModel.getPlayerShip().rotate(-Math.PI / 30); // Rotate left (counterclockwise)
         }
         if (inputHandler.isKeyPressed(KeyEvent.VK_D)) {
-            gameModel.getPlayerShip().rotate(Math.PI / 30);
+            gameModel.getPlayerShip().rotate(Math.PI / 30); // Rotate right (clockwise)
         }
+
+        // Forward movement input (W key for forward)
         if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
-            gameModel.getPlayerShip().setMovingForward(true);
+            gameModel.getPlayerShip().setMovingForward(true);  // Continuously move forward while key is held
         } else {
-            gameModel.getPlayerShip().setMovingForward(false);
+            gameModel.getPlayerShip().setMovingForward(false); // Stop moving forward when key is released
         }
+
+        // Backward movement input (S key for backward)
         if (inputHandler.isKeyPressed(KeyEvent.VK_S)) {
-            gameModel.getPlayerShip().setMovingBackward(true);
+            gameModel.getPlayerShip().setMovingBackward(true);  // Continuously move backward while key is held
         } else {
-            gameModel.getPlayerShip().setMovingBackward(false);
+            gameModel.getPlayerShip().setMovingBackward(false); // Stop moving backward when key is released
         }
     }
+
 
     /**
      * Renders the game state by explicitly triggering the View to redraw.

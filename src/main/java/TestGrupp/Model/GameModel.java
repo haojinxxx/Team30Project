@@ -20,9 +20,9 @@ public class GameModel implements GameEventListener, Subject {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
-        //this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
+        this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
-        this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
+        //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
 
         addGameObject(this.playerShip);
     }
@@ -55,10 +55,11 @@ public class GameModel implements GameEventListener, Subject {
 
             TransformComponent transform = gameObject.getTransform();
             String spriteType = determineSpriteType(gameObject); // Custom logic for sprite type
+            //System.out.println("GameModel accessing rotation: " + gameObject.getTransform().getRotation());
             gameObjectDTOs.add(new GameObjectDTO(
                     gameObject.getId(),
-                    transform.getX(),
-                    transform.getY(),
+                    transform.getPosition(),
+
                     transform.getRotation(),
                     gameObject.isActive(),
                     spriteType
@@ -94,9 +95,7 @@ public class GameModel implements GameEventListener, Subject {
 
     public void setScreenCenter(Point2d center) {
         this.screenCenter = center;
-
-        // Initialize PlayerShip after the screen center is set
-        //getPlayerShip().setPos(center);
+        getPlayerShip().setPos(center);
 
     }
 

@@ -30,7 +30,7 @@ public class Controller {
         this.gm.addObserver(this.view);
     }
 
-    private void initializeModelWithScreenCenter() {
+    public void initializeModelWithScreenCenter() {
         int screenWidth = view.getScreenWidth(); // Add a getter in the View
         int screenHeight = view.getScreenHeight(); // Add a getter in the View
 

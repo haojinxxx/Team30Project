@@ -5,7 +5,6 @@ import TestGrupp.Model.EnemyShip;
 import TestGrupp.Model.TransformComponent;
 import TestGrupp.Model.PhysicsComponent;
 import javax.vecmath.Vector2d;
-
 public class AttackState implements BehaviorState {
     private TransformComponent playerTransform;
     private EnemyShip enemyShip; // Reference to the enemy ship
@@ -18,16 +17,16 @@ public class AttackState implements BehaviorState {
     @Override
     public void update(TransformComponent transform, PhysicsComponent physics, double deltaTime) {
         Vector2d direction = new Vector2d(
-                playerTransform.getX() - transform.getX(),
-                playerTransform.getY() - transform.getY()
+                playerTransform.getPosition().getX() - transform.getPosition().getX(),
+                playerTransform.getPosition().getY() - transform.getPosition().getY()
         );
         direction.normalize();
         direction.scale(physics.getMaxSpeed());
         physics.setVelocity(direction);
 
         double distance = Math.sqrt(
-                Math.pow(playerTransform.getX() - transform.getX(), 2) +
-                        Math.pow(playerTransform.getY() - transform.getY(), 2)
+                Math.pow(playerTransform.getPosition().getX() - transform.getPosition().getX(), 2) +
+                        Math.pow(playerTransform.getPosition().getY() - transform.getPosition().getY(), 2)
         );
         if (distance <= enemyShip.getFiringRange()) {
             enemyShip.fire();
