@@ -5,113 +5,145 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerShip extends GameObject {
+    private double maxSpeed;           // Maximum speed of the ship
+    private double acceleration;       // Acceleration factor
+    private double friction;           // Friction factor (how quickly the ship slows down)
+    private HealthComponent health;    // Component to track health
+    private PhysicsComponent physics;  // Component for movement and physics
+    private boolean hasShield;         // Whether the ship has an active shield
+    private List<Projectile> shipProjectiles; // Projectiles fired by the ship
 
-    private double maxSpeed;
-    private double acceleration;
-    private HealthComponent health;
-    private PhysicsComponent physics;
-    private TransformComponent transform;
-    private boolean hasShield;
-    private List<Projectile> shipProjectiles;
+    private double desiredRotation;    // The target rotation in radians
+    private double rotationSpeed;      // Rotation speed in radians per second
+    private boolean rotating;          // Whether the ship is actively rotating
 
-    private double desiredRotation;  // The rotation the player is aiming for
-    private double rotationSpeed;    // The speed at which rotation occurs
-    private boolean rotating;        // Whether the ship is rotating
-
-    private boolean movingForward;
-    private boolean movingBackward;
+    private boolean movingForward;     // Flag for forward movement
+    private boolean movingBackward;    // Flag for backward movement
 
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
-        super(position, 0, 0, 0, listener);
-        this.health = new HealthComponent(100);
+        super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
+        this.health = new HealthComponent(100); // Start with full health
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
-        this.physics = new PhysicsComponent();
-        this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
 
-        // Default settings
-        this.rotationSpeed = 300.0;
-        this.rotating = false;
+        // Default movement and rotation settings
+        this.rotationSpeed = Math.toRadians(200); // Convert degrees/sec to radians/sec
         this.desiredRotation = rotation;
-
-        // Movement settings
-        this.acceleration = 200;
-        this.maxSpeed = 10.0;    // Set the max speed for the ship
+        this.acceleration = 2000; // Increase the acceleration factor
+        this.maxSpeed = 3000.0;   // Increase the max speed for faster movement
+        this.friction = 0.001;    // Decrease friction for slower deceleration
+        this.rotating = false;
         this.movingForward = false;
         this.movingBackward = false;
+
+        this.physics = new PhysicsComponent(maxSpeed, 0.95);
     }
 
-    // Rotation logic: Update desired rotation
-    public void rotate(Double degrees) {
-        this.desiredRotation = transform.getRotation() + degrees;
+    // Handle ship rotation to a specific angle in radians
+    public void rotate(double radians) {
+        this.desiredRotation = getTransform().getRotation() + radians;
         this.rotating = true;
     }
 
+    // Stop the rotation
     public void stopRotation() {
         this.rotating = false;
     }
 
-    // Move logic: Set flags for moving forward or backward
+    // Set forward movement flag
     public void setMovingForward(boolean movingForward) {
         this.movingForward = movingForward;
     }
 
+    // Set backward movement flag
     public void setMovingBackward(boolean movingBackward) {
         this.movingBackward = movingBackward;
     }
 
-    // Update the position and handle physics updates
-    @Override
-    public void update(double deltaTime) {
-        super.update(deltaTime);
-        System.out.println("update i playership");
-
-        // Handle rotation (rotate towards desired angle)
-        if (rotating) {
-            double angleDiff = desiredRotation - transform.getRotation();
-
-            if (Math.abs(angleDiff) > rotationSpeed * deltaTime) {
-                transform.setRotation(transform.getRotation() + Math.signum(angleDiff) * rotationSpeed * deltaTime);
-            } else {
-                transform.setRotation(desiredRotation);
-                rotating = false;  // Stop rotating once the desired rotation is reached
-            }
-        }
-
-        // Handle movement based on input (accelerate ship forward or backward)
-        if (movingForward) {
-            // Move forward in the direction the ship is facing
-            double moveAngle = transform.getRotation();
-            double moveX = Math.cos(Math.toRadians(moveAngle)) * acceleration;
-            double moveY = Math.sin(Math.toRadians(moveAngle)) * acceleration;
-            physics.setAcceleration(moveX, moveY);
-        } else if (movingBackward) {
-            // Move backward (retardation is just negative acceleration)
-            double moveAngle = transform.getRotation();
-            double moveX = Math.cos(Math.toRadians(moveAngle)) * -acceleration;
-            double moveY = Math.sin(Math.toRadians(moveAngle)) * -acceleration;
-            physics.setAcceleration(moveX, moveY);
-        } else {
-            // No movement, stop acceleration
-            physics.setAcceleration(0, 0);
-        }
-
-        // Update the physics, which will also update the transform (position)
-        physics.update(deltaTime, transform);
+    // Add a projectile to the ship's fired projectiles list
+    public void fireProjectile(Projectile projectile) {
+        shipProjectiles.add(projectile);
     }
 
+    // Retrieve all projectiles fired by the ship
+    public List<Projectile> getProjectiles() {
+        return shipProjectiles;
+    }
+
+    // Take damage, reducing health unless a shield is active
     public void takeDamage(int damage) {
         if (!hasShield) {
             health.removeHealth(damage);
         }
     }
 
-    public void addHealth(int health) {
-        this.health.addHealth(health);
+    // Add health to the ship
+    public void addHealth(int healthPoints) {
+        this.health.addHealth(healthPoints);
     }
 
-    // Retrieve all projectiles that have been fired
-    public List<Projectile> getProjectiles() {
-        return shipProjectiles;
+    // Activate the ship's shield
+    public void activateShield() {
+        this.hasShield = true;
+    }
+
+    // Deactivate the ship's shield
+    public void deactivateShield() {
+        this.hasShield = false;
+    }
+
+    // Update the ship's state
+    @Override
+    public void update(double deltaTime) {
+        super.update(deltaTime);
+
+        // Handle rotation logic
+        if (rotating) {
+            double angleDiff = desiredRotation - getTransform().getRotation();
+            angleDiff = Math.atan2(Math.sin(angleDiff), Math.cos(angleDiff)); // Normalize to [-π, π]
+
+            // Smoothly update the rotation to match the desiredRotation
+            double rotationChange = rotationSpeed * deltaTime;
+            if (Math.abs(angleDiff) > rotationChange) {
+                // Rotate towards desired angle with speed limit
+                getTransform().setRotation(getTransform().getRotation() + Math.signum(angleDiff) * rotationChange);
+            } else {
+                // If the angle is close enough, set the rotation to the desired rotation
+                getTransform().setRotation(desiredRotation);
+                rotating = false;
+            }
+        }
+
+        // Handle movement logic
+        if (movingForward || movingBackward) {
+            double moveAngle = getTransform().getRotation(); // Ship's rotation in radians
+            double speedMultiplier = movingForward ? 1 : -1; // Determine forward/backward
+
+            // Calculate acceleration vector based on ship's rotation
+            double moveX = Math.cos(moveAngle) * acceleration * speedMultiplier;
+            double moveY = Math.sin(moveAngle) * acceleration * speedMultiplier;
+
+            // Debugging log for acceleration vector
+            System.out.println("Moving Forward: " + movingForward);
+            System.out.println("Rotation (radians): " + getTransform().getRotation());
+            System.out.println("Acceleration Vector: (" + moveX + ", " + moveY + ")");
+
+            physics.setAcceleration(moveX, moveY); // Set the acceleration to the physics component
+        } else {
+            physics.setAcceleration(0, 0); // No movement when flags are off
+        }
+
+        // Update physics and position
+        physics.update(deltaTime, getTransform());
+    }
+
+    // Get the current health value
+    public int getHealth() {
+        return health.getHealth();
+    }
+
+    // Check if the shield is active
+    public boolean isShieldActive() {
+        return hasShield;
     }
 }
