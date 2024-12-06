@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 public class TransformComponent {
     private Point2d position;
-    private double rotation;
+    private double rotation; // Stored in radians
     private double scaleX;
     private double scaleY;
 
@@ -24,45 +24,15 @@ public class TransformComponent {
         this.position.set(position);
     }
 
-    public double getX() {
-        return position.getX();
-    }
-
-    public double getY() {
-        return position.getY();
-    }
-
-    public void setX(double x) {
-        this.position.set(x, position.getY());
-    }
-
-    public void setY(double y) {
-        this.position.set(position.getX(), y);
-    }
-
     public double getRotation() {
         return rotation;
     }
 
     public void setRotation(double rotation) {
-        this.rotation = rotation;
+        this.rotation = rotation % (2 * Math.PI); // Normalize to [0, 2π]
+        if (this.rotation < 0) this.rotation += 2 * Math.PI; // Ensure positive values
     }
 
-    public double getScaleX() {
-        return scaleX;
-    }
-
-    public void setScaleX(double scaleX) {
-        this.scaleX = scaleX;
-    }
-
-    public double getScaleY() {
-        return scaleY;
-    }
-
-    public void setScaleY(double scaleY) {
-        this.scaleY = scaleY;
-    }
 
     public Rectangle2D.Float getBoundingBox() {
         return new Rectangle2D.Float(
