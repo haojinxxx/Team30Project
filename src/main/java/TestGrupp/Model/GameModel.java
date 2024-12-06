@@ -19,6 +19,8 @@ public class GameModel implements GameEventListener, Subject {
     private Point2d screenCenter;
     private Score score;
 
+
+
     public GameModel() {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);

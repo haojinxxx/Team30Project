@@ -9,10 +9,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Observable;
 
-
 public class ScoreView extends JPanel {
     private JLabel scoreLabel;
-
 
     public ScoreView() {
         setLayout(new FlowLayout(FlowLayout.LEFT)); // Change alignment to left
@@ -31,9 +29,9 @@ public class ScoreView extends JPanel {
         add(label);
         add(scoreLabel);
     }
+
     public void updateScore(int score) {
         scoreLabel.setText(Integer.toString(score));
     }
-
 
 }
