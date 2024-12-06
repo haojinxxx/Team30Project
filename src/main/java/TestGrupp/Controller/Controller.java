@@ -1,39 +1,56 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
-import java.awt.*;
-import java.awt.event.*;
-import TestGrupp.View.Panel;
+import TestGrupp.View.View;
 
-import javax.swing.*;
-
-
+import javax.vecmath.Point2d;
 
 public class Controller {
-    //a basic controller that handles KEYBOARD input
+    private GameModel gm;
+    private InputHandler ih;
+    private GameLoop loop;
+    private View view;
 
-    GameModel gm;
-    InputHandler ih;
-    Panel panel;
+    private Point2d screenCenter;
 
-    Action upAction;
-    Action leftAction;
-    Action rightAction;
-    public Controller(GameModel gm, Panel panel) {
-
+    public Controller(GameModel gm, View view) {
         this.gm = gm;
-        this.panel = panel;
-        this.ih = new InputHandler(this.panel, this.gm);
+        this.view = view;
+
+        // Create InputHandler and GameLoop instances
+        this.ih = new InputHandler();
+        this.loop = new GameLoop(this.gm, this.view, this.ih);
 
 
-        this.panel.setFocusable(true);
-        this.panel.requestFocusInWindow();
+        // Set up the panel to listen for key events
+        this.view.setFocusable(true);
+        this.view.requestFocusInWindow();
+        this.view.addKeyListener(this.ih);
 
-   }
+        // Register the panel as an observer
+        this.gm.addObserver(this.view);
+    }
 
+    public void initializeModelWithScreenCenter() {
+        int screenWidth = view.getScreenWidth(); // Add a getter in the View
+        int screenHeight = view.getScreenHeight(); // Add a getter in the View
 
+        int centerX = screenWidth / 2;
+        int centerY = screenHeight / 2;
+        Point2d screenCenter = new Point2d(centerX, centerY);
 
-    public void update() {
-        panel.repaint();
+        gm.setScreenCenter(screenCenter); // Add this method in GameModel
+    }
+
+    // Method to start the game loop
+    public void startGame() {
+        initializeModelWithScreenCenter();
+        SoundManager.initialize();
+        loop.start();  // This calls the start() method on the GameLoop instance
+    }
+
+    // Method to stop the game loop (if needed)
+    public void stopGame() {
+        loop.stop();
     }
 }

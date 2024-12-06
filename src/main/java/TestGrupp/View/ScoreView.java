@@ -1,13 +1,15 @@
+
 package TestGrupp.View;
 
-import TestGrupp.Model.GameModel;
 import TestGrupp.Model.Score;
+import TestGrupp.Observer.Observer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.Observable;
 
-public class ScoreView extends JPanel{
+public class ScoreView extends JPanel {
     private JLabel scoreLabel;
 
     public ScoreView() {
@@ -20,16 +22,16 @@ public class ScoreView extends JPanel{
         label.setForeground(Color.WHITE);
         label.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-        scoreLabel = new JLabel("99999");
+        scoreLabel = new JLabel("0");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 25));
         scoreLabel.setForeground(Color.WHITE);
 
         add(label);
         add(scoreLabel);
     }
-    public void updateScore(int newScore) {
-        scoreLabel.setText(String.valueOf(newScore));
+
+    public void updateScore(int score) {
+        scoreLabel.setText(Integer.toString(score));
     }
 
 }
-

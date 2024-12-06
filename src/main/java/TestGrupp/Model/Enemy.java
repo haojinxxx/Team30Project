@@ -1,5 +1,7 @@
 package TestGrupp.Model;
 
+import javax.vecmath.Point2d;
+
 public interface Enemy {
-    void spawn(GameModel gameModel, double x, double y);
+    void spawn(GameModel gameModel, Point2d pos);
 }

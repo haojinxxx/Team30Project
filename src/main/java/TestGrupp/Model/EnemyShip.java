@@ -9,6 +9,7 @@ public class EnemyShip extends GameObject implements Enemy {
     private final int firingRange;
 
     // Fields
+    private final GameEventListener listener;
     private double speed;
 
     private boolean collidible;
@@ -26,7 +27,7 @@ public class EnemyShip extends GameObject implements Enemy {
         this.listener = listener;
         double angle = this.getTransform().getRotation();
         this.health = new HealthComponent(health);
-        this.physics = new PhysicsComponent();
+        this.physics = new PhysicsComponent(maxSpeed, 0.95);
         this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
 
         this.collidible = true;
@@ -52,7 +53,7 @@ public class EnemyShip extends GameObject implements Enemy {
         Vector2d velocity = new Vector2d(Math.cos(Math.toRadians(rotation)), Math.sin(Math.toRadians(rotation)));
 
         if (listener != null) {
-            listener.onProjectileFired(position, velocity, rotation, projectileSpeed, projectileDamage);
+            listener.onProjectileFired(position, velocity, rotation, projectileSpeed, projectileDamage, false);
         }
     }
 
@@ -60,15 +61,17 @@ public class EnemyShip extends GameObject implements Enemy {
         this.health.removeHealth(damage);
         if (this.health.getHealth() <= 0) {
             this.setActive(false);
+            if (listener != null) {
+                listener.onEnemyDestroyed(this);
+            }
         }
     }
 
 
 
-
     @Override
-    public void spawn(GameModel gameModel, double x, double y) {
-        gameModel.createEnemyShip(x, y, Math.random() * 360, 1, 100);
+    public void spawn(GameModel gameModel, Point2d pos) {
+        gameModel.createEnemyShip(pos, Math.random() * 360, 1, 100);
     }
 
 }

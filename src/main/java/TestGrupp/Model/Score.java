@@ -1,10 +1,11 @@
 package TestGrupp.Model;
 
-public class Score {
+import java.util.Observable;
+
+public class Score extends Observable {
     private int score;
     private long startTime;
     private long lastUpdateTime;
-
 
     public Score() {
         score = 0;
@@ -14,10 +15,14 @@ public class Score {
 
     public void addScore(int scoreAdded) {
         score += scoreAdded;
+        setChanged();
+        notifyObservers();
     }
 
     public void removeScore(int scoreRemoved) {
         score -= scoreRemoved;
+        setChanged();
+        notifyObservers();
     }
 
     public int getScore() {
@@ -31,6 +36,8 @@ public class Score {
             int secondsPassed = (int) (elapsedTime / 1000);
             score += secondsPassed * 10;
             lastUpdateTime += secondsPassed * 1000;
+            setChanged();
+            notifyObservers();
         }
     }
 }

@@ -9,7 +9,7 @@ public class shieldPowerUp extends PowerUp {
     }
 
     public void powerUp(PlayerShip playerShip) {
-        playerShip.hasShield = true;
-        startPowerUpTimer(() -> playerShip.hasShield = false, 10000);
+        //playerShip.hasShield = true;
+        //startPowerUpTimer(() -> playerShip.hasShield = false, 10000);
     }
 }
