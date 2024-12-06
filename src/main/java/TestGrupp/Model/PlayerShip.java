@@ -66,20 +66,24 @@ public class PlayerShip extends GameObject {
     }
 
     public void fire() {
-        double projectileSpeed = 250;
+        double projectileSpeed = 400;
         Point2d position = new Point2d(this.getTransform().getPosition());  // Get the current position of the ship
         double rotation = this.getTransform().getRotation();  // Get the rotation (direction the ship is facing)
         int projectileDamage = this.projectileDamage;
 
         // Define the distance in front of the player where the projectile will spawn
-        double offset = 10.0;  // Adjust this distance as needed
+        double offset = 5.0;  // Adjust this distance as needed
 
-        // Calculate the spawn position in front of the ship (using rotation to determine the direction)
-        double spawnX = position.x + offset * Math.cos(rotation);
-        double spawnY = position.y + offset * Math.sin(rotation);
+        // Calculate the direction the player is facing based on the rotation
+        double directionX = Math.cos(rotation);
+        double directionY = Math.sin(rotation);
+
+        // Now, calculate the spawn position in front of the ship (offset from the ship's current position)
+        double spawnX = position.x + offset * directionX;
+        double spawnY = position.y + offset * directionY;
 
         // Set the projectile's velocity in the same direction as the ship's facing direction
-        Vector2d velocity = new Vector2d(Math.cos(rotation), Math.sin(rotation));
+        Vector2d velocity = new Vector2d(directionX, directionY);
         velocity.scale(projectileSpeed);  // Scale the velocity to the projectile's speed
 
         // Debugging message
@@ -90,6 +94,8 @@ public class PlayerShip extends GameObject {
             listener.onProjectileFired(new Point2d(spawnX, spawnY), velocity, rotation, projectileSpeed, projectileDamage, true);
         }
     }
+
+
 
     // Retrieve all projectiles fired by the ship
     public List<Projectile> getProjectiles() {
