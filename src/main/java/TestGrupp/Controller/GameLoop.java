@@ -88,8 +88,10 @@ public class GameLoop implements Runnable {
         // Forward movement input (W key for forward)
         if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
             gameModel.getPlayerShip().setMovingForward(true);  // Continuously move forward while key is held
+            SoundManager.playThrusterSound();
         } else {
             gameModel.getPlayerShip().setMovingForward(false); // Stop moving forward when key is released
+            SoundManager.stopThrusterSound();
         }
 
         // Backward movement input (S key for backward)
@@ -105,6 +107,7 @@ public class GameLoop implements Runnable {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastFireTime >= fireCooldown) {
                 gameModel.getPlayerShip().fire(); // Fire a projectile
+                SoundManager.playFireSound(); // Play fire sound
                 lastFireTime = currentTime;
             }
         }

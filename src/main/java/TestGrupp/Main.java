@@ -2,6 +2,7 @@
 package TestGrupp;
 
 import TestGrupp.Controller.Controller;
+import TestGrupp.Controller.SoundManager;
 import TestGrupp.Model.GameModel;
 import TestGrupp.View.View;
 
@@ -12,7 +13,7 @@ public class Main {
         gm.addObserver(view); // Register the view as an observer
         Controller controller = new Controller(gm, view);
 
-        controller.initializeModelWithScreenCenter();
+
         controller.startGame();
     }
 }

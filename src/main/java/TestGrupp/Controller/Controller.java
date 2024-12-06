@@ -21,6 +21,7 @@ public class Controller {
         this.ih = new InputHandler();
         this.loop = new GameLoop(this.gm, this.view, this.ih);
 
+
         // Set up the panel to listen for key events
         this.view.setFocusable(true);
         this.view.requestFocusInWindow();
@@ -43,6 +44,8 @@ public class Controller {
 
     // Method to start the game loop
     public void startGame() {
+        initializeModelWithScreenCenter();
+        SoundManager.initialize();
         loop.start();  // This calls the start() method on the GameLoop instance
     }
 
