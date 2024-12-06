@@ -9,7 +9,7 @@ public class Panel extends JFrame {
     private final int heightScreen;
     private final int shipSquareDimension;
     private final int margin;
-    private SpaceShipView spaceShipView;
+    private PlayerShipSprite spaceShipView;
     private BackgroundView backGroundView;
     BottomPanel bottomPanel;
     private ScoreView scoreView;
@@ -44,7 +44,7 @@ public class Panel extends JFrame {
         layeredPane.add(backGroundView, JLayeredPane.DEFAULT_LAYER);
 
         // Create and add the spaceship panel to the layered pane
-        spaceShipView = new SpaceShipView(shipSquareDimension);
+        spaceShipView = new PlayerShipSprite(shipSquareDimension);
         spaceShipView.setBounds((widthScreen - shipSquareDimension) / 2, (heightScreen - shipSquareDimension) / 2, shipSquareDimension, shipSquareDimension);
         layeredPane.add(spaceShipView, JLayeredPane.PALETTE_LAYER);
 
@@ -65,7 +65,7 @@ public class Panel extends JFrame {
     }
 
 
-    public SpaceShipView getSpaceShipView() {
+    public PlayerShipSprite getSpaceShipView() {
         return spaceShipView; //not secure?
     }
 
