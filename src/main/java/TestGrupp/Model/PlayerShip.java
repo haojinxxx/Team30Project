@@ -1,6 +1,7 @@
 package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ public class PlayerShip extends GameObject {
     private double acceleration;       // Acceleration factor
     private double friction;           // Friction factor (how quickly the ship slows down)
     private HealthComponent health;    // Component to track health
+    private int projectileDamage;      // Damage dealt by the ship's projectiles
+
     private PhysicsComponent physics;  // Component for movement and physics
     private boolean hasShield;         // Whether the ship has an active shield
     private List<Projectile> shipProjectiles; // Projectiles fired by the ship
@@ -20,9 +23,11 @@ public class PlayerShip extends GameObject {
     private boolean movingForward;     // Flag for forward movement
     private boolean movingBackward;    // Flag for backward movement
 
+
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
         super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
         this.health = new HealthComponent(100); // Start with full health
+        this.projectileDamage = 10; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
 
@@ -60,9 +65,30 @@ public class PlayerShip extends GameObject {
         this.movingBackward = movingBackward;
     }
 
-    // Add a projectile to the ship's fired projectiles list
-    public void fireProjectile(Projectile projectile) {
-        shipProjectiles.add(projectile);
+    public void fire() {
+        double projectileSpeed = 250;
+        Point2d position = new Point2d(this.getTransform().getPosition());  // Get the current position of the ship
+        double rotation = this.getTransform().getRotation();  // Get the rotation (direction the ship is facing)
+        int projectileDamage = this.projectileDamage;
+
+        // Define the distance in front of the player where the projectile will spawn
+        double offset = 10.0;  // Adjust this distance as needed
+
+        // Calculate the spawn position in front of the ship (using rotation to determine the direction)
+        double spawnX = position.x + offset * Math.cos(rotation);
+        double spawnY = position.y + offset * Math.sin(rotation);
+
+        // Set the projectile's velocity in the same direction as the ship's facing direction
+        Vector2d velocity = new Vector2d(Math.cos(rotation), Math.sin(rotation));
+        velocity.scale(projectileSpeed);  // Scale the velocity to the projectile's speed
+
+        // Debugging message
+        System.out.printf("I shoot!!! Projectile spawned at: (%f, %f)\n", spawnX, spawnY);
+
+        // If the listener is not null, notify that a projectile has been fired
+        if (listener != null) {
+            listener.onProjectileFired(new Point2d(spawnX, spawnY), velocity, rotation, projectileSpeed, projectileDamage, true);
+        }
     }
 
     // Retrieve all projectiles fired by the ship

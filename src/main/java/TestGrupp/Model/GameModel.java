@@ -72,7 +72,12 @@ public class GameModel implements GameEventListener, Subject {
         if (gameObject instanceof PlayerShip) return "PlayerShip";
         if (gameObject instanceof Asteroid) return "Asteroid";
         if (gameObject instanceof EnemyShip) return "EnemyShip";
-        if (gameObject instanceof Projectile) return "Projectile";
+        if (gameObject instanceof Projectile) {
+            if (((Projectile) gameObject).isPlayerProjectile()) return "PlayerProjectile";
+            else
+                return "EnemyProjectile";
+        }
+
         throw new IllegalArgumentException("Unknown GameObject type");
     }
 
@@ -121,8 +126,8 @@ public class GameModel implements GameEventListener, Subject {
     }
 
     @Override
-    public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage) {
-        Projectile projectile = new Projectile(position, rotation, velocity, speed, damage, 10, 5, listener);
+    public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage, boolean isPlayerProjectile) {
+        Projectile projectile = new Projectile(position, rotation,1,1, speed, damage, listener, isPlayerProjectile);
         addGameObject(projectile);
         //notifyObservers(); // Notify observers of the event
     }

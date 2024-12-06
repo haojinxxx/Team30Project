@@ -53,7 +53,7 @@ public class EnemyShip extends GameObject implements Enemy {
         Vector2d velocity = new Vector2d(Math.cos(Math.toRadians(rotation)), Math.sin(Math.toRadians(rotation)));
 
         if (listener != null) {
-            listener.onProjectileFired(position, velocity, rotation, projectileSpeed, projectileDamage);
+            listener.onProjectileFired(position, velocity, rotation, projectileSpeed, projectileDamage, false);
         }
     }
 

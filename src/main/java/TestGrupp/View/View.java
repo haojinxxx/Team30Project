@@ -12,6 +12,7 @@ public class View extends JFrame implements Observer {
     private int widthScreen;
     private int heightScreen;
     private int shipSquareDimension;
+    private int projectileSquareDimension;
     private int margin;
     private Map<Integer, Sprite> gameObjectSprites;
     private JLayeredPane layeredPane;
@@ -24,6 +25,7 @@ public class View extends JFrame implements Observer {
         this.widthScreen = screenSize.width;
         this.heightScreen = screenSize.height;
         this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
+        this.projectileSquareDimension = (int) (0.01 * widthScreen);  // 1% of the screen width
         this.margin = 30;
         this.gameObjectSprites = new HashMap<>();
 
@@ -136,9 +138,23 @@ public class View extends JFrame implements Observer {
                 PlayerShipSprite spaceship = new PlayerShipSprite(shipSquareDimension);
                 spaceship.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
                 return spaceship;
+
+            case "PlayerProjectile":
+
+                System.out.println("Creating PlayerProjectile sprite...");
+                PlayerProjectileSprite projectile = new PlayerProjectileSprite(projectileSquareDimension);
+                projectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
+                return projectile;
+            /*
+            case "EnemyProjectile":
+                System.out.println("Creating EnemyProjectile sprite...");
+                EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite(shipSquareDimension);
+                enemyProjectile.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                return enemyProjectile;*/
             default:
                 System.out.println("Unknown sprite type: " + spriteType);
                 return null;
+
         }
     }
 

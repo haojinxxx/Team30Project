@@ -13,6 +13,8 @@ public class GameLoop implements Runnable {
     private final int targetFPS = 60;       // Target frames per second
     private final int updatesPerSecond = 120; // Target updates per second (logic ticks)
     private final double updateInterval = 1000.0 / updatesPerSecond; // Time per update in milliseconds
+    private long lastFireTime = 0;
+    private final long fireCooldown = 500; // Cooldown period in milliseconds
 
     public GameLoop(GameModel gameModel, View view, InputHandler inputHandler) {
         this.gameModel = gameModel;
@@ -96,6 +98,17 @@ public class GameLoop implements Runnable {
         } else {
             gameModel.getPlayerShip().setMovingBackward(false); // Stop moving backward when key is released
         }
+
+        // Fire projectile input (Space key to fire)
+
+        if (inputHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastFireTime >= fireCooldown) {
+                gameModel.getPlayerShip().fire(); // Fire a projectile
+                lastFireTime = currentTime;
+            }
+        }
+
     }
 
 
