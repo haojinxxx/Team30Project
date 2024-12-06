@@ -27,7 +27,7 @@ public class EnemyShip extends GameObject implements Enemy {
         this.listener = listener;
         double angle = this.getTransform().getRotation();
         this.health = new HealthComponent(health);
-        this.physics = new PhysicsComponent();
+        this.physics = new PhysicsComponent(maxSpeed, 0.95);
         this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
 
         this.collidible = true;

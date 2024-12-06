@@ -22,7 +22,7 @@ public class Asteroid extends GameObject implements Enemy{
 
         this.health = new HealthComponent(health);
 
-        this.physics = new PhysicsComponent();
+        this.physics = new PhysicsComponent(speed, 0.95);
         this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
     }
 

@@ -10,7 +10,7 @@ public class Projectile extends GameObject {
 
     public Projectile(Point2d initialPosition, double rotation, Vector2d velocity, double scaleX, double scaleY, double speed, int damage, GameEventListener listener) {
         super(initialPosition, rotation, scaleX, scaleY, listener);
-        this.physics = new PhysicsComponent();
+        this.physics = new PhysicsComponent(speed, 0.95);
         this.getTransform().setPosition(initialPosition);
         this.getTransform().setRotation(rotation);
 
