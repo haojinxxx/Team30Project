@@ -160,6 +160,20 @@ public class PlayerShip extends GameObject {
             System.out.println("Rotation (radians): " + getTransform().getRotation());
             System.out.println("Acceleration Vector: (" + moveX + ", " + moveY + ")");
 
+
+            //Implement wrap-around logic
+            Point2d position = getTransform().getPosition();
+            if (position.x < 0) {
+                position.x = 1280;
+            } else if (position.x > 1280) {
+                position.x = 0;
+            }
+            if (position.y < 0) {
+                position.y = 600;
+            } else if (position.y > 600) {
+                position.y = 0;
+            }
+
             physics.setAcceleration(moveX, moveY); // Set the acceleration to the physics component
         } else {
             physics.setAcceleration(0, 0); // No movement when flags are off
