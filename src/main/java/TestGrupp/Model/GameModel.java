@@ -4,6 +4,7 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.ObserverScore;
@@ -14,11 +15,12 @@ public class GameModel implements GameEventListener, Subject {
     private CollisionManager collisionManager;
     private GameEventListener listener;
     private PlayerShip playerShip;
-    private Asteroid asteroid; //????
     private List<Observer> observers;
     private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
     private Score score;
+
+    private PowerUp powerup;
 
 
 
@@ -27,8 +29,9 @@ public class GameModel implements GameEventListener, Subject {
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
         this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
-        //this.asteroid = new Asteroid(screenCenter, 0, 1, 1, 1, 10, 0, this);
         this.score = new Score();
+
+        this.powerup= new healthPowerUp(new Point2d(200, 200), this);
 
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
@@ -44,6 +47,8 @@ public class GameModel implements GameEventListener, Subject {
 
 
         //spawnAsteroid(screenCenter, 2);
+
+        addGameObject(this.powerup);
 
     }
 
@@ -80,10 +85,6 @@ public class GameModel implements GameEventListener, Subject {
                 removeGameObject(gameObject);
                 continue;
             }
-
-
-
-
             gameObject.update(deltaTime);
 
             TransformComponent transform = gameObject.getTransform();
@@ -106,6 +107,7 @@ public class GameModel implements GameEventListener, Subject {
         if (gameObject instanceof PlayerShip) return "PlayerShip";
         if (gameObject instanceof Asteroid) return "Asteroid";
         if (gameObject instanceof EnemyShip) return "EnemyShip";
+        if (gameObject instanceof PowerUp) return "PowerUp";
         if (gameObject instanceof Projectile) {
             if (((Projectile) gameObject).isPlayerProjectile()) return "PlayerProjectile";
             else
@@ -142,7 +144,6 @@ public class GameModel implements GameEventListener, Subject {
         double speed = 0.5;
         int health = 10;
 
-
         Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
         addGameObject(asteroid);
     }
@@ -150,6 +151,24 @@ public class GameModel implements GameEventListener, Subject {
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
         EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 0, this);
         addGameObject(enemyShip);
+    }
+
+    public void spawnPowerUp(Point2d position) {
+        PowerUp powerUp;
+        Random random = new Random();
+        int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
+
+        switch (randomPowerUp) {
+            case 0:
+                powerUp = new healthPowerUp(position,  this);
+                break;
+            case 1:
+                powerUp = new shieldPowerUp(position, this);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + randomPowerUp);
+        }
+        addGameObject(powerUp);
     }
 
     @Override

@@ -23,6 +23,8 @@ public class PlayerShip extends GameObject {
     private boolean movingForward;     // Flag for forward movement
     private boolean movingBackward;    // Flag for backward movement
 
+    private boolean hasHealthPowerUp;
+    private boolean hasShieldPowerUp;
 
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
         super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
@@ -178,4 +180,22 @@ public class PlayerShip extends GameObject {
     public boolean isShieldActive() {
         return hasShield;
     }
+
+    //Power up stuff
+    public void HealthPowerUpStatus(boolean status){
+        hasHealthPowerUp = status;
+    }
+    public void ShieldPowerUpStatus(boolean status){
+        hasShieldPowerUp = status;
+    }
+    public void flipShieldStatus(){
+        hasShield = !hasShield;
+    }
+    public boolean getHealthPowerUpStatus(){
+        return hasHealthPowerUp;
+    }
+    public boolean getShieldPowerUpStatus(){
+        return hasShieldPowerUp;
+    }
+
 }
