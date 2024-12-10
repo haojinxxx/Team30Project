@@ -8,7 +8,11 @@ public class healthPowerUp extends PowerUp {
         super(position, listener);
     }
 
-    public void powerUp(PlayerShip playerShip) {
-        playerShip.addHealth(20);
+    public void PowerUp(PlayerShip playerShip) {
+        if(playerShip.getHealthPowerUpStatus()){
+            playerShip.addHealth(20);
+            playerShip.HealthPowerUpStatus(false);
+        }
+
     }
 }

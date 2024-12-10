@@ -8,8 +8,14 @@ public class shieldPowerUp extends PowerUp {
         super(position, listener);
     }
 
-    public void powerUp(PlayerShip playerShip) {
-        //playerShip.hasShield = true;
-        //startPowerUpTimer(() -> playerShip.hasShield = false, 10000);
+    public void PowerUp(PlayerShip playerShip) {
+        if (playerShip.getShieldPowerUpStatus()) {
+            {
+                playerShip.flipShieldStatus();
+                startPowerUpTimer(() -> playerShip.flipShieldStatus(), 10000);
+                playerShip.ShieldPowerUpStatus(false);
+            }
+
+        }
     }
 }

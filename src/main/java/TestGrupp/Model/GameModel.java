@@ -4,6 +4,7 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.ObserverScore;
@@ -19,6 +20,8 @@ public class GameModel implements GameEventListener, Subject {
     private Point2d screenCenter;
     private Score score;
 
+    private PowerUp powerup;
+
 
 
     public GameModel() {
@@ -28,10 +31,14 @@ public class GameModel implements GameEventListener, Subject {
         this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
         this.score = new Score();
 
+        this.powerup= new healthPowerUp(new Point2d(200, 200), this);
+
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
 
         addGameObject(this.playerShip);
+        addGameObject(this.powerup);
+
     }
 
     @Override
@@ -89,6 +96,7 @@ public class GameModel implements GameEventListener, Subject {
         if (gameObject instanceof PlayerShip) return "PlayerShip";
         if (gameObject instanceof Asteroid) return "Asteroid";
         if (gameObject instanceof EnemyShip) return "EnemyShip";
+        if (gameObject instanceof PowerUp) return "PowerUp";
         if (gameObject instanceof Projectile) {
             if (((Projectile) gameObject).isPlayerProjectile()) return "PlayerProjectile";
             else
@@ -132,6 +140,24 @@ public class GameModel implements GameEventListener, Subject {
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
         EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 0, this);
         addGameObject(enemyShip);
+    }
+
+    public void spawnPowerUp(Point2d position) {
+        PowerUp powerUp;
+        Random random = new Random();
+        int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
+
+        switch (randomPowerUp) {
+            case 0:
+                powerUp = new healthPowerUp(position,  this);
+                break;
+            case 1:
+                powerUp = new shieldPowerUp(position, this);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + randomPowerUp);
+        }
+        addGameObject(powerUp);
     }
 
     @Override

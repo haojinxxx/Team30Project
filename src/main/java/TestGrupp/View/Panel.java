@@ -9,10 +9,11 @@ public class Panel extends JFrame {
     private final int heightScreen;
     private final int shipSquareDimension;
     private final int margin;
-    private SpaceShipView spaceShipView;
+    private PlayerShipSprite spaceShipView;
     private BackgroundView backGroundView;
     BottomPanel bottomPanel;
     private ScoreView scoreView;
+    private PowerUpSprite powerUpSprite;
 
     public Panel(String title) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -44,9 +45,14 @@ public class Panel extends JFrame {
         layeredPane.add(backGroundView, JLayeredPane.DEFAULT_LAYER);
 
         // Create and add the spaceship panel to the layered pane
-        spaceShipView = new SpaceShipView(shipSquareDimension);
+        spaceShipView = new PlayerShipSprite(shipSquareDimension);
         spaceShipView.setBounds((widthScreen - shipSquareDimension) / 2, (heightScreen - shipSquareDimension) / 2, shipSquareDimension, shipSquareDimension);
         layeredPane.add(spaceShipView, JLayeredPane.PALETTE_LAYER);
+
+        // Create and add the powerup sprite to the layered pane
+        powerUpSprite = new PowerUpSprite(shipSquareDimension);
+        powerUpSprite.setBounds((widthScreen - shipSquareDimension) / 2 + 100, (heightScreen - shipSquareDimension) / 2 + 100, shipSquareDimension, shipSquareDimension);
+        layeredPane.add(powerUpSprite, JLayeredPane.PALETTE_LAYER);
 
         // Create and add the bottom panel to the frame
         bottomPanel = new BottomPanel(widthScreen, margin);
@@ -65,7 +71,7 @@ public class Panel extends JFrame {
     }
 
 
-    public SpaceShipView getSpaceShipView() {
+    public PlayerShipSprite getSpaceShipView() {
         return spaceShipView; //not secure?
     }
 

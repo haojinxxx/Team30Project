@@ -40,6 +40,10 @@ public class CollisionManager {
                 Projectile projectile = (Projectile) other;
                 playerShip.takeDamage(projectile.getDamage());
             }
+            else if (other instanceof PowerUp) {
+                PowerUp powerUp = (PowerUp) other;
+                powerUp.StorePowerUp(playerShip, powerUp);
+            }
         }
 
         // If the owner is an EnemyShip

@@ -156,12 +156,18 @@ public class View extends JFrame implements Observer, ObserverScore {
                 PlayerProjectileSprite projectile = new PlayerProjectileSprite(projectileSquareDimension);
                 projectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
                 return projectile;
+            case "PowerUp":
+                System.out.println("Creating PowerUp sprite...");
+                PowerUpSprite powerUp = new PowerUpSprite(shipSquareDimension);
+                powerUp.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                return powerUp;
             /*
             case "EnemyProjectile":
                 System.out.println("Creating EnemyProjectile sprite...");
                 EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite(shipSquareDimension);
                 enemyProjectile.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
                 return enemyProjectile;*/
+
             default:
                 System.out.println("Unknown sprite type: " + spriteType);
                 return null;
