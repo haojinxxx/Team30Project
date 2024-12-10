@@ -11,11 +11,19 @@ public abstract class PowerUp extends GameObject {
 
     }
     //Abstract method for powerup functionality
-    public abstract void powerUp(PlayerShip playerShip);
+    public abstract void PowerUp(PlayerShip playerShip);
     //Activates subclass own powerUp implemen
     public void activatePowerUp(PlayerShip playerShip) {
-        powerUp(playerShip);
+        PowerUp(playerShip);
         }
+    public void StorePowerUp(PlayerShip playerShip, PowerUp powerUp) {
+        if (powerUp instanceof shieldPowerUp) {
+            playerShip.ShieldPowerUpStatus(true);
+        }
+        else if (powerUp instanceof healthPowerUp) {
+            playerShip.HealthPowerUpStatus(true);
+        }
+    }
     //Timer for powerup
     public void startPowerUpTimer(Runnable task, long duration) {
         Timer timer = new Timer();
