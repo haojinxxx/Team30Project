@@ -15,6 +15,8 @@ public class Main {
         Controller controller = new Controller(gm, view);
 
 
+
+
         controller.startGame();
     }
 }

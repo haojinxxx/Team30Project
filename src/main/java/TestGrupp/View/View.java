@@ -156,6 +156,13 @@ public class View extends JFrame implements Observer, ObserverScore {
                 PlayerProjectileSprite projectile = new PlayerProjectileSprite(projectileSquareDimension);
                 projectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
                 return projectile;
+
+                case "Asteroid":
+                System.out.println("Creating Asteroid sprite...");
+                AsteroidSprite asteroid = new AsteroidSprite(shipSquareDimension);
+                asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                return asteroid;
+
             /*
             case "EnemyProjectile":
                 System.out.println("Creating EnemyProjectile sprite...");
