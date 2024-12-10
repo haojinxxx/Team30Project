@@ -50,6 +50,7 @@ public class GameModel implements GameEventListener, Subject {
 
         addGameObject(this.powerup);
 
+
     }
 
     @Override
