@@ -14,6 +14,7 @@ public class GameModel implements GameEventListener, Subject {
     private CollisionManager collisionManager;
     private GameEventListener listener;
     private PlayerShip playerShip;
+    private Asteroid asteroid; //????
     private List<Observer> observers;
     private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
@@ -26,12 +27,24 @@ public class GameModel implements GameEventListener, Subject {
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
         this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
+        //this.asteroid = new Asteroid(screenCenter, 0, 1, 1, 1, 10, 0, this);
         this.score = new Score();
 
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
 
         addGameObject(this.playerShip);
+        //spawnAsteroid(screenCenter, 2);
+
+        EnemyFactory enemyFactory = new EnemyFactory();
+        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+
+        EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
+        enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
+
+
+        //spawnAsteroid(screenCenter, 2);
+
     }
 
     @Override
@@ -67,6 +80,10 @@ public class GameModel implements GameEventListener, Subject {
                 removeGameObject(gameObject);
                 continue;
             }
+
+
+
+
             gameObject.update(deltaTime);
 
             TransformComponent transform = gameObject.getTransform();
@@ -124,6 +141,7 @@ public class GameModel implements GameEventListener, Subject {
     public void spawnAsteroid(Point2d position, int childAsteroids) {
         double speed = 0.5;
         int health = 10;
+
 
         Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
         addGameObject(asteroid);

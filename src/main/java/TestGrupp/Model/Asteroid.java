@@ -48,6 +48,6 @@ public class Asteroid extends GameObject implements Enemy{
 
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
-        //gameModel.createAsteroid(x, y, Math.random() * 360, 1, 1, 1, 10, 0);
+        gameModel.spawnAsteroid(pos, 0);
     }
 }
