@@ -32,6 +32,7 @@ public class CollisionManager {
             PlayerShip playerShip = (PlayerShip) owner;
 
             if (other instanceof Asteroid) {
+                System.out.printf("PlayerShip collided with Asteroid\n");  // Debug print
                 playerShip.takeDamage(10);
             } else if (other instanceof EnemyShip) {
                 EnemyShip enemyShip = (EnemyShip) other;

@@ -40,6 +40,7 @@ public class GameModel implements GameEventListener, Subject  {
             e.printStackTrace();
         }
 
+        this.collisionManager = new CollisionManager(gameObjects);
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
@@ -47,6 +48,10 @@ public class GameModel implements GameEventListener, Subject  {
         Properties properties = getGameProperties();
         int playerWidth = Integer.parseInt(properties.getProperty("player.width"));
         int playerHeight = Integer.parseInt(properties.getProperty("player.height"));
+        int asteroidWidth = Integer.parseInt(properties.getProperty("asteroid.width"));
+        int asteroidHeight = Integer.parseInt(properties.getProperty("asteroid.height"));
+
+
         this.playerShip = new PlayerShip(screenCenter, 0, playerWidth, playerHeight, this);
         this.score = new Score();
 
@@ -59,7 +64,7 @@ public class GameModel implements GameEventListener, Subject  {
         //spawnAsteroid(screenCenter, 2);
 
         EnemyFactory enemyFactory = new EnemyFactory();
-        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, asteroidWidth, asteroidHeight, 0.5, 10, 0, this));
 
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
         enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
@@ -120,6 +125,7 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
+        collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore());
     }
