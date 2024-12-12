@@ -170,20 +170,20 @@ public class View extends JFrame implements Observer, ObserverScore {
             case "PlayerProjectile":
 
                 System.out.println("Creating PlayerProjectile sprite...");
-                PlayerProjectileSprite projectile = new PlayerProjectileSprite(projectileSquareDimension);
-                projectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
+                PlayerProjectileSprite projectile = new PlayerProjectileSprite(retrieveProperty("projectile.width"), retrieveProperty("projectile.height"));
+                projectile.setBounds(0, 0, retrieveProperty("projectile.width"), retrieveProperty("projectile.height")); // Set bounds explicitly
                 return projectile;
 
             case "PowerUp":
                 System.out.println("Creating PowerUp sprite...");
-                PowerUpSprite powerUp = new PowerUpSprite(shipSquareDimension);
-                powerUp.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                PowerUpSprite powerUp = new PowerUpSprite(retrieveProperty("powerup.width"), retrieveProperty("powerup.height"));
+                powerUp.setBounds(0, 0, retrieveProperty("powerup.width"), retrieveProperty("powerup.height")); // Set bounds explicitly
                 return powerUp;
 
             case "Asteroid":
                 System.out.println("Creating Asteroid sprite...");
-                AsteroidSprite asteroid = new AsteroidSprite(shipSquareDimension);
-                asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                AsteroidSprite asteroid = new AsteroidSprite(retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height"));
+                asteroid.setBounds(0, 0, retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height")); // Set bounds explicitly
                 return asteroid;
 
             //case "EnemyShip":

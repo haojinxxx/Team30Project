@@ -9,9 +9,9 @@ import java.io.IOException;
 public class PowerUpSprite extends Sprite{
     private Image PowerUpImage;
 
-    public PowerUpSprite(int PowerUpDimensions) {
+    public PowerUpSprite(int powerUpWidth, int powerUpHeight) {
         super();
-        setPreferredSize(new Dimension(PowerUpDimensions + 20, PowerUpDimensions + 20)); // Add padding for rotation
+        setPreferredSize(new Dimension(powerUpWidth, powerUpHeight)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
         try {
             PowerUpImage = ImageIO.read(new File("src/main/resources/images/HealthPowerUp.png"));

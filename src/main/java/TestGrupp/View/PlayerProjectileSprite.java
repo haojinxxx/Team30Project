@@ -9,10 +9,10 @@ import java.io.IOException;
 public class PlayerProjectileSprite extends Sprite {
     private Image projectileImage;
 
-    public PlayerProjectileSprite(int projectileSquareDimension) {
+    public PlayerProjectileSprite(int projectileWidth, int projectileHeight) {
         super();
         // Increase the bounding box size by a small factor to prevent clipping during rotation
-        setPreferredSize(new Dimension(projectileSquareDimension + 20, projectileSquareDimension + 20)); // Add padding for rotation
+        setPreferredSize(new Dimension(projectileWidth + 20, projectileHeight + 20)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
         try {
             projectileImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Projectile.png"));

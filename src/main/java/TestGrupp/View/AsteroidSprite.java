@@ -9,9 +9,9 @@ import java.io.IOException;
 public class AsteroidSprite extends Sprite {
     private Image asteroidImage;
 
-    public AsteroidSprite(int asteroidDimension) {
+    public AsteroidSprite(int asteroidWidth, int asteroidHeight) {
         super();
-        setPreferredSize(new Dimension(asteroidDimension, asteroidDimension));
+        setPreferredSize(new Dimension(asteroidWidth, asteroidHeight));
         setOpaque(false); // Make the panel transparent
         try {
             asteroidImage = ImageIO.read(new File("src/main/resources/images/EnemyJunkBolt-Size1.png"));
