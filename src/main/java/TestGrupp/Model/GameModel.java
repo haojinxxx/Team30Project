@@ -14,7 +14,7 @@ import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.ObserverScore;
 import TestGrupp.Observer.Subject;
 
-public class GameModel implements GameEventListener, Subject, EnemyProvider {
+public class GameModel implements GameEventListener, Subject  {
     private List<GameObject> gameObjects;
     private CollisionManager collisionManager;
     private GameEventListener listener;
@@ -158,13 +158,7 @@ public class GameModel implements GameEventListener, Subject, EnemyProvider {
         return gameObjects;
     }
 
-    @Override
-    public List<EnemyShip> getEnemies() {
-        return gameObjects.stream()
-                .filter(gameObject -> gameObject instanceof EnemyShip)
-                .map(gameObject -> (EnemyShip) gameObject)
-                .collect(Collectors.toList());
-    }
+
 
     public static PlayerShip getPlayerShip() {
         return playerShip;
@@ -185,7 +179,7 @@ public class GameModel implements GameEventListener, Subject, EnemyProvider {
     }
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
-        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 50, this, this);
+        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 50, this);
         addGameObject(enemyShip);
     }
 
