@@ -9,10 +9,10 @@ import java.io.IOException;
 public class PlayerShipSprite extends Sprite {
     private Image playerShipImage;
 
-    public PlayerShipSprite(int shipSquareDimension) {
+    public PlayerShipSprite(int shipWidth, int shipHeight) {
         super();
         // Increase the bounding box size by a small factor to prevent clipping during rotation
-        setPreferredSize(new Dimension(shipSquareDimension + 20, shipSquareDimension + 20)); // Add padding for rotation
+        setPreferredSize(new Dimension(shipWidth+ 20, shipHeight + 20)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
         try {
             playerShipImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Model.png"));
