@@ -1,6 +1,8 @@
 package TestGrupp.Model;
 
 
+import TestGrupp.Model.Behaviors.AttackState;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
@@ -16,10 +18,11 @@ public class EnemyShip extends GameObject implements Enemy {
 
     private HealthComponent health;
     private PhysicsComponent physics;
+    private BehaviorState behaviorState;
 
     // Constructor
 
-    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
+    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener, EnemyProvider enemyProvider) {
         super(position, rotation, maxSpeed, health, listener);
         this.getTransform().setPosition(position);
         this.getTransform().setRotation(rotation);
@@ -32,15 +35,31 @@ public class EnemyShip extends GameObject implements Enemy {
 
         this.collidible = true;
         this.firingRange = firingRange;
+
+        this.behaviorState = new AttackState(GameModel.getPlayerShip().getTransform(), this, enemyProvider);
     }
+
 
     public int getFiringRange() {
         return firingRange;
     }
     public void update(double deltaTime) {
         super.update(deltaTime);
+        if (behaviorState != null) {
+            behaviorState.update(getTransform(), physics, deltaTime);
+        }
         physics.update(deltaTime, this.getTransform());
 
+        Vector2d velocity = physics.getVelocity();
+        if (velocity.length() > 0) {
+            double rotation = Math.atan2(velocity.y, velocity.x);
+            this.getTransform().setRotation(rotation);
+        }
+
+    }
+
+    public PhysicsComponent getPhysics() {
+        return physics;
     }
 
 
@@ -71,7 +90,7 @@ public class EnemyShip extends GameObject implements Enemy {
 
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.createEnemyShip(pos, Math.random() * 360, 1, 100);
+        gameModel.createEnemyShip(pos, Math.random() * 360, 100, 100);
     }
 
 }

@@ -3,7 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class Asteroid extends GameObject implements Enemy{
+public class Asteroid extends GameObject implements Enemy {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
@@ -23,11 +23,12 @@ public class Asteroid extends GameObject implements Enemy{
         this.health = new HealthComponent(health);
 
         this.physics = new PhysicsComponent(speed, 0.95);
+        this.physics.setIsProjectile(true);
         this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
     }
 
     // Methods
-    public void update(float deltaTime) {
+    public void update(double deltaTime) {
         physics.update(deltaTime, this.getTransform());
     }
 
@@ -37,6 +38,7 @@ public class Asteroid extends GameObject implements Enemy{
             destroy();
         }
     }
+
     public void destroy() {
         for (int i = 0; i < childAsteroids; i++) {
             if (listener != null) {
@@ -45,6 +47,7 @@ public class Asteroid extends GameObject implements Enemy{
         }
         this.setActive(false);
     }
+
 
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
