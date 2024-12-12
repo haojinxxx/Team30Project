@@ -39,7 +39,7 @@ public class View extends JFrame implements Observer, ObserverScore {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
         this.heightScreen = screenSize.height;
-        //this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
+        this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
         this.projectileSquareDimension = (int) (0.01 * widthScreen);  // 1% of the screen width
         this.margin = 30;
         this.gameObjectSprites = new HashMap<>();
@@ -186,18 +186,13 @@ public class View extends JFrame implements Observer, ObserverScore {
                 asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
                 return asteroid;
 
-            case "EnemyShip":
-                System.out.println("Creating EnemyShip sprite...");
+            //case "EnemyShip":
+               //System.out.println("Creating EnemyShip sprite...");
                 //EnemyShipSprite enemyShip = new EnemyShipSprite(shipSquareDimension);
                 //enemyShip.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
                 //return enemyShip;
 
 
-            case "EnemyProjectile":
-                System.out.println("Creating EnemyProjectile sprite...");
-                EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite(projectileSquareDimension);
-                enemyProjectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
-                return enemyProjectile;
 
             default:
                 System.out.println("Unknown sprite type: " + spriteType);
