@@ -53,6 +53,20 @@ public class PhysicsComponent {
         this.friction = friction;
     }
 
+    // Getter for Speed
+    public double getSpeed() {
+        return velocity.length();
+    }
+
+    // Setter for Speed
+    public void setSpeed(double speed) {
+        if (speed < 0) {
+            throw new IllegalArgumentException("Speed must be a positive value.");
+        }
+        velocity.normalize();
+        velocity.scale(speed);
+    }
+
     // Getter for Max Speed
     public double getMaxSpeed() {
         return maxSpeed;

@@ -8,7 +8,7 @@ public abstract class GameObject {
     private boolean active;
     private boolean collidible;
     private TransformComponent transform;
-    //private PhysicsComponent physics;
+    private PhysicsComponent physics;
 
     public GameObject(Point2d position, double rotation, double scaleX, double scaleY, GameEventListener listener) {
         this.id = System.identityHashCode(this);
@@ -39,6 +39,10 @@ public abstract class GameObject {
 
     public TransformComponent getTransform() {
         return transform;
+    }
+
+    public PhysicsComponent getPhysics() {
+        return physics;
     }
 
     public double getX() {

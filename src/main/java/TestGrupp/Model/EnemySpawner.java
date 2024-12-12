@@ -72,7 +72,7 @@ public class EnemySpawner {
             default:
                 throw new IllegalStateException("Unexpected value: " + edge);
         }
-        Enemy enemy = enemyFactory.createEnemy(enemyType);
+        Enemy enemy = enemyFactory.createEnemy(enemyType, pos);
         if (enemy != null) {
             enemy.spawn(gameModel, pos);
         }

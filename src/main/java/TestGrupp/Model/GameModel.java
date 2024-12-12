@@ -59,7 +59,7 @@ public class GameModel implements GameEventListener, Subject  {
         //spawnAsteroid(screenCenter, 2);
 
         EnemyFactory enemyFactory = new EnemyFactory();
-        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+        enemyFactory.registerEnemy("Asteroid", () -> new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
 
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
         enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
@@ -163,6 +163,9 @@ public class GameModel implements GameEventListener, Subject  {
 
     }
 
+
+
+    //Not in use, a factory is used instead
     public void spawnAsteroid(Point2d position, int childAsteroids) {
         double speed = 0.5;
         int health = 10;
@@ -170,6 +173,8 @@ public class GameModel implements GameEventListener, Subject  {
         Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
         addGameObject(asteroid);
     }
+
+
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
         EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 50, this);

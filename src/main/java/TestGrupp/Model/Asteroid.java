@@ -49,6 +49,13 @@ public class Asteroid extends GameObject implements Enemy{
         this.setActive(false);
     }
 
+
+
+
+
+
+
+
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
         gameModel.spawnAsteroid(pos, 0);
