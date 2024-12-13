@@ -60,12 +60,16 @@ public class CollisionManager {
         }
 
         // If the owner is an Asteroid
+
         else if (owner instanceof Asteroid) {
             Asteroid asteroid = (Asteroid) owner;
 
             if (other instanceof PlayerShip) {
                 PlayerShip playerShip = (PlayerShip) other;
                 playerShip.takeDamage(10);
+            } else if (other instanceof Projectile) {
+                Projectile projectile = (Projectile) other;
+                asteroid.takeDamage(projectile.getDamage());
             }
         }
     }
