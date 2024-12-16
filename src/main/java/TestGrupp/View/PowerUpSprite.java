@@ -8,9 +8,13 @@ import java.io.IOException;
 
 public class PowerUpSprite extends Sprite{
     private Image PowerUpImage;
+    private int powerUpWidth;
+    private int powerUpHeight;
 
     public PowerUpSprite(int powerUpWidth, int powerUpHeight) {
         super();
+        this.powerUpWidth = powerUpWidth;
+        this.powerUpHeight = powerUpHeight;
         setPreferredSize(new Dimension(powerUpWidth, powerUpHeight)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
         try {
@@ -42,7 +46,7 @@ public class PowerUpSprite extends Sprite{
             g2d.translate(-width / 2, -height / 2);
 
             // Draw the image at the center of the sprite (no resizing)
-            g2d.drawImage(PowerUpImage, 0, 0, width + 20, height - 20, this); // Adjust image bounds
+            g2d.drawImage(PowerUpImage, 0, 0, powerUpWidth, powerUpHeight, this); // Adjust image bounds
 
             // Restore the original transform
             g2d.setTransform(originalTransform);
