@@ -12,35 +12,26 @@ import java.util.List;
 import java.util.Properties;
 
 public class View extends JFrame implements Observer, ObserverScore {
-    private Properties gameProperties;
     private int widthScreen;
     private int heightScreen;
-    private int shipSquareDimension;
-    private int projectileSquareDimension;
     private int margin;
     private Map<Integer, Sprite> gameObjectSprites;
     private JLayeredPane layeredPane;
     private BackgroundView backGroundView;
     private BottomPanel bottomPanel;
     private ScoreView scoreView;
+    private SpriteFactory spriteFactory;
 
     public View(String title) {
         String configPath = "src/main/resources/config.properties";
-        try {
-            FileInputStream propsInput = new FileInputStream(configPath);
-            this.gameProperties = new Properties();
-            gameProperties.load(propsInput);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ConfigurationLoader configLoader = new ConfigurationLoader(configPath);
+        this.spriteFactory = new SpriteFactory(configLoader);
 
 
         // Initialize screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
         this.heightScreen = screenSize.height;
-        this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
-        this.projectileSquareDimension = (int) (0.01 * widthScreen);  // 1% of the screen width
         this.margin = 30;
         this.gameObjectSprites = new HashMap<>();
 
@@ -107,9 +98,6 @@ public class View extends JFrame implements Observer, ObserverScore {
         layeredPane.repaint();
     }
 
-    public int retrieveProperty(String key) {
-        return Integer.parseInt(gameProperties.getProperty(key));
-    }
 
     public void render() {
      //   System.out.println("Rendering view...");
@@ -119,9 +107,8 @@ public class View extends JFrame implements Observer, ObserverScore {
 
     private void updateOrCreateSprite(int id, double x, double y, double rotation, String spriteType) {
         Sprite sprite = gameObjectSprites.get(id);
-
         if (sprite == null) {
-            sprite = createSprite(spriteType);
+            sprite = spriteFactory.createSprite(spriteType);
             if (sprite != null) {
                 gameObjectSprites.put(id, sprite);
                 layeredPane.add(sprite, JLayeredPane.PALETTE_LAYER);
@@ -158,7 +145,7 @@ public class View extends JFrame implements Observer, ObserverScore {
             System.out.println("Removed sprite ID: " + id);
         }
     }
-
+/*
     private Sprite createSprite(String spriteType) {
         switch (spriteType) {
             case "PlayerShip":
@@ -200,6 +187,8 @@ public class View extends JFrame implements Observer, ObserverScore {
 
         }
     }
+
+ */
 
     public int getScreenWidth() {
         return widthScreen;
