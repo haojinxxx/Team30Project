@@ -164,19 +164,26 @@ public class View extends JFrame implements Observer, ObserverScore {
                 return powerUp;
 
 
-                case "Asteroid":
-                System.out.println("Creating Asteroid sprite...");
-                AsteroidSprite asteroid = new AsteroidSprite(shipSquareDimension);
-                asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
-                return asteroid;
+            case "Asteroid":
+            System.out.println("Creating Asteroid sprite...");
+            AsteroidSprite asteroid = new AsteroidSprite(shipSquareDimension);
+            asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+            return asteroid;
 
-            /*
+            case "EnemyShip":
+                System.out.println("Creating EnemyShip sprite...");
+                EnemyShipSprite enemyShip = new EnemyShipSprite(shipSquareDimension);
+                enemyShip.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                return enemyShip;
+
+
+
+
             case "EnemyProjectile":
                 System.out.println("Creating EnemyProjectile sprite...");
-                EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite(shipSquareDimension);
-                enemyProjectile.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
-                return enemyProjectile;*/
-
+                EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite( projectileSquareDimension);
+                enemyProjectile.setBounds(0, 0,  projectileSquareDimension,  projectileSquareDimension); // Set bounds explicitly
+                return enemyProjectile;
             default:
                 System.out.println("Unknown sprite type: " + spriteType);
                 return null;

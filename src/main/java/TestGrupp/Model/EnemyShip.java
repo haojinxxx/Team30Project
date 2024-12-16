@@ -1,80 +1,68 @@
 package TestGrupp.Model;
 
-
-import TestGrupp.Model.Behaviors.AttackState;
+import TestGrupp.Model.EntityComponents.FacePlayer;
+import TestGrupp.Model.EntityComponents.FireAtPlayer;
+import TestGrupp.Model.EntityComponents.Component;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnemyShip extends GameObject implements Enemy {
     private final int projectileDamage;
     private final int firingRange;
-
-    // Fields
     private final GameEventListener listener;
-    private double speed;
+    private final List<Component> components;
+    private final PhysicsComponent physics;
+    private final HealthComponent health;
 
-    private boolean collidible;
-
-    private HealthComponent health;
-    private PhysicsComponent physics;
-    private BehaviorState behaviorState;
-
-    // Constructor
-
-    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener, EnemyProvider enemyProvider) {
+    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
         super(position, rotation, maxSpeed, health, listener);
-        this.getTransform().setPosition(position);
-        this.getTransform().setRotation(rotation);
         this.projectileDamage = projectileDamage;
-        this.listener = listener;
-        double angle = this.getTransform().getRotation();
-        this.health = new HealthComponent(health);
-        this.physics = new PhysicsComponent(maxSpeed, 0.95);
-        this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
-
-        this.collidible = true;
         this.firingRange = firingRange;
+        this.listener = listener;
 
-        this.behaviorState = new AttackState(GameModel.getPlayerShip().getTransform(), this, enemyProvider);
+
+        this.physics = new PhysicsComponent(maxSpeed, 0.95);
+        //this.physics.setIsProjectile(true);
+
+
+
+        this.components = new ArrayList<>();
+        
+        this.health = new HealthComponent(health);
+
+        // Add components based on desired behavior
+        this.components.add(new FacePlayer());
+        this.components.add(new FireAtPlayer(listener, projectileDamage, firingRange, 2));
     }
 
 
-    public int getFiringRange() {
-        return firingRange;
-    }
+    @Override
     public void update(double deltaTime) {
+
+
         super.update(deltaTime);
-        if (behaviorState != null) {
-            behaviorState.update(getTransform(), physics, deltaTime);
+        Point2d playerPosition = listener.getPlayerPosition();
+
+        // Update all components
+        for (Component component : components) {
+            component.update(deltaTime, this.getTransform(), this.physics, playerPosition);
         }
+
+        // Set physics acceleration vector based on current rotation
+        Vector2d acceleration = new Vector2d(Math.cos(getTransform().getRotation()), Math.sin(getTransform().getRotation()));
+
+        double moveAngle = getTransform().getRotation();
+        double moveX = Math.cos(moveAngle) * 2000;
+        double moveY = Math.sin(moveAngle) * 2000;
+
+        physics.setAcceleration(moveX, moveY);
         physics.update(deltaTime, this.getTransform());
 
-        Vector2d velocity = physics.getVelocity();
-        if (velocity.length() > 0) {
-            double rotation = Math.atan2(velocity.y, velocity.x);
-            this.getTransform().setRotation(rotation);
-        }
-
     }
 
-    public PhysicsComponent getPhysics() {
-        return physics;
-    }
-
-
-    public void fire() {
-        double projectileSpeed = 10;
-        Point2d position = new Point2d(this.getTransform().getPosition());
-        double rotation = this.getTransform().getRotation();
-        int projectileDamage = this.projectileDamage;
-
-        Vector2d velocity = new Vector2d(Math.cos(Math.toRadians(rotation)), Math.sin(Math.toRadians(rotation)));
-
-        if (listener != null) {
-            listener.onProjectileFired(position, velocity, rotation, projectileSpeed, projectileDamage, false);
-        }
-    }
 
     public void takeDamage(int damage) {
         this.health.removeHealth(damage);
@@ -86,11 +74,8 @@ public class EnemyShip extends GameObject implements Enemy {
         }
     }
 
-
-
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
         gameModel.createEnemyShip(pos, Math.random() * 360, 100, 100);
     }
-
 }
