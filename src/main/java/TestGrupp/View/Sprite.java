@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class Sprite extends JComponent {
+public abstract class Sprite extends JComponent {
     private double rotation;
     private BufferedImage image;
 
@@ -13,6 +13,19 @@ public class Sprite extends JComponent {
     public Sprite() {
         setOpaque(false); // Make sure the sprite component is transparent
     }
+
+    // Template method
+    public final void initializeSprite() {
+        loadImage();
+        setPreferredSize(new Dimension(getSpriteWidth() + 20, getSpriteHeight() + 20)); // Add padding for rotation
+    }
+
+
+    // Abstract methods to be implemented by subclasses
+    protected abstract void loadImage();
+    protected abstract int getSpriteWidth();
+    protected abstract int getSpriteHeight();
+
 
     // Method to set the image for the sprite
     public void setImage(BufferedImage image) {

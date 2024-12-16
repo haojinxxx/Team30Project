@@ -2,15 +2,23 @@ package TestGrupp.View;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 
 public class PlayerProjectileSprite extends Sprite {
-    private Image projectileImage;
+    private BufferedImage projectileImage;
+    private int projectileWidth;
+    private int projectileHeight;
+
 
     public PlayerProjectileSprite(int projectileWidth, int projectileHeight) {
         super();
+        this.projectileWidth = projectileWidth;
+        this.projectileHeight = projectileHeight;
+        initializeSprite();
+        /*
         // Increase the bounding box size by a small factor to prevent clipping during rotation
         setPreferredSize(new Dimension(projectileWidth + 20, projectileHeight + 20)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
@@ -19,8 +27,11 @@ public class PlayerProjectileSprite extends Sprite {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
 
+    /*
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -49,4 +60,27 @@ public class PlayerProjectileSprite extends Sprite {
             g2d.setTransform(originalTransform);
         }
     }
+
+     */
+
+    @Override
+    protected void loadImage() {
+        try {
+            projectileImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Projectile.png"));
+            setImage(projectileImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected int getSpriteWidth() {
+        return projectileWidth;
+    }
+
+    @Override
+    protected int getSpriteHeight() {
+        return projectileHeight;
+    }
+
 }

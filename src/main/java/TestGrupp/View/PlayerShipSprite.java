@@ -1,13 +1,12 @@
 package TestGrupp.View;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class PlayerShipSprite extends Sprite {
-    private Image playerShipImage;
+    private BufferedImage playerShipImage;
     private int shipWidth;
     private int shipHeight;
 
@@ -15,6 +14,9 @@ public class PlayerShipSprite extends Sprite {
         super();
         this.shipWidth = shipWidth;
         this.shipHeight = shipHeight;
+        initializeSprite();
+
+        /*
         // Increase the bounding box size by a small factor to prevent clipping during rotation
         setPreferredSize(new Dimension(shipWidth+ 20, shipHeight + 20)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
@@ -23,7 +25,10 @@ public class PlayerShipSprite extends Sprite {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
+    /*
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -50,4 +55,28 @@ public class PlayerShipSprite extends Sprite {
             g2d.setTransform(originalTransform);
         }
     }
+
+
+     */
+
+    @Override
+    protected void loadImage() {
+        try {
+            playerShipImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Model.png"));
+            setImage(playerShipImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected int getSpriteWidth() {
+        return shipWidth;
+    }
+
+    @Override
+    protected int getSpriteHeight() {
+        return shipHeight;
+    }
 }
+
