@@ -145,50 +145,6 @@ public class View extends JFrame implements Observer, ObserverScore {
             System.out.println("Removed sprite ID: " + id);
         }
     }
-/*
-    private Sprite createSprite(String spriteType) {
-        switch (spriteType) {
-            case "PlayerShip":
-                System.out.println("Creating PlayerShip sprite...");
-                PlayerShipSprite spaceship = new PlayerShipSprite(retrieveProperty("player.width"), retrieveProperty("player.height"));
-                spaceship.setBounds(0, 0, retrieveProperty("player.width"), retrieveProperty("player.height")); // Set bounds explicitly
-                return spaceship;
-
-            case "PlayerProjectile":
-
-                System.out.println("Creating PlayerProjectile sprite...");
-                PlayerProjectileSprite projectile = new PlayerProjectileSprite(retrieveProperty("projectile.width"), retrieveProperty("projectile.height"));
-                projectile.setBounds(0, 0, retrieveProperty("projectile.width"), retrieveProperty("projectile.height")); // Set bounds explicitly
-                return projectile;
-
-            case "PowerUp":
-                System.out.println("Creating PowerUp sprite...");
-                PowerUpSprite powerUp = new PowerUpSprite(retrieveProperty("powerup.width"), retrieveProperty("powerup.height"));
-                powerUp.setBounds(0, 0, retrieveProperty("powerup.width"), retrieveProperty("powerup.height")); // Set bounds explicitly
-                return powerUp;
-
-            case "Asteroid":
-                System.out.println("Creating Asteroid sprite...");
-                AsteroidSprite asteroid = new AsteroidSprite(retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height"));
-                asteroid.setBounds(0, 0, retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height")); // Set bounds explicitly
-                return asteroid;
-
-            //case "EnemyShip":
-               //System.out.println("Creating EnemyShip sprite...");
-                //EnemyShipSprite enemyShip = new EnemyShipSprite(shipSquareDimension);
-                //enemyShip.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
-                //return enemyShip;
-
-
-
-            default:
-                System.out.println("Unknown sprite type: " + spriteType);
-                return null;
-
-        }
-    }
-
- */
 
     public int getScreenWidth() {
         return widthScreen;
