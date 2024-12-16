@@ -11,7 +11,6 @@ public class Main {
         View view = new View("Cosmic Shooter");
         GameModel gm = new GameModel();
         gm.addObserver(view); // Register the view as an observer
-        gm.addScoreObserver(view); // Register the view as a score observer
         Controller controller = new Controller(gm, view);
         System.out.println(view.getScreenWidth());
 
