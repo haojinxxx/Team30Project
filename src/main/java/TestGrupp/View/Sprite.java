@@ -20,7 +20,6 @@ public abstract class Sprite extends JComponent {
         setPreferredSize(new Dimension(getSpriteWidth() + 20, getSpriteHeight() + 20)); // Add padding for rotation
     }
 
-
     // Abstract methods to be implemented by subclasses
     protected abstract void loadImage();
     protected abstract int getSpriteWidth();
@@ -46,19 +45,25 @@ public abstract class Sprite extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         if (image != null) {
             Graphics2D g2d = (Graphics2D) g;
-            AffineTransform originalTransform = g2d.getTransform();  // Save the original transform
+            int width = getWidth();
+            int height = getHeight();
 
-            // Rotate around the center of the component
-            int centerX = getWidth() / 2;
-            int centerY = getHeight() / 2;
-            g2d.rotate(rotation, centerX, centerY);  // Rotate by the current angle
+            // Save the current transform state
+            AffineTransform originalTransform = g2d.getTransform();
 
-            // Draw the image centered in the component
-            g2d.drawImage(image, 0, 0, this);
+            // Move the origin to the center of the sprite
+            g2d.translate(width / 2, height / 2);
 
-            // Restore the original transform after drawing
+            // Rotate the sprite around its center
+            g2d.rotate(getRotation() + Math.PI / 2); // Correcting the rotation offset from default image rotation
+
+            // Translate back to the original position after rotation
+            g2d.drawImage(image, -getSpriteWidth() / 2, -getSpriteHeight() / 2, getSpriteWidth(), getSpriteHeight(), this);
+
+            // Restore the original transform
             g2d.setTransform(originalTransform);
         }
     }
