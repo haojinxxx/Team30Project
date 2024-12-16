@@ -23,6 +23,16 @@ public class FireAtPlayer implements Component {
         this.timeSinceLastShot = cooldown; // Initialize to allow immediate firing
     }
 
+
+
+    /**
+     * Updates the component to fire at the player if within range and cooldown period has elapsed.
+     *
+     * @param deltaTime      The time elapsed since the last update, in seconds.
+     * @param transform      The transform component of the entity.
+     * @param physics        The physics component of the entity.
+     * @param playerPosition The position of the player.
+     */
     @Override
     public void update(double deltaTime, TransformComponent transform, PhysicsComponent physics, Point2d playerPosition) {
         timeSinceLastShot += deltaTime; // Update the time since the last shot
