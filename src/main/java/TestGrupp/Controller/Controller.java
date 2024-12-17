@@ -6,11 +6,9 @@ import TestGrupp.View.View;
 import javax.vecmath.Point2d;
 
 public class Controller {
-    private final InputProcessor inputProcessor;
-    private GameModel gm;
-    private InputHandler ih;
-    private GameLoop loop;
-    private View view;
+    private final GameModel gm;
+    private final GameLoop loop;
+    private final View view;
 
     private Point2d screenCenter;
 
@@ -18,21 +16,23 @@ public class Controller {
         this.gm = gm;
         this.view = view;
 
-        this.ih = new InputHandler();
-        this.inputProcessor = new InputProcessor(
+        InputHandler ih = new InputHandler();
+        // Assuming you make SoundManager a singleton
+        // Fire cooldown in milliseconds
+        InputProcessor inputProcessor = new InputProcessor(
                 this.gm,
-                this.ih,
+                ih,
                 SoundManager.getInstance(),  // Assuming you make SoundManager a singleton
                 500  // Fire cooldown in milliseconds
         );
 
-        this.loop = new GameLoop(this.gm, this.view, this.ih, this.inputProcessor);
+        this.loop = new GameLoop(this.gm, this.view, ih, inputProcessor);
 
 
         // Set up the panel to listen for key events
         this.view.setFocusable(true);
         this.view.requestFocusInWindow();
-        this.view.addKeyListener(this.ih);
+        this.view.addKeyListener(ih);
 
         // Register the panel as an observer
         this.gm.addObserver(this.view);
