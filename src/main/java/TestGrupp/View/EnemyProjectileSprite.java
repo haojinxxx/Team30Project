@@ -24,7 +24,7 @@ public class EnemyProjectileSprite extends Sprite {
     @Override
     protected void loadImage() {
         try {
-            projectileImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Projectile.png"));
+            projectileImage = ImageIO.read(new File("src/main/resources/images/EnemyShipBasic-Projectile.png"));
             setImage(projectileImage);
         } catch (IOException e) {
             e.printStackTrace();
