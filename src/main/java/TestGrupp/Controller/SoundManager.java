@@ -8,27 +8,39 @@ import java.util.List;
 
 public class SoundManager {
 
+    private static SoundManager instance;
+
     // List to hold all active fire sound clips
-    private static List<Clip> activeFireClips = new ArrayList<>();
-    private static Clip thrusterSoundClip;
-    private static Clip ambientThemeClip;  // New clip for ambient theme music
+    private List<Clip> activeFireClips = new ArrayList<>();
+    private Clip thrusterSoundClip;
+    private Clip ambientThemeClip;  // New clip for ambient theme music
+
+    // Private constructor to prevent instantiation
+    private SoundManager() {
+        initialize();  // Initialize the sound manager when the instance is created
+    }
+
+    // Public method to provide access to the singleton instance
+    public static SoundManager getInstance() {
+        if (instance == null) {
+            instance = new SoundManager();
+        }
+        return instance;
+    }
 
     // Initialize the sounds
-    public static void initialize() {
+    private void initialize() {
         try {
-            // Load the thruster sound (example)
             File thrusterFile = new File("src/main/resources/sounds/player-thrusters.wav");
             AudioInputStream thrusterAudioIn = AudioSystem.getAudioInputStream(thrusterFile);
             thrusterSoundClip = AudioSystem.getClip();
             thrusterSoundClip.open(thrusterAudioIn);
 
-            // Load the ambient theme music (example)
             File ambientFile = new File("src/main/resources/sounds/ambient-theme.wav");
             AudioInputStream ambientAudioIn = AudioSystem.getAudioInputStream(ambientFile);
             ambientThemeClip = AudioSystem.getClip();
             ambientThemeClip.open(ambientAudioIn);
 
-            // Loop the ambient theme indefinitely
             ambientThemeClip.loop(Clip.LOOP_CONTINUOUSLY);
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -36,8 +48,7 @@ public class SoundManager {
         }
     }
 
-    // Play the fire sound (allowing overlapping)
-    public static void playFireSound() {
+    public void playFireSound() {
         try {
             // Load and play a new fire sound clip for each shot
             File soundFile = new File("src/main/resources/sounds/player-fire.wav");
@@ -63,7 +74,7 @@ public class SoundManager {
     }
 
     // Play the thruster sound without stopping immediately when "W" is released
-    public static void playThrusterSound() {
+    public void playThrusterSound() {
         try {
             if (thrusterSoundClip != null && !thrusterSoundClip.isRunning()) {
                 thrusterSoundClip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the thruster sound
@@ -74,7 +85,7 @@ public class SoundManager {
     }
 
     // Stop the thruster sound only when it's completely finished
-    public static void stopThrusterSound() {
+    public void stopThrusterSound() {
         if (thrusterSoundClip != null && thrusterSoundClip.isRunning()) {
             thrusterSoundClip.stop(); // Stop immediately
             thrusterSoundClip.setFramePosition(0);  // Reset to start (so it can start from the beginning next time)
@@ -82,7 +93,7 @@ public class SoundManager {
     }
 
     // Stop all active fire sounds
-    public static void stopAllFireSounds() {
+    public void stopAllFireSounds() {
         for (Clip clip : activeFireClips) {
             if (clip.isRunning()) {
                 clip.stop();
@@ -92,7 +103,7 @@ public class SoundManager {
     }
 
     // Stop the ambient theme sound if needed
-    public static void stopAmbientTheme() {
+    public void stopAmbientTheme() {
         if (ambientThemeClip != null && ambientThemeClip.isRunning()) {
             ambientThemeClip.stop();
         }
