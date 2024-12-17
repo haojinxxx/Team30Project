@@ -94,13 +94,6 @@ public class GameLoop implements Runnable {
             SoundManager.stopThrusterSound();
         }
 
-        // Backward movement input (S key for backward)
-        if (inputHandler.isKeyPressed(KeyEvent.VK_S)) {
-            gameModel.getPlayerShip().setMovingBackward(true);  // Continuously move backward while key is held
-        } else {
-            gameModel.getPlayerShip().setMovingBackward(false); // Stop moving backward when key is released
-        }
-
         // Fire projectile input (Space key to fire)
 
         if (inputHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
