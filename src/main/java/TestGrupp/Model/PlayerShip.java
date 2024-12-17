@@ -24,8 +24,6 @@ public class PlayerShip extends GameObject {
     private boolean rotating;          // Whether the ship is actively rotating
 
     private boolean movingForward;     // Flag for forward movement
-    private boolean movingBackward;    // Flag for backward movement
-
     private boolean hasHealthPowerUp;
     private boolean hasShieldPowerUp;
 
@@ -47,7 +45,6 @@ public class PlayerShip extends GameObject {
         this.friction = 0.001;    // Decrease friction for slower deceleration
         this.rotating = false;
         this.movingForward = false;
-        this.movingBackward = false;
 
         this.physics = new PhysicsComponent(maxSpeed, 0.95);
     }
@@ -69,9 +66,7 @@ public class PlayerShip extends GameObject {
     }
 
     // Set backward movement flag
-    public void setMovingBackward(boolean movingBackward) {
-        this.movingBackward = movingBackward;
-    }
+
 
     public void fire() {
         double projectileSpeed = 400;
@@ -159,7 +154,7 @@ public class PlayerShip extends GameObject {
         }
 
         // Handle movement logic
-        if (movingForward || movingBackward) {
+        if (movingForward) {
             double moveAngle = getTransform().getRotation(); // Ship's rotation in radians
             double speedMultiplier = movingForward ? 1 : -1; // Determine forward/backward
 

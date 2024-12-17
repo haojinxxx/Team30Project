@@ -155,7 +155,7 @@ public class GameModel implements GameEventListener, Subject  {
 
 
 
-    public static PlayerShip getPlayerShip() {
+    public PlayerShip getPlayerShip() {
         return playerShip;
     }
 
