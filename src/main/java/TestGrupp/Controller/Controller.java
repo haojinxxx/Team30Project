@@ -52,7 +52,7 @@ public class Controller {
     // Method to start the game loop
     public void startGame() {
         initializeModelWithScreenCenter();
-        SoundManager.initialize();
+
         loop.start();  // This calls the start() method on the GameLoop instance
     }
 

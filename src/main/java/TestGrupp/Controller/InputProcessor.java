@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 public class InputProcessor {
 
+    private final SoundManager soundManager;
     private InputHandler inputHandler;
 
     private long lastFireTime;
@@ -14,6 +15,7 @@ public class InputProcessor {
     public InputProcessor(GameModel gameModel, InputHandler inputHandler, SoundManager soundManager, long fireCooldown) {
         this.inputHandler = inputHandler;
         this.fireCooldown = fireCooldown;
+        this.soundManager = soundManager;
     }
 
     public void processInput() {
@@ -34,10 +36,10 @@ public class InputProcessor {
     private void processForwardMovement() {
         if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
             GameModel.getPlayerShip().setMovingForward(true);
-            SoundManager.playThrusterSound();
+            soundManager.playThrusterSound();
         } else {
             GameModel.getPlayerShip().setMovingForward(false);
-            SoundManager.stopThrusterSound();
+            soundManager.stopThrusterSound();
         }
     }
 
@@ -46,7 +48,7 @@ public class InputProcessor {
             long currentTime = System.currentTimeMillis();
             if (currentTime - lastFireTime >= fireCooldown) {
                 GameModel.getPlayerShip().fire();
-                SoundManager.playFireSound();
+                soundManager.playFireSound();
                 lastFireTime = currentTime;
             }
         }
