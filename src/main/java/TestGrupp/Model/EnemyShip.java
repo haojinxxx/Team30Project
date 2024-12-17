@@ -15,10 +15,12 @@ public class EnemyShip extends GameObject implements Enemy {
     private final List<Component> components;
     private final PhysicsComponent physics;
     private final HealthComponent health;
+    private final int firingRange;
 
     public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
         super(position, rotation, maxSpeed, health, listener);
         this.listener = listener;
+        this.firingRange = firingRange;
 
 
         this.physics = new PhysicsComponent(maxSpeed, 0.95);
@@ -32,6 +34,10 @@ public class EnemyShip extends GameObject implements Enemy {
 
         this.components.add(new FacePlayer());
         this.components.add(new FireAtPlayer(listener, projectileDamage, firingRange, 2));
+    }
+
+    private Double distanceToPlayer(Point2d playerPosition) {
+        return this.getPos().distance(playerPosition);
     }
 
 
@@ -52,10 +58,14 @@ public class EnemyShip extends GameObject implements Enemy {
             component.update(deltaTime, this.getTransform(), this.physics, playerPosition);
         }
 
+        // Have the ship not move if it is too close to the player
+        if (distanceToPlayer(playerPosition) < firingRange*0.75) {
+            return;
+        }
 
         double moveAngle = getTransform().getRotation();
-        double moveX = Math.cos(moveAngle) * 2000;
-        double moveY = Math.sin(moveAngle) * 2000;
+        double moveX = Math.cos(moveAngle) * 4000;
+        double moveY = Math.sin(moveAngle) * 4000;
 
         physics.setAcceleration(moveX, moveY);
         physics.update(deltaTime, this.getTransform());
