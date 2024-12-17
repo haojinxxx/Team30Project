@@ -74,7 +74,6 @@ public class GameLoop implements Runnable {
     }
 
 
-
     /**
      * Renders the game state by explicitly triggering the View to redraw.
      */
