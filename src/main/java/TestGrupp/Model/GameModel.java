@@ -2,19 +2,23 @@ package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.ObserverScore;
 import TestGrupp.Observer.Subject;
 
-public class GameModel implements GameEventListener, Subject {
+public class GameModel implements GameEventListener, Subject  {
     private List<GameObject> gameObjects;
     private CollisionManager collisionManager;
     private GameEventListener listener;
-    private PlayerShip playerShip;
+    private static PlayerShip playerShip;
     private List<Observer> observers;
     private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
@@ -22,13 +26,28 @@ public class GameModel implements GameEventListener, Subject {
 
     private PowerUp powerup;
 
+    private Properties gameProperties;
+
 
 
     public GameModel() {
+        String configPath = "src/main/resources/config.properties";
+        try {
+            FileInputStream propsInput = new FileInputStream(configPath);
+            this.gameProperties = new Properties();
+            gameProperties.load(propsInput);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
-        this.playerShip = new PlayerShip(screenCenter, 0, 1, 1, this);
+
+        Properties properties = getGameProperties();
+        int playerWidth = Integer.parseInt(properties.getProperty("player.width"));
+        int playerHeight = Integer.parseInt(properties.getProperty("player.height"));
+        this.playerShip = new PlayerShip(screenCenter, 0, playerWidth, playerHeight, this);
         this.score = new Score();
 
         this.powerup= new healthPowerUp(new Point2d(200, 200), this);
@@ -47,12 +66,13 @@ public class GameModel implements GameEventListener, Subject {
         enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
         enemySpawner.setSpawnRate("EnemyShip", 5000); // Spawn an enemy ship every 5000 milliseconds (5 seconds)
 
-
-        //spawnAsteroid(screenCenter, 2);
-
         addGameObject(this.powerup);
 
 
+    }
+
+    public Properties getGameProperties() {
+        return gameProperties;
     }
 
     @Override
@@ -133,7 +153,9 @@ public class GameModel implements GameEventListener, Subject {
         return gameObjects;
     }
 
-    public PlayerShip getPlayerShip() {
+
+
+    public static PlayerShip getPlayerShip() {
         return playerShip;
     }
 
@@ -157,6 +179,7 @@ public class GameModel implements GameEventListener, Subject {
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
         EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 10, 200, this);
+
         addGameObject(enemyShip);
     }
 

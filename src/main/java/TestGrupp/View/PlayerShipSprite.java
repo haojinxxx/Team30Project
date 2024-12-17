@@ -8,11 +8,15 @@ import java.io.IOException;
 
 public class PlayerShipSprite extends Sprite {
     private Image playerShipImage;
+    private int shipWidth;
+    private int shipHeight;
 
-    public PlayerShipSprite(int shipSquareDimension) {
+    public PlayerShipSprite(int shipWidth, int shipHeight) {
         super();
+        this.shipWidth = shipWidth;
+        this.shipHeight = shipHeight;
         // Increase the bounding box size by a small factor to prevent clipping during rotation
-        setPreferredSize(new Dimension(shipSquareDimension + 20, shipSquareDimension + 20)); // Add padding for rotation
+        setPreferredSize(new Dimension(shipWidth+ 20, shipHeight + 20)); // Add padding for rotation
         setOpaque(false); // Make the panel transparent
         try {
             playerShipImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Model.png"));
@@ -39,11 +43,8 @@ public class PlayerShipSprite extends Sprite {
             // Rotate the sprite around its center
             g2d.rotate(getRotation() + Math.PI / 2); // Correcting the rotation offset from default image rotation
 
-            // Translate back to the original position after rotation
-            g2d.translate(-width / 2, -height / 2);
-
-            // Draw the image at the center of the sprite (no resizing)
-            g2d.drawImage(playerShipImage, 0, 0, width - 20, height - 20, this); // Adjust image bounds
+            //g2d.drawImage(playerShipImage, -playerShipImage.getWidth(this) / 2, -playerShipImage.getHeight(this) / 2, this);
+            g2d.drawImage(playerShipImage, -shipWidth / 2, -shipHeight / 2, shipWidth, shipHeight, this);
 
             // Restore the original transform
             g2d.setTransform(originalTransform);

@@ -6,10 +6,13 @@ import TestGrupp.Observer.ObserverScore;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.List;
+import java.util.Properties;
 
 public class View extends JFrame implements Observer, ObserverScore {
+    private Properties gameProperties;
     private int widthScreen;
     private int heightScreen;
     private int shipSquareDimension;
@@ -22,6 +25,16 @@ public class View extends JFrame implements Observer, ObserverScore {
     private ScoreView scoreView;
 
     public View(String title) {
+        String configPath = "src/main/resources/config.properties";
+        try {
+            FileInputStream propsInput = new FileInputStream(configPath);
+            this.gameProperties = new Properties();
+            gameProperties.load(propsInput);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         // Initialize screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
@@ -94,6 +107,10 @@ public class View extends JFrame implements Observer, ObserverScore {
         layeredPane.repaint();
     }
 
+    public int retrieveProperty(String key) {
+        return Integer.parseInt(gameProperties.getProperty(key));
+    }
+
     public void render() {
      //   System.out.println("Rendering view...");
         layeredPane.revalidate();
@@ -146,29 +163,30 @@ public class View extends JFrame implements Observer, ObserverScore {
         switch (spriteType) {
             case "PlayerShip":
                 System.out.println("Creating PlayerShip sprite...");
-                PlayerShipSprite spaceship = new PlayerShipSprite(shipSquareDimension);
-                spaceship.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                PlayerShipSprite spaceship = new PlayerShipSprite(retrieveProperty("player.width"), retrieveProperty("player.height"));
+                spaceship.setBounds(0, 0, retrieveProperty("player.width"), retrieveProperty("player.height")); // Set bounds explicitly
                 return spaceship;
 
             case "PlayerProjectile":
 
                 System.out.println("Creating PlayerProjectile sprite...");
-                PlayerProjectileSprite projectile = new PlayerProjectileSprite(projectileSquareDimension);
-                projectile.setBounds(0, 0, projectileSquareDimension, projectileSquareDimension); // Set bounds explicitly
+                PlayerProjectileSprite projectile = new PlayerProjectileSprite(retrieveProperty("projectile.width"), retrieveProperty("projectile.height"));
+                projectile.setBounds(0, 0, retrieveProperty("projectile.width"), retrieveProperty("projectile.height")); // Set bounds explicitly
                 return projectile;
 
             case "PowerUp":
                 System.out.println("Creating PowerUp sprite...");
-                PowerUpSprite powerUp = new PowerUpSprite(shipSquareDimension);
-                powerUp.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
+                PowerUpSprite powerUp = new PowerUpSprite(retrieveProperty("powerup.width"), retrieveProperty("powerup.height"));
+                powerUp.setBounds(0, 0, retrieveProperty("powerup.width"), retrieveProperty("powerup.height")); // Set bounds explicitly
                 return powerUp;
 
 
             case "Asteroid":
-            System.out.println("Creating Asteroid sprite...");
-            AsteroidSprite asteroid = new AsteroidSprite(shipSquareDimension);
-            asteroid.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
-            return asteroid;
+                System.out.println("Creating Asteroid sprite...");
+                AsteroidSprite asteroid = new AsteroidSprite(retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height"));
+                asteroid.setBounds(0, 0, retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height")); // Set bounds explicitly
+                return asteroid;
+
 
             case "EnemyShip":
                 System.out.println("Creating EnemyShip sprite...");
@@ -184,6 +202,7 @@ public class View extends JFrame implements Observer, ObserverScore {
                 EnemyProjectileSprite enemyProjectile = new EnemyProjectileSprite( projectileSquareDimension);
                 enemyProjectile.setBounds(0, 0,  projectileSquareDimension,  projectileSquareDimension); // Set bounds explicitly
                 return enemyProjectile;
+
             default:
                 System.out.println("Unknown sprite type: " + spriteType);
                 return null;

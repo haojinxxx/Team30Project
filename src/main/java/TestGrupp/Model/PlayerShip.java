@@ -12,6 +12,9 @@ public class PlayerShip extends GameObject {
     private HealthComponent health;    // Component to track health
     private int projectileDamage;      // Damage dealt by the ship's projectiles
 
+    private int scaleX;
+    private int scaleY;
+
     private PhysicsComponent physics;  // Component for movement and physics
     private boolean hasShield;         // Whether the ship has an active shield
     private List<Projectile> shipProjectiles; // Projectiles fired by the ship
@@ -28,6 +31,9 @@ public class PlayerShip extends GameObject {
 
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
         super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+
         this.health = new HealthComponent(100); // Start with full health
         this.projectileDamage = 10; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
@@ -80,9 +86,13 @@ public class PlayerShip extends GameObject {
         double directionX = Math.cos(rotation);
         double directionY = Math.sin(rotation);
 
+        // Calculate the center of the player ship
+        double centerX = position.x + (scaleX / 2.0);
+        double centerY = position.y + (scaleY / 2.0);
+
         // Now, calculate the spawn position in front of the ship (offset from the ship's current position)
-        double spawnX = position.x + offset * directionX;
-        double spawnY = position.y + offset * directionY;
+        double spawnX = centerX + offset * directionX;
+        double spawnY = centerY + offset * directionY;
 
         // Set the projectile's velocity in the same direction as the ship's facing direction
         Vector2d velocity = new Vector2d(directionX, directionY);
