@@ -9,6 +9,7 @@ public class GameLoop implements Runnable {
     private final GameModel gameModel;
     private final View view;
     private final InputHandler inputHandler;
+    private final InputProcessor inputProcessor;
     private boolean running;
     private final int targetFPS = 60;       // Target frames per second
     private final int updatesPerSecond = 120; // Target updates per second (logic ticks)
@@ -16,10 +17,11 @@ public class GameLoop implements Runnable {
     private long lastFireTime = 0;
     private final long fireCooldown = 500; // Cooldown period in milliseconds
 
-    public GameLoop(GameModel gameModel, View view, InputHandler inputHandler) {
+    public GameLoop(GameModel gameModel, View view, InputHandler inputHandler, InputProcessor inputProcessor) {
         this.gameModel = gameModel;
         this.view = view;
         this.inputHandler = inputHandler;
+        this.inputProcessor = inputProcessor;
         this.running = false;
     }
 
@@ -68,51 +70,10 @@ public class GameLoop implements Runnable {
      * Updates the game state and handles user input.
      */
     private void update(double deltaTime) {
-        handleInput(); // Handle user input
-        gameModel.update(deltaTime); // Update the game logic
-        // No need to directly notify the view; the observer pattern takes care of it
+        inputProcessor.processInput(); // Process input before updating game model
+        gameModel.update(deltaTime);
     }
 
-    /**
-     * Handles user input via the InputHandler.
-     */
-    private void handleInput() {
-        // Rotation input (A/D keys for left/right rotation)
-        if (inputHandler.isKeyPressed(KeyEvent.VK_A)) {
-            gameModel.getPlayerShip().rotate(-Math.PI / 30); // Rotate left (counterclockwise)
-        }
-        if (inputHandler.isKeyPressed(KeyEvent.VK_D)) {
-            gameModel.getPlayerShip().rotate(Math.PI / 30); // Rotate right (clockwise)
-        }
-
-        // Forward movement input (W key for forward)
-        if (inputHandler.isKeyPressed(KeyEvent.VK_W)) {
-            gameModel.getPlayerShip().setMovingForward(true);  // Continuously move forward while key is held
-            SoundManager.playThrusterSound();
-        } else {
-            gameModel.getPlayerShip().setMovingForward(false); // Stop moving forward when key is released
-            SoundManager.stopThrusterSound();
-        }
-
-        // Backward movement input (S key for backward)
-        if (inputHandler.isKeyPressed(KeyEvent.VK_S)) {
-            gameModel.getPlayerShip().setMovingBackward(true);  // Continuously move backward while key is held
-        } else {
-            gameModel.getPlayerShip().setMovingBackward(false); // Stop moving backward when key is released
-        }
-
-        // Fire projectile input (Space key to fire)
-
-        if (inputHandler.isKeyPressed(KeyEvent.VK_SPACE)) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastFireTime >= fireCooldown) {
-                gameModel.getPlayerShip().fire(); // Fire a projectile
-                SoundManager.playFireSound(); // Play fire sound
-                lastFireTime = currentTime;
-            }
-        }
-
-    }
 
 
     /**
