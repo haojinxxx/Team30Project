@@ -64,6 +64,11 @@ public class GameModel implements GameEventListener, Subject  {
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
         enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
 
+        EnemyFactory enemyFactory2 = new EnemyFactory();
+        enemyFactory2.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 50, 20, 50, this));
+
+        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080, enemyFactory2);
+        enemySpawner2.setSpawnRate("EnemyShip", 5000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
         addGameObject(this.powerup);
 
 
