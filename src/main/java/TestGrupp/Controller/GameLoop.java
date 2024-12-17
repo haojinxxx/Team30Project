@@ -8,19 +8,16 @@ import java.awt.event.KeyEvent;
 public class GameLoop implements Runnable {
     private final GameModel gameModel;
     private final View view;
-    private final InputHandler inputHandler;
     private final InputProcessor inputProcessor;
     private boolean running;
     private final int targetFPS = 60;       // Target frames per second
     private final int updatesPerSecond = 120; // Target updates per second (logic ticks)
     private final double updateInterval = 1000.0 / updatesPerSecond; // Time per update in milliseconds
-    private long lastFireTime = 0;
-    private final long fireCooldown = 500; // Cooldown period in milliseconds
+
 
     public GameLoop(GameModel gameModel, View view, InputHandler inputHandler, InputProcessor inputProcessor) {
         this.gameModel = gameModel;
         this.view = view;
-        this.inputHandler = inputHandler;
         this.inputProcessor = inputProcessor;
         this.running = false;
     }
@@ -67,7 +64,9 @@ public class GameLoop implements Runnable {
     }
 
     /**
-     * Updates the game state and handles user input.
+     * Updates the game state based on the time passed since the last update.
+     *
+     * @param deltaTime Time passed since the last update in seconds
      */
     private void update(double deltaTime) {
         inputProcessor.processInput(); // Process input before updating game model
