@@ -3,50 +3,40 @@ package TestGrupp.View;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class EnemyShipSprite extends Sprite {
-    private Image enemyShipImage;
+    private BufferedImage playerShipImage;
+    private int shipWidth;
+    private int shipHeight;
 
-    public EnemyShipSprite(int shipSquareDimension) {
+    public EnemyShipSprite(int shipWidth, int shipHeight) {
         super();
-        // Increase the bounding box size by a small factor to prevent clipping during rotation
-        setPreferredSize(new Dimension(shipSquareDimension + 20, shipSquareDimension + 20)); // Add padding for rotation
-        setOpaque(false); // Make the panel transparent
+        this.shipWidth = shipWidth;
+        this.shipHeight = shipHeight;
+        initializeSprite();
+    }
+
+
+    @Override
+    protected void loadImage() {
         try {
-            enemyShipImage = ImageIO.read(new File("src/main/resources/images/EnemyShipBasic-Model.png"));
+            playerShipImage = ImageIO.read(new File("src/main/resources/images/EnemyShipBasic-Model.png"));
+            setImage(playerShipImage);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    protected int getSpriteWidth() {
+        return shipWidth;
+    }
+
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        if (enemyShipImage != null) {
-            Graphics2D g2d = (Graphics2D) g;
-            int width = getWidth();
-            int height = getHeight();
-
-            // Save the current transform state
-            AffineTransform originalTransform = g2d.getTransform();
-
-            // Move the origin to the center of the sprite
-            g2d.translate(width / 2, height / 2);
-
-            // Rotate the sprite around its center
-            g2d.rotate(getRotation() + Math.PI / 2); // Correcting the rotation offset from default image rotation
-
-            // Translate back to the original position after rotation
-            g2d.translate(-width / 2, -height / 2);
-
-            // Draw the image at the center of the sprite (no resizing)
-            g2d.drawImage(enemyShipImage, 0, 0, width - 20, height - 20, this); // Adjust image bounds
-
-            // Restore the original transform
-            g2d.setTransform(originalTransform);
-        }
+    protected int getSpriteHeight() {
+        return shipHeight;
     }
 }
