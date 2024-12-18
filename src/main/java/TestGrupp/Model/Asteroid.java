@@ -3,7 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class Asteroid extends GameObject implements Enemy{
+public class Asteroid extends GameObject implements Enemy {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
@@ -40,6 +40,7 @@ public class Asteroid extends GameObject implements Enemy{
             destroy();
         }
     }
+
     public void destroy() {
         for (int i = 0; i < childAsteroids; i++) {
             if (listener != null) {
@@ -47,10 +48,5 @@ public class Asteroid extends GameObject implements Enemy{
             }
         }
         this.setActive(false);
-    }
-
-    @Override
-    public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.spawnAsteroid(pos, 0);
     }
 }

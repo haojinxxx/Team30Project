@@ -68,10 +68,13 @@ public class EnemyShip extends GameObject implements Enemy {
     }
 
 
+    /*
 
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
         gameModel.createEnemyShip(pos, Math.random() * 360, 1, 100);
     }
 
+
+     */
 }
