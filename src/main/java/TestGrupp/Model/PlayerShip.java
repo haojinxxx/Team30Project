@@ -41,7 +41,7 @@ public class PlayerShip extends GameObject {
         this.rotationSpeed = Math.toRadians(200); // Convert degrees/sec to radians/sec
         this.desiredRotation = rotation;
         this.acceleration = 2000; // Increase the acceleration factor
-        this.maxSpeed = 3000.0;   // Increase the max speed for faster movement
+        this.maxSpeed = 250.0;   // Increase the max speed for faster movement
         this.friction = 0.001;    // Decrease friction for slower deceleration
         this.rotating = false;
         this.movingForward = false;
