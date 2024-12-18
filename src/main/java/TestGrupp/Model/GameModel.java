@@ -58,18 +58,22 @@ public class GameModel implements GameEventListener, Subject  {
         addGameObject(this.playerShip);
         //spawnAsteroid(screenCenter, 2);
 
-        EnemyFactory enemyFactory = new EnemyFactory();
-        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+        //EnemyFactory enemyFactory = new EnemyFactory();
+        //enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
 
-        EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
-        enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
+        spawnAsteroid();
 
+
+
+        /*
         EnemyFactory enemyFactory2 = new EnemyFactory();
         enemyFactory2.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 50, 20, 50, this));
 
-        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080, enemyFactory2);
+        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080);
         enemySpawner2.setSpawnRate("EnemyShip", 5000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
         addGameObject(this.powerup);
+
+         */
 
 
     }
@@ -168,12 +172,15 @@ public class GameModel implements GameEventListener, Subject  {
 
     }
 
-    public void spawnAsteroid(Point2d position, int childAsteroids) {
-        double speed = 0.5;
-        int health = 10;
+    public void spawnAsteroid() {
+        EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, this);
+        List<GameObject> spawnedAsteroids = enemySpawner.setSpawnRate("Asteroid", 2000);
+        for (GameObject asteroid : spawnedAsteroids) {
+            addGameObject(asteroid);
+        }
 
-        Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
-        addGameObject(asteroid);
+
+
     }
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
@@ -199,14 +206,20 @@ public class GameModel implements GameEventListener, Subject  {
         addGameObject(powerUp);
     }
 
+
     @Override
     public void onAsteroidDestroyed(Point2d position, int childAsteroids) {
+        /*
         for (int i = 0; i < childAsteroids; i++) {
             spawnAsteroid(position, childAsteroids);
         }
         score.addScore(50);
         //notifyObservers(); // Notify observers of the event
+
+         */
     }
+
+
 
     @Override
     public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage, boolean isPlayerProjectile) {

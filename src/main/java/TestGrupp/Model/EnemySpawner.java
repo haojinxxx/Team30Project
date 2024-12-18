@@ -1,55 +1,59 @@
 package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class EnemySpawner {
     private final GameModel gameModel;
+    private final GameEventListener gameEventListener;
     private final int screenWidth;
     private final int screenHeight;
     private final Random random;
     private final EnemyFactory enemyFactory;
     private final Map<String, Integer> spawnRates;
     private final Map<String, Timer> timers;
+    private ArrayList<GameObject> spawnedEnemies;
+
 
     // Constructor
-    public EnemySpawner(GameModel gameModel, int screenWidth, int screenHeight, EnemyFactory enemyFactory) {
+    public EnemySpawner(GameModel gameModel, int screenWidth, int screenHeight, GameEventListener gameEventListener) {
+        this.gameEventListener = gameEventListener;
         this.gameModel = gameModel;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.random = new Random();
-        this.enemyFactory = enemyFactory;
+        this.enemyFactory = new EnemyFactory();
         this.spawnRates = new HashMap<>();
         this.timers = new HashMap<>();
+        this.spawnedEnemies = new ArrayList<>();
     }
 
     // Set spawn rate for enemy type
-    public void setSpawnRate(String enemyType, int spawnRate) {
+    public  List<GameObject>  setSpawnRate(String enemyType, int spawnRate) {
         spawnRates.put(enemyType, spawnRate);
         if (timers.containsKey(enemyType)) {
             timers.get(enemyType).cancel();
         }
         Timer timer = new Timer();
         timers.put(enemyType, timer);
-        startSpawning(enemyType, spawnRate, timer);
+        return startSpawning(enemyType, spawnRate, timer);
     }
 
     // Start spawning enemies
-    private void startSpawning(String enemyType, int spawnRate, Timer timer) {
+    public List<GameObject> startSpawning(String enemyType, int spawnRate, Timer timer) {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                spawnEnemy(enemyType);
+                spawnEnemy(enemyType, spawnedEnemies);
             }
-        }, 0, spawnRate);
+         }, 0, spawnRate);
+
+        return spawnedEnemies;
+
     }
 
     // Spawn enemy on a randomly chosen edge on the screen with a random position on that edge
-    private void spawnEnemy(String enemyType) {
+    private void spawnEnemy(String enemyType, List<GameObject> spawnedEnemies) {
         Point2d pos = new Point2d();
         int edge = random.nextInt(4);
         switch (edge) {
@@ -72,9 +76,10 @@ public class EnemySpawner {
             default:
                 throw new IllegalStateException("Unexpected value: " + edge);
         }
-        Enemy enemy = enemyFactory.createEnemy(enemyType);
+        GameObject enemy = enemyFactory.createEnemy(enemyType, gameEventListener);
         if (enemy != null) {
-            enemy.spawn(gameModel, pos);
+            spawnedEnemies.add(enemy);
         }
+        throw new IllegalStateException("Enemy could not be spawned");
     }
 }
