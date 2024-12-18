@@ -42,7 +42,12 @@ public class CollisionManager {
             }
             else if (other instanceof PowerUp) {
                 PowerUp powerUp = (PowerUp) other;
-                powerUp.StorePowerUp(playerShip, powerUp);
+                if (powerUp instanceof healthPowerUp){
+                    playerShip.collectPowerUp(powerUp, 0);
+                }
+                else if (powerUp instanceof shieldPowerUp){
+                    playerShip.collectPowerUp(powerUp, 1);
+                }
             }
         }
 

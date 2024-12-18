@@ -16,7 +16,7 @@ public class PlayerShip extends GameObject {
     private int scaleY;
 
     private PhysicsComponent physics;  // Component for movement and physics
-    private boolean hasShield;         // Whether the ship has an active shield
+
     private List<Projectile> shipProjectiles; // Projectiles fired by the ship
 
     private double desiredRotation;    // The target rotation in radians
@@ -24,8 +24,8 @@ public class PlayerShip extends GameObject {
     private boolean rotating;          // Whether the ship is actively rotating
 
     private boolean movingForward;     // Flag for forward movement
-    private boolean hasHealthPowerUp;
-    private boolean hasShieldPowerUp;
+    private List<PowerUp> collectedPowerUps;
+    private boolean hasShield;         // Whether the ship has an active shield
 
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
         super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
@@ -101,7 +101,6 @@ public class PlayerShip extends GameObject {
             listener.onProjectileFired(new Point2d(spawnX, spawnY), velocity, rotation, projectileSpeed, projectileDamage, true);
         }
     }
-
 
 
     // Retrieve all projectiles fired by the ship
@@ -195,26 +194,26 @@ public class PlayerShip extends GameObject {
         return health.getHealth();
     }
 
-    // Check if the shield is active
-    public boolean isShieldActive() {
-        return hasShield;
-    }
-
     //Power up stuff
-    public void HealthPowerUpStatus(boolean status){
-        hasHealthPowerUp = status;
-    }
-    public void ShieldPowerUpStatus(boolean status){
-        hasShieldPowerUp = status;
-    }
     public void flipShieldStatus(){
         hasShield = !hasShield;
     }
-    public boolean getHealthPowerUpStatus(){
-        return hasHealthPowerUp;
+
+    public void activateStoredPowerUp(int index) {
+        if (index >= 0 && index < collectedPowerUps.size()) {
+            PowerUp powerUp = collectedPowerUps.get(index);
+            powerUp.activatePowerUp(this);
+            collectedPowerUps.remove(index);
+        }
     }
-    public boolean getShieldPowerUpStatus(){
-        return hasShieldPowerUp;
+
+    public void collectPowerUp(PowerUp powerUp, int index) {
+        collectedPowerUps.add(index, powerUp);
+        listener.onPowerUpCollected(powerUp);
     }
+    public void removePowerUp(PowerUp powerUp) {
+        collectedPowerUps.remove(powerUp);
+    }
+
 
 }

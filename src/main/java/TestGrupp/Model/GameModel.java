@@ -231,4 +231,9 @@ public class GameModel implements GameEventListener, Subject  {
         }
         //notifyObservers(); // Notify observers of the event
     }
+    @Override
+    public  void onPowerUpCollected(PowerUp powerUp) {
+        removeGameObject(powerUp);
+        //notifyObservers();
+    }
 }

@@ -15,16 +15,10 @@ public abstract class PowerUp extends GameObject {
     //Activates subclass own powerUp implemen
     public void activatePowerUp(PlayerShip playerShip) {
         PowerUp(playerShip);
+        playerShip.removePowerUp(this);
         }
-    public void StorePowerUp(PlayerShip playerShip, PowerUp powerUp) {
-        if (powerUp instanceof shieldPowerUp) {
-            playerShip.ShieldPowerUpStatus(true);
-        }
-        else if (powerUp instanceof healthPowerUp) {
-            playerShip.HealthPowerUpStatus(true);
-        }
-    }
-    //Timer for powerup
+
+    //Timer for power-ups
     public void startPowerUpTimer(Runnable task, long duration) {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
