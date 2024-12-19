@@ -5,11 +5,10 @@ import TestGrupp.Model.EntityComponents.FireAtPlayer;
 import TestGrupp.Model.EntityComponents.Component;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyShip extends GameObject implements Enemy {
+public class EnemyShip extends GameObject {
 
     private final GameEventListener listener;
     private final List<Component> components;
@@ -89,6 +88,7 @@ public class EnemyShip extends GameObject implements Enemy {
         }
     }
 
+
     @Override
     public void onCollision(GameObject other) {
         System.out.printf("Goes here");
@@ -101,8 +101,4 @@ public class EnemyShip extends GameObject implements Enemy {
         }
     }
 
-    @Override
-    public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.createEnemyShip(pos, Math.random() * 360, 100, 100);
-    }
 }
