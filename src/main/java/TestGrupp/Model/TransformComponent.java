@@ -1,6 +1,8 @@
 package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -71,11 +73,31 @@ public class TransformComponent {
      * @return the bounding box of the game object
      */
     public Rectangle2D.Float getBoundingBox() {
+        Point2d[] corners = new Point2d[]{
+                new Point2d(position.getX() - scaleX / 2, position.getY() - scaleY / 2),
+                new Point2d(position.getX() + scaleX / 2, position.getY() - scaleY / 2),
+                new Point2d(position.getX() + scaleX / 2, position.getY() + scaleY / 2),
+                new Point2d(position.getX() - scaleX / 2, position.getY() + scaleY / 2)
+        };
+
+
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(rotation, position.getX(), position.getY());
+        Path2D path = new Path2D.Double();
+        path.moveTo(corners[0].getX(), corners[0].getY());
+        for (int i = 1; i < corners.length; i++) {
+            path.lineTo(corners[i].getX(), corners[i].getY());
+        }
+        path.closePath();
+        path.transform(transform);
+
+        // Get the bounding box of the rotated shape
+        Rectangle2D bounds = path.getBounds2D();
         return new Rectangle2D.Float(
-                (float) position.getX(),
-                (float) position.getY(),
-                (float) scaleX,
-                (float) scaleY
+                (float) bounds.getX(),
+                (float) bounds.getY(),
+                (float) bounds.getWidth(),
+                (float) bounds.getHeight()
         );
     }
 }
