@@ -30,7 +30,7 @@ public class PlayerShip extends GameObject {
     public PlayerShip(Point2d position, double rotation, GameEventListener listener) {
         super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
 
-
+        this.collectedPowerUps = new ArrayList<PowerUp>();
         this.health = new HealthComponent(100); // Start with full health
         this.projectileDamage = 100; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
@@ -197,13 +197,15 @@ public class PlayerShip extends GameObject {
     @Override
     public void onCollision(GameObject other) {
         if (other instanceof PowerUp) {
-            /*
+
             PowerUp powerUp = (PowerUp) other;
-            if (powerUp.getType() == PowerUpType.HEALTH) {
-                addHealth(50);
-            } else if (powerUp.getType() == PowerUpType.SHIELD) {
-                activateShield();
-            }*/
+            if (powerUp instanceof healthPowerUp) {
+                collectPowerUp(powerUp, 0);
+
+            } else if (powerUp instanceof shieldPowerUp) {
+
+                collectPowerUp(powerUp, 1);
+            }
         }
         else if (other instanceof Projectile) {
             Projectile projectile = (Projectile) other;

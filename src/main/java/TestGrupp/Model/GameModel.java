@@ -208,9 +208,11 @@ public class GameModel implements GameEventListener, Subject  {
         }
         addGameObject(powerUp);
     }
+    private Random random2 = new Random();
+
     private boolean shouldSpawnPowerUp() {
         int chance = 20; // 20% chance to spawn a random powerup
-        return random.nextInt(100) < chance;
+        return random2.nextInt(100) < chance;
     }
 
     @Override
