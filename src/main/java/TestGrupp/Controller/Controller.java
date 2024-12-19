@@ -1,6 +1,7 @@
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
+import TestGrupp.Model.ScreenDataSingleton;
 import TestGrupp.View.View;
 
 import javax.vecmath.Point2d;
@@ -9,12 +10,15 @@ public class Controller {
     private final GameModel gm;
     private final GameLoop loop;
     private final View view;
+    private ScreenDataSingleton screenDataSingleton;
+
 
     private Point2d screenCenter;
 
     public Controller(GameModel gm, View view) {
         this.gm = gm;
         this.view = view;
+        this.screenDataSingleton = ScreenDataSingleton.getInstance(view.getScreenWidth(), view.getScreenHeight(), view.getBottomPanelHeight());
 
         InputHandler ih = new InputHandler();
         // Assuming you make SoundManager a singleton
@@ -47,7 +51,9 @@ public class Controller {
         Point2d screenCenter = new Point2d(centerX, centerY);
 
         gm.setScreenCenter(screenCenter); // Add this method in GameModel
+
     }
+
 
     // Method to start the game loop
     public void startGame() {

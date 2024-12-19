@@ -153,6 +153,8 @@ public class PlayerShip extends GameObject {
             }
         }
 
+
+
         // Handle movement logic
         if (movingForward) {
             double moveAngle = getTransform().getRotation(); // Ship's rotation in radians
@@ -169,17 +171,7 @@ public class PlayerShip extends GameObject {
 
 
             //Implement wrap-around logic
-            Point2d position = getTransform().getPosition();
-            if (position.x < 0) {
-                position.x = 1280;
-            } else if (position.x > 1280) {
-                position.x = 0;
-            }
-            if (position.y < 0) {
-                position.y = 600;
-            } else if (position.y > 600) {
-                position.y = 0;
-            }
+            checkOutofBounds();
 
             physics.setAcceleration(moveX, moveY); // Set the acceleration to the physics component
         } else {
@@ -188,6 +180,27 @@ public class PlayerShip extends GameObject {
 
         // Update physics and position
         physics.update(deltaTime, getTransform());
+    }
+
+    private void checkOutofBounds(){
+        //Singleton arguments doesn't matter because
+        //we only need the screen size, which is set in controller when initializing the game
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0,0,0);
+
+        int maxX = screenData.getWidth();
+        int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
+
+        Point2d position = getTransform().getPosition();
+        if (position.x < 0) {
+            position.x = maxX;
+        } else if (position.x > maxX) {
+            position.x = 0;
+        }
+        if (position.y < 0) {
+            position.y = maxY;
+        } else if (position.y > maxY) {
+            position.y = 0;
+        }
     }
 
     // Get the current health value

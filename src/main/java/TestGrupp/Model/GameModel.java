@@ -3,12 +3,10 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.ObserverScore;
@@ -27,6 +25,7 @@ public class GameModel implements GameEventListener, Subject  {
     private PowerUp powerup;
 
     private Properties gameProperties;
+
 
 
 
@@ -106,7 +105,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void update(double deltaTime) {
-        score.updateScoreBasedOnTime();
+        /*score.updateScoreBasedOnTime();
         List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
         for (GameObject gameObject : new ArrayList<>(gameObjects)) {
             if (!gameObject.isActive()) {
@@ -128,7 +127,30 @@ public class GameModel implements GameEventListener, Subject  {
             ));
         }
         notifyObservers(gameObjectDTOs);
+        notifyScoreObservers(score.getScore()); */
+        score.updateScoreBasedOnTime();
+        List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
+        for (GameObject gameObject : new ArrayList<>(gameObjects)) {
+            if (!gameObject.isActive()) {
+                removeGameObject(gameObject);
+                continue;
+            }
+            gameObject.update(deltaTime);
+
+            TransformComponent transform = gameObject.getTransform();
+            String spriteType = determineSpriteType(gameObject);
+            gameObjectDTOs.add(new GameObjectDTO(
+                    gameObject.getId(),
+                    transform.getPosition(),
+                    transform.getRotation(),
+                    gameObject.isActive(),
+                    spriteType
+            ));
+        }
+        notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore());
+
+
     }
 
     private String determineSpriteType(GameObject gameObject) {
@@ -175,7 +197,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void spawnAsteroid(Point2d position, int childAsteroids) {
-        double speed = 400;
+        double speed = 300;
         int health = 10;
 
         Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
