@@ -6,4 +6,5 @@ import java.util.Observable;
 
 public interface Observer {
     void update(List<GameObjectDTO> gameObjectDTOs);
+    void updateScore(int score);
 }

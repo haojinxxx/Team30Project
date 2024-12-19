@@ -3,14 +3,15 @@ package TestGrupp.View;
 import TestGrupp.Controller.ConfigurationLoader;
 import TestGrupp.Model.GameObjectDTO;
 import TestGrupp.Observer.Observer;
-import TestGrupp.Observer.ObserverScore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class View extends JFrame implements Observer, ObserverScore {
+
+public class View extends JFrame implements Observer  {
+    private Properties gameProperties;
     private int widthScreen;
     private int heightScreen;
     private int margin;

@@ -9,7 +9,6 @@ import java.util.Properties;
 import java.util.Random;
 
 import TestGrupp.Observer.Observer;
-import TestGrupp.Observer.ObserverScore;
 import TestGrupp.Observer.Subject;
 
 public class GameModel implements GameEventListener, Subject  {
@@ -18,7 +17,6 @@ public class GameModel implements GameEventListener, Subject  {
     private GameEventListener listener;
     private static PlayerShip playerShip;
     private List<Observer> observers;
-    private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
     private Score score;
     private Random random;
@@ -92,18 +90,11 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score) {
         for (Observer observer : observers) {
-            observer.update(gameObjectDTOs); // Pass the DTO list to each observer
+            observer.update(gameObjectDTOs);
+            observer.updateScore(score);// Pass the DTO list to each observer
         }
-    }
-    private void notifyScoreObservers(int score) {
-        for (ObserverScore observer : scoreObservers) {
-            observer.updateScore(score);
-        }
-    }
-    public void addScoreObserver(ObserverScore observer) {
-        scoreObservers.add(observer);
     }
 
     public void update(double deltaTime) {
@@ -128,6 +119,7 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
+
         collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore()); */
@@ -150,8 +142,9 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
-        notifyObservers(gameObjectDTOs);
-        notifyScoreObservers(score.getScore());
+      
+        notifyObservers(gameObjectDTOs, score.getScore());
+  
 
 
     }
