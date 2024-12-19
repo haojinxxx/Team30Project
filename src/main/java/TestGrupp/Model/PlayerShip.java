@@ -27,10 +27,9 @@ public class PlayerShip extends GameObject {
     private boolean hasHealthPowerUp;
     private boolean hasShieldPowerUp;
 
-    public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
+    public PlayerShip(Point2d position, double rotation, GameEventListener listener) {
         super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
+
 
         this.health = new HealthComponent(100); // Start with full health
         this.projectileDamage = 10000; // Set the default projectile damage

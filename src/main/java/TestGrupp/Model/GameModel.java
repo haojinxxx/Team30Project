@@ -46,7 +46,7 @@ public class GameModel implements GameEventListener, Subject  {
         Properties properties = getGameProperties();
         int playerWidth = Integer.parseInt(properties.getProperty("PlayerShip.width"));
         int playerHeight = Integer.parseInt(properties.getProperty("PlayerShip.height"));
-        this.playerShip = new PlayerShip(screenCenter, 0, playerWidth, playerHeight, this);
+        this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
         this.powerup= new healthPowerUp(new Point2d(200, 200), this);
