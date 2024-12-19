@@ -2,6 +2,7 @@ package TestGrupp.View;
 
 import TestGrupp.Controller.ConfigurationLoader;
 import TestGrupp.Model.GameObjectDTO;
+import TestGrupp.Model.PowerUp;
 import TestGrupp.Observer.Observer;
 
 import javax.swing.*;
@@ -74,6 +75,11 @@ public class View extends JFrame implements Observer  {
     @Override
     public void updateScore(int score) {
         scoreView.updateScore(score);
+    }
+
+    @Override
+    public void updatePowerUps(List<PowerUp> collectedPowerUps) {
+        bottomPanel.getPowerUpView().highlightPowerUps(collectedPowerUps);
     }
 
     @Override

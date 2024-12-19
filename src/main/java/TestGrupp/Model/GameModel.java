@@ -90,10 +90,11 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score, List<PowerUp> collectedPowerUps) {
         for (Observer observer : observers) {
-            observer.update(gameObjectDTOs);
-            observer.updateScore(score);// Pass the DTO list to each observer
+            observer.update(gameObjectDTOs);// Pass the DTO list to each observer
+            observer.updateScore(score);
+            observer.updatePowerUps(collectedPowerUps);
         }
     }
 
@@ -121,10 +122,10 @@ public class GameModel implements GameEventListener, Subject  {
         }
 
         collisionManager.update(gameObjects);
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
         score.updateScoreBasedOnTime();
 
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
   
 
 
@@ -191,7 +192,7 @@ public class GameModel implements GameEventListener, Subject  {
     public void spawnPowerUp(Point2d position) {
         PowerUp powerUp;
         Random random = new Random();
-        int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
+        int randomPowerUp = random.nextInt(1); // Assuming we have 3 types of PowerUps
 
         switch (randomPowerUp) {
             case 0:
@@ -244,6 +245,7 @@ public class GameModel implements GameEventListener, Subject  {
         removeGameObject(powerUp);
         //notifyObservers();
     }
+
 
     @Override
     public void onPlayerDestroyed() {
