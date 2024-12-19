@@ -21,10 +21,12 @@ public class GameModel implements GameEventListener, Subject  {
     private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
     private Score score;
+    private Random random;
 
     private PowerUp powerup;
 
     private Properties gameProperties;
+
 
 
 
@@ -206,6 +208,10 @@ public class GameModel implements GameEventListener, Subject  {
         }
         addGameObject(powerUp);
     }
+    private boolean shouldSpawnPowerUp() {
+        int chance = 20; // 20% chance to spawn a random powerup
+        return random.nextInt(100) < chance;
+    }
 
     @Override
     public void onAsteroidDestroyed(Point2d position, int childAsteroids) {
@@ -227,8 +233,17 @@ public class GameModel implements GameEventListener, Subject  {
     public void onEnemyDestroyed(EnemyShip enemy) {
         removeGameObject(enemy);
         score.addScore(100);
+
+        if (shouldSpawnPowerUp()) {
+            spawnPowerUp(enemy.getTransform().getPosition());
+        }
         //notifyObservers(); // Notify observers of the event
     }
+
+    @Override
+    public  void onPowerUpCollected(PowerUp powerUp) {
+        removeGameObject(powerUp);
+        //notifyObservers();
 
     @Override
     public void onPlayerDestroyed() {

@@ -39,6 +39,8 @@ public class CollisionManager {
         return box1.intersects(box2);
     }
 
+
+
     private static void handleCollision(GameObject owner, GameObject other) {
 
         // If the owner is a PlayerShip
