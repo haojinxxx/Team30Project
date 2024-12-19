@@ -4,7 +4,6 @@ import javax.vecmath.Point2d;
 import java.util.*;
 
 public class EnemySpawner {
-    private final GameModel gameModel;
     private final GameEventListener gameEventListener;
     private final int screenWidth;
     private final int screenHeight;
@@ -16,9 +15,8 @@ public class EnemySpawner {
 
 
     // Constructor
-    public EnemySpawner(GameModel gameModel, int screenWidth, int screenHeight, GameEventListener gameEventListener) {
+    public EnemySpawner(int screenWidth, int screenHeight, GameEventListener gameEventListener) {
         this.gameEventListener = gameEventListener;
-        this.gameModel = gameModel;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.random = new Random();
@@ -29,31 +27,28 @@ public class EnemySpawner {
     }
 
     // Set spawn rate for enemy type
-    public  List<GameObject>  setSpawnRate(String enemyType, int spawnRate) {
+    public void setSpawnRate(String enemyType, int spawnRate) {
         spawnRates.put(enemyType, spawnRate);
         if (timers.containsKey(enemyType)) {
             timers.get(enemyType).cancel();
         }
         Timer timer = new Timer();
         timers.put(enemyType, timer);
-        return startSpawning(enemyType, spawnRate, timer);
+        startSpawning(enemyType, spawnRate, timer);
     }
 
     // Start spawning enemies
-    public List<GameObject> startSpawning(String enemyType, int spawnRate, Timer timer) {
+    private void startSpawning(String enemyType, int spawnRate, Timer timer) {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                spawnEnemy(enemyType, spawnedEnemies);
+                spawnEnemy(enemyType);
             }
-         }, 0, spawnRate);
-
-        return spawnedEnemies;
-
+        }, 0, spawnRate);
     }
 
     // Spawn enemy on a randomly chosen edge on the screen with a random position on that edge
-    private void spawnEnemy(String enemyType, List<GameObject> spawnedEnemies) {
+    private void spawnEnemy(String enemyType) {
         Point2d pos = new Point2d();
         int edge = random.nextInt(4);
         switch (edge) {
@@ -78,8 +73,16 @@ public class EnemySpawner {
         }
         GameObject enemy = enemyFactory.createEnemy(enemyType, gameEventListener);
         if (enemy != null) {
+            enemy.getTransform().setPosition(pos);
             spawnedEnemies.add(enemy);
+        } else {
+            throw new IllegalStateException("Enemy could not be spawned");
         }
-        throw new IllegalStateException("Enemy could not be spawned");
     }
+
+    // Return the list of spawned enemies
+    public List<GameObject> getSpawnedEnemies() {
+        return new ArrayList<>(spawnedEnemies);
+    }
+
 }

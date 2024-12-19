@@ -20,11 +20,9 @@ public class GameModel implements GameEventListener, Subject  {
     private Point2d screenCenter;
     private Score score;
     private Random random;
-
     private PowerUp powerup;
-
     private Properties gameProperties;
-
+    private EnemySpawner enemySpawner;
 
 
 
@@ -51,38 +49,15 @@ public class GameModel implements GameEventListener, Subject  {
 
         this.powerup= new healthPowerUp(new Point2d(200, 200), this);
 
-        //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
-        //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
 
         addGameObject(this.playerShip);
-        //spawnAsteroid(screenCenter, 2);
 
 
-        //EnemyFactory enemyFactory = new EnemyFactory();
-        //enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 2, this));
-        //enemyFactory.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 10, 0, 400, this));
+        // Initialize the EnemySpawner
+        this.enemySpawner = new EnemySpawner(1920, 1080, this);
+        this.enemySpawner.setSpawnRate("Asteroid", 2000);   //Start spawning asteroids
+        this.enemySpawner.setSpawnRate("EnemyShip", 5000); //Start spawning enemy ships
 
-        //EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
-        //enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
-        //enemySpawner.setSpawnRate("EnemyShip", 5000); // Spawn an enemy ship every 5000 milliseconds (5 seconds)
-
-        //EnemyFactory enemyFactory = new EnemyFactory();
-        //enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
-
-        spawnAsteroid();
-
-
-
-
-        /*
-        EnemyFactory enemyFactory2 = new EnemyFactory();
-        enemyFactory2.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 50, 20, 50, this));
-
-        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080);
-        enemySpawner2.setSpawnRate("EnemyShip", 5000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
-        addGameObject(this.powerup);
-
-         */
 
 
     }
@@ -109,6 +84,18 @@ public class GameModel implements GameEventListener, Subject  {
         }
     }
 
+
+    // Check if any enemies have been spawned and add them to the gameObjects list
+    private void checkAndAddSpawnedEnemies(Class<? extends GameObject> enemyClass) {
+        List<GameObject> spawnedEnemies = enemySpawner.getSpawnedEnemies();
+        for (GameObject enemy : spawnedEnemies) {
+            if (enemyClass.isInstance(enemy) && !gameObjects.contains(enemy)) {
+                addGameObject(enemy);
+                System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId());
+            }
+        }
+    }
+
     public void update(double deltaTime) {
         score.updateScoreBasedOnTime();
         List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
@@ -131,6 +118,12 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
+
+        checkAndAddSpawnedEnemies(Asteroid.class);
+        checkAndAddSpawnedEnemies(EnemyShip.class);
+
+
+
 
         collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs, score.getScore());
@@ -186,21 +179,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
 
-    public void spawnAsteroid() {
-        EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, this);
-        List<GameObject> spawnedAsteroids = enemySpawner.setSpawnRate("Asteroid", 2000);
-        for (GameObject asteroid : spawnedAsteroids) {
-            addGameObject(asteroid);
-        }
 
-
-    }
-
-    public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
-        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 10, 200, this);
-
-        addGameObject(enemyShip);
-    }
 
     public void spawnPowerUp(Point2d position) {
         PowerUp powerUp;

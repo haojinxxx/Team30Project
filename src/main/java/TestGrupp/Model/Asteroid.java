@@ -3,7 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
-public class Asteroid extends GameObject implements Enemy {
+public class Asteroid extends GameObject {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;

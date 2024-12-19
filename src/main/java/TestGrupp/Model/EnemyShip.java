@@ -5,11 +5,10 @@ import TestGrupp.Model.EntityComponents.FireAtPlayer;
 import TestGrupp.Model.EntityComponents.Component;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyShip extends GameObject implements Enemy {
+public class EnemyShip extends GameObject {
 
     private final GameEventListener listener;
     private final List<Component> components;
