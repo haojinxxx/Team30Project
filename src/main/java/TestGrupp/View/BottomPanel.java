@@ -27,4 +27,5 @@ public class BottomPanel extends JPanel {
     }
 
     public int getButtonWidth(){return buttonWidth;}
+
 }
