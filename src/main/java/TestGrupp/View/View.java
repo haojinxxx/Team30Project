@@ -1,45 +1,35 @@
 package TestGrupp.View;
 
+import TestGrupp.Controller.ConfigurationLoader;
 import TestGrupp.Model.GameObjectDTO;
 import TestGrupp.Observer.Observer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
 import java.util.*;
 import java.util.List;
-import java.util.Properties;
+
 
 public class View extends JFrame implements Observer  {
     private Properties gameProperties;
     private int widthScreen;
     private int heightScreen;
-    private int shipSquareDimension;
-    private int projectileSquareDimension;
     private int margin;
     private Map<Integer, Sprite> gameObjectSprites;
     private JLayeredPane layeredPane;
     private BackgroundView backGroundView;
     private BottomPanel bottomPanel;
     private ScoreView scoreView;
+    private SpriteFactory spriteFactory;
 
     public View(String title) {
-        String configPath = "src/main/resources/config.properties";
-        try {
-            FileInputStream propsInput = new FileInputStream(configPath);
-            this.gameProperties = new Properties();
-            gameProperties.load(propsInput);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.spriteFactory = new SpriteFactory();
 
 
         // Initialize screen dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.widthScreen = screenSize.width;
         this.heightScreen = screenSize.height;
-        this.shipSquareDimension = (int) (0.04 * widthScreen);  // 4% of the screen width
-        this.projectileSquareDimension = (int) (0.01 * widthScreen);  // 1% of the screen width
         this.margin = 30;
         this.gameObjectSprites = new HashMap<>();
 
@@ -106,9 +96,6 @@ public class View extends JFrame implements Observer  {
         layeredPane.repaint();
     }
 
-    public int retrieveProperty(String key) {
-        return Integer.parseInt(gameProperties.getProperty(key));
-    }
 
     public void render() {
      //   System.out.println("Rendering view...");
@@ -118,9 +105,8 @@ public class View extends JFrame implements Observer  {
 
     private void updateOrCreateSprite(int id, double x, double y, double rotation, String spriteType) {
         Sprite sprite = gameObjectSprites.get(id);
-
         if (sprite == null) {
-            sprite = createSprite(spriteType);
+            sprite = spriteFactory.createSprite(spriteType);
             if (sprite != null) {
                 gameObjectSprites.put(id, sprite);
                 layeredPane.add(sprite, JLayeredPane.PALETTE_LAYER);
@@ -158,53 +144,15 @@ public class View extends JFrame implements Observer  {
         }
     }
 
-    private Sprite createSprite(String spriteType) {
-        switch (spriteType) {
-            case "PlayerShip":
-                System.out.println("Creating PlayerShip sprite...");
-                PlayerShipSprite spaceship = new PlayerShipSprite(retrieveProperty("player.width"), retrieveProperty("player.height"));
-                spaceship.setBounds(0, 0, retrieveProperty("player.width"), retrieveProperty("player.height")); // Set bounds explicitly
-                return spaceship;
-
-            case "PlayerProjectile":
-
-                System.out.println("Creating PlayerProjectile sprite...");
-                PlayerProjectileSprite projectile = new PlayerProjectileSprite(retrieveProperty("projectile.width"), retrieveProperty("projectile.height"));
-                projectile.setBounds(0, 0, retrieveProperty("projectile.width"), retrieveProperty("projectile.height")); // Set bounds explicitly
-                return projectile;
-
-            case "PowerUp":
-                System.out.println("Creating PowerUp sprite...");
-                PowerUpSprite powerUp = new PowerUpSprite(retrieveProperty("powerup.width"), retrieveProperty("powerup.height"));
-                powerUp.setBounds(0, 0, retrieveProperty("powerup.width"), retrieveProperty("powerup.height")); // Set bounds explicitly
-                return powerUp;
-
-            case "Asteroid":
-                System.out.println("Creating Asteroid sprite...");
-                AsteroidSprite asteroid = new AsteroidSprite(retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height"));
-                asteroid.setBounds(0, 0, retrieveProperty("asteroid.width"), retrieveProperty("asteroid.height")); // Set bounds explicitly
-                return asteroid;
-
-            //case "EnemyShip":
-               //System.out.println("Creating EnemyShip sprite...");
-                //EnemyShipSprite enemyShip = new EnemyShipSprite(shipSquareDimension);
-                //enemyShip.setBounds(0, 0, shipSquareDimension, shipSquareDimension); // Set bounds explicitly
-                //return enemyShip;
-
-
-
-            default:
-                System.out.println("Unknown sprite type: " + spriteType);
-                return null;
-
-        }
-    }
-
     public int getScreenWidth() {
         return widthScreen;
     }
 
     public int getScreenHeight() {
         return heightScreen;
+    }
+
+    public int getBottomPanelHeight() {
+        return bottomPanel.getPreferredSize().height;
     }
 }

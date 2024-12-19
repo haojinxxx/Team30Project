@@ -4,6 +4,7 @@ package TestGrupp;
 import TestGrupp.Controller.Controller;
 import TestGrupp.Controller.SoundManager;
 import TestGrupp.Model.GameModel;
+import TestGrupp.Model.ScreenDataSingleton;
 import TestGrupp.View.View;
 
 public class Main {

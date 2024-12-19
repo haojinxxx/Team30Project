@@ -9,13 +9,25 @@ public class CollisionManager {
     }
 
     public void update(List<GameObject> collidibleObjects) {
-        // Iterate through all collidable game objects and check for collisions
         for (int i = 0; i < collidibleObjects.size(); i++) {
             GameObject obj1 = collidibleObjects.get(i);
-            for (int j = i + 1; j < collidibleObjects.size(); j++) {
+            System.out.printf("print bool object is asteroid %b\n", obj1 instanceof Asteroid);
+            // Skip projectiles as collision "owners" as we dont consider projectiles "collision owners"
+            if (obj1 instanceof Projectile) {
+                continue;
+            }
+
+            // Check collisions with other objects and projectiles
+            for (int j = 0; j < collidibleObjects.size(); j++) {
+                if (i == j) {
+                    continue; // Avoid self-collision
+                }
+
                 GameObject obj2 = collidibleObjects.get(j);
+
+
                 if (checkCollision(obj1, obj2)) {
-                    handleCollision(obj1, obj2);  // Handle the collision
+                    handleCollision(obj1, obj2); // Handle collision
                 }
             }
         }
@@ -26,47 +38,16 @@ public class CollisionManager {
         Rectangle2D.Float box2 = obj2.getTransform().getBoundingBox();
         return box1.intersects(box2);
     }
-    public static void handleCollision(GameObject owner, GameObject other) {
+
+
+
+    private static void handleCollision(GameObject owner, GameObject other) {
+
         // If the owner is a PlayerShip
-        if (owner instanceof PlayerShip) {
-            PlayerShip playerShip = (PlayerShip) owner;
-
-            if (other instanceof Asteroid) {
-                playerShip.takeDamage(10);
-            } else if (other instanceof EnemyShip) {
-                EnemyShip enemyShip = (EnemyShip) other;
-                enemyShip.takeDamage(5);
-            } else if (other instanceof Projectile) {
-                Projectile projectile = (Projectile) other;
-                playerShip.takeDamage(projectile.getDamage());
-            }
-            else if (other instanceof PowerUp) {
-                PowerUp powerUp = (PowerUp) other;
-                powerUp.StorePowerUp(playerShip, powerUp);
-            }
-        }
-
-        // If the owner is an EnemyShip
-        else if (owner instanceof EnemyShip) {
-            EnemyShip enemyShip = (EnemyShip) owner;
-
-            if (other instanceof PlayerShip) {
-                PlayerShip playerShip = (PlayerShip) other;
-                playerShip.takeDamage(5);
-            } else if (other instanceof Projectile) {
-                Projectile projectile = (Projectile) other;
-                enemyShip.takeDamage(projectile.getDamage());
-            }
-        }
-
-        // If the owner is an Asteroid
-        else if (owner instanceof Asteroid) {
-            Asteroid asteroid = (Asteroid) owner;
-
-            if (other instanceof PlayerShip) {
-                PlayerShip playerShip = (PlayerShip) other;
-                playerShip.takeDamage(10);
-            }
+        System.out.printf("Received collision between type %s and type %s\n", owner.getClass().getSimpleName(), other.getClass().getSimpleName());
+        owner.onCollision(other);
+        if (other instanceof Projectile) { // As projectiles are not collision owners, we need to handle the collision from the projectiles perspective also
+            other.onCollision(owner);
         }
     }
 }
