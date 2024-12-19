@@ -98,7 +98,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void update(double deltaTime) {
-        /*score.updateScoreBasedOnTime();
+        score.updateScoreBasedOnTime();
         List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
         for (GameObject gameObject : new ArrayList<>(gameObjects)) {
             if (!gameObject.isActive()) {
@@ -121,28 +121,9 @@ public class GameModel implements GameEventListener, Subject  {
         }
 
         collisionManager.update(gameObjects);
-        notifyObservers(gameObjectDTOs);
-        notifyScoreObservers(score.getScore()); */
+        notifyObservers(gameObjectDTOs, score.getScore());
         score.updateScoreBasedOnTime();
-        List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
-        for (GameObject gameObject : new ArrayList<>(gameObjects)) {
-            if (!gameObject.isActive()) {
-                removeGameObject(gameObject);
-                continue;
-            }
-            gameObject.update(deltaTime);
 
-            TransformComponent transform = gameObject.getTransform();
-            String spriteType = determineSpriteType(gameObject);
-            gameObjectDTOs.add(new GameObjectDTO(
-                    gameObject.getId(),
-                    transform.getPosition(),
-                    transform.getRotation(),
-                    gameObject.isActive(),
-                    spriteType
-            ));
-        }
-      
         notifyObservers(gameObjectDTOs, score.getScore());
   
 
