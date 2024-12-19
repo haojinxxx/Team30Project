@@ -18,17 +18,17 @@ public class Asteroid extends GameObject implements Enemy {
         TransformComponent transform = this.getTransform();
         transform.setPosition(position);
         transform.setRotation(rotation);
-        double angle = this.getTransform().getRotation();
 
         this.health = new HealthComponent(health);
 
-
-        this.physics = new PhysicsComponent(speed, 0);
-        Vector2d initialVelocity = new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle)));
+        this.physics = new PhysicsComponent(speed, 0); // Adjust friction as needed
+        Vector2d initialVelocity = new Vector2d(Math.cos(Math.toRadians(rotation)), Math.sin(Math.toRadians(rotation)));
         initialVelocity.scale(speed);
-        this.physics.setVelocity(new Vector2d(Math.cos(Math.toRadians(angle)), Math.sin(Math.toRadians(angle))));
-        this.physics.setIsProjectile(true); //???
+        this.physics.setVelocity(initialVelocity);
+
+        this.physics.setIsProjectile(true); // Asteroids should be treated as projectiles
     }
+
 
     // Methods
     public void update(double deltaTime) {
