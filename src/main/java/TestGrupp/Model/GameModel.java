@@ -107,7 +107,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void update(double deltaTime) {
-        score.updateScoreBasedOnTime();
+        /*score.updateScoreBasedOnTime();
         List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
         for (GameObject gameObject : new ArrayList<>(gameObjects)) {
             if (!gameObject.isActive()) {
@@ -130,7 +130,30 @@ public class GameModel implements GameEventListener, Subject  {
         }
         collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs);
+        notifyScoreObservers(score.getScore()); */
+        score.updateScoreBasedOnTime();
+        List<GameObjectDTO> gameObjectDTOs = new ArrayList<>();
+        for (GameObject gameObject : new ArrayList<>(gameObjects)) {
+            if (!gameObject.isActive()) {
+                removeGameObject(gameObject);
+                continue;
+            }
+            gameObject.update(deltaTime);
+
+            TransformComponent transform = gameObject.getTransform();
+            String spriteType = determineSpriteType(gameObject);
+            gameObjectDTOs.add(new GameObjectDTO(
+                    gameObject.getId(),
+                    transform.getPosition(),
+                    transform.getRotation(),
+                    gameObject.isActive(),
+                    spriteType
+            ));
+        }
+        notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore());
+
+
     }
 
     private String determineSpriteType(GameObject gameObject) {
@@ -177,7 +200,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void spawnAsteroid(Point2d position, int childAsteroids) {
-        double speed = 400;
+        double speed = 300;
         int health = 10;
         // random rotation
         double rotationAngle = Math.random() * 360;
@@ -247,6 +270,7 @@ public class GameModel implements GameEventListener, Subject  {
         removeGameObject(powerUp);
         //notifyObservers();
     }
+
     @Override
     public void onPlayerDestroyed() {
         // Do whatever, this is placeholder code

@@ -150,4 +150,8 @@ public class View extends JFrame implements Observer, ObserverScore {
     public int getScreenHeight() {
         return heightScreen;
     }
+
+    public int getBottomPanelHeight() {
+        return bottomPanel.getPreferredSize().height;
+    }
 }
