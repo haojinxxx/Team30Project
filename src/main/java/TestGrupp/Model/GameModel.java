@@ -60,10 +60,17 @@ public class GameModel implements GameEventListener, Subject  {
 
         EnemyFactory enemyFactory = new EnemyFactory();
         enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+        enemyFactory.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 10, 0, 400, this));
 
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
         enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
+        enemySpawner.setSpawnRate("EnemyShip", 5000); // Spawn an enemy ship every 5000 milliseconds (5 seconds)
 
+        EnemyFactory enemyFactory2 = new EnemyFactory();
+        enemyFactory2.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 50, 20, 50, this));
+
+        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080, enemyFactory2);
+        enemySpawner2.setSpawnRate("EnemyShip", 5000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
         addGameObject(this.powerup);
 
 
@@ -153,8 +160,12 @@ public class GameModel implements GameEventListener, Subject  {
 
 
 
-    public static PlayerShip getPlayerShip() {
+    public PlayerShip getPlayerShip() {
         return playerShip;
+    }
+
+    public Point2d getPlayerPosition() {
+        return playerShip.getTransform().getPosition();
     }
 
     public void setScreenCenter(Point2d center) {
@@ -164,7 +175,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void spawnAsteroid(Point2d position, int childAsteroids) {
-        double speed = 0.5;
+        double speed = 400;
         int health = 10;
 
         Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
@@ -172,7 +183,8 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
-        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 50, this);
+        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 10, 200, this);
+
         addGameObject(enemyShip);
     }
 

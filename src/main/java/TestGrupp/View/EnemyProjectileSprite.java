@@ -1,5 +1,6 @@
 package TestGrupp.View;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,13 +8,13 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 
-public class PlayerProjectileSprite extends Sprite {
+public class EnemyProjectileSprite extends Sprite {
     private BufferedImage projectileImage;
     private int projectileWidth;
     private int projectileHeight;
 
 
-    public PlayerProjectileSprite(int projectileWidth, int projectileHeight) {
+    public EnemyProjectileSprite(int projectileWidth, int projectileHeight) {
         super();
         this.projectileWidth = projectileWidth;
         this.projectileHeight = projectileHeight;
@@ -24,7 +25,7 @@ public class PlayerProjectileSprite extends Sprite {
     @Override
     protected void loadImage() {
         try {
-            projectileImage = ImageIO.read(new File("src/main/resources/images/PlayerShip-Projectile.png"));
+            projectileImage = ImageIO.read(new File("src/main/resources/images/EnemyShipBasic-Projectile.png"));
             setImage(projectileImage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,6 +33,7 @@ public class PlayerProjectileSprite extends Sprite {
     }
 
     @Override
+
     protected int getSpriteWidth() {
         return projectileWidth;
     }
@@ -40,5 +42,4 @@ public class PlayerProjectileSprite extends Sprite {
     protected int getSpriteHeight() {
         return projectileHeight;
     }
-
 }
