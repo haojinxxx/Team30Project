@@ -187,10 +187,10 @@ public class PlayerShip extends GameObject {
     }
 
 
-    private void checkOutofBounds(){
+    private void checkOutofBounds() {
         //Singleton arguments doesn't matter because
         //we only need the screen size, which is set in controller when initializing the game
-        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0,0,0);
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
 
         int maxX = screenData.getWidth();
         int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
@@ -205,6 +205,8 @@ public class PlayerShip extends GameObject {
             position.y = maxY;
         } else if (position.y > maxY) {
             position.y = 0;
+        }
+    }
 
     @Override
     public void onCollision(GameObject other) {

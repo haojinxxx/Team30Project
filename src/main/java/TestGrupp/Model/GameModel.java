@@ -267,6 +267,7 @@ public class GameModel implements GameEventListener, Subject  {
     public  void onPowerUpCollected(PowerUp powerUp) {
         removeGameObject(powerUp);
         //notifyObservers();
+    }
 
     @Override
     public void onPlayerDestroyed() {
