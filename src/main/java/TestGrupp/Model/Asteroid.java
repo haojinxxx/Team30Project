@@ -51,16 +51,11 @@ public class Asteroid extends GameObject implements Enemy {
         this.setActive(false);
     }
 
+
     public void onCollision(GameObject other) {
         if (other instanceof Projectile) {
             Projectile projectile = (Projectile) other;
             takeDamage(projectile.getDamage());
         }
-    }
-
-
-    @Override
-    public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.spawnAsteroid(pos, childAsteroids);
     }
 }

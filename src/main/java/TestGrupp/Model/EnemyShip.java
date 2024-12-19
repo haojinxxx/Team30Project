@@ -89,6 +89,7 @@ public class EnemyShip extends GameObject implements Enemy {
         }
     }
 
+
     @Override
     public void onCollision(GameObject other) {
         System.out.printf("Goes here");
@@ -101,8 +102,4 @@ public class EnemyShip extends GameObject implements Enemy {
         }
     }
 
-    @Override
-    public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.createEnemyShip(pos, Math.random() * 360, 100, 100);
-    }
 }
