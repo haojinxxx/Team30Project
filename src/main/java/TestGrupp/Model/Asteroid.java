@@ -10,8 +10,8 @@ public class Asteroid extends GameObject implements Enemy {
     private GameEventListener listener;
 
     // Constructor
-    public Asteroid(Point2d position, double rotation, double scaleX, double scaleY, double speed, int health, int childAsteroids, GameEventListener listener) {
-        super(position, rotation, scaleX, scaleY, listener);
+    public Asteroid(Point2d position, double rotation, double speed, int health, int childAsteroids, GameEventListener listener) {
+        super(position, rotation, listener);
         this.childAsteroids = childAsteroids;
         this.listener = listener;
 
@@ -45,15 +45,22 @@ public class Asteroid extends GameObject implements Enemy {
     public void destroy() {
         for (int i = 0; i < childAsteroids; i++) {
             if (listener != null) {
-                listener.onAsteroidDestroyed(this.getTransform().getPosition(), childAsteroids);
+                listener.onAsteroidDestroyed(this.getTransform().getPosition(), 0);
             }
         }
         this.setActive(false);
     }
 
+    public void onCollision(GameObject other) {
+        if (other instanceof Projectile) {
+            Projectile projectile = (Projectile) other;
+            takeDamage(projectile.getDamage());
+        }
+    }
+
 
     @Override
     public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.spawnAsteroid(pos, 0);
+        gameModel.spawnAsteroid(pos, childAsteroids);
     }
 }

@@ -18,7 +18,7 @@ public class EnemyShip extends GameObject implements Enemy {
     private final int firingRange;
 
     public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
-        super(position, rotation, maxSpeed, health, listener);
+        super(position, rotation, listener);
         this.listener = listener;
         this.firingRange = firingRange;
 
@@ -81,9 +81,22 @@ public class EnemyShip extends GameObject implements Enemy {
         System.out.printf("Enemy ship took %d damage\n", damage);
         this.health.removeHealth(damage);
         if (this.health.getHealth() <= 0) {
+            System.out.printf("Enemy ship destroyed\n");
             this.setActive(false);
             if (listener != null) {
                 listener.onEnemyDestroyed(this);
+            }
+        }
+    }
+
+    @Override
+    public void onCollision(GameObject other) {
+        System.out.printf("Goes here");
+        if (other instanceof Projectile) {
+            Projectile projectile = (Projectile) other;
+            if (projectile.isPlayerProjectile()) {
+                System.out.printf("Too here");
+                takeDamage(projectile.getDamage());
             }
         }
     }

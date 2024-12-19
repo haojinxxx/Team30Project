@@ -12,7 +12,7 @@ public class Projectile extends GameObject {
 
     // Constructor to spawn projectile with an initial position, rotation, velocity, scale, damage, and other parameters
     public Projectile(Point2d initialPosition, double rotation, double scaleX, double scaleY, double speed, int damage, GameEventListener listener, boolean playerProjectile) {
-        super(initialPosition, rotation, scaleX, scaleY, listener);  // Using scaleX and scaleY for size
+        super(initialPosition, rotation, listener);  // Using scaleX and scaleY for size
         this.physics = new PhysicsComponent(speed, 0.95);  // Initialize the PhysicsComponent with speed and friction
         this.isPlayerProjectile = playerProjectile;
         this.getTransform().setPosition(initialPosition);

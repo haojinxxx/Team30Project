@@ -28,12 +28,12 @@ public class PlayerShip extends GameObject {
     private boolean hasShieldPowerUp;
 
     public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
-        super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
+        super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
         this.scaleX = scaleX;
         this.scaleY = scaleY;
 
         this.health = new HealthComponent(100); // Start with full health
-        this.projectileDamage = 10; // Set the default projectile damage
+        this.projectileDamage = 10000; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
 
@@ -111,8 +111,14 @@ public class PlayerShip extends GameObject {
 
     // Take damage, reducing health unless a shield is active
     public void takeDamage(int damage) {
-        if (!hasShield) {
-            health.removeHealth(damage);
+        System.out.printf("Player took %d damage\n", damage);
+        this.health.removeHealth(damage);
+        if (this.health.getHealth() <= 0) {
+            System.out.print("Player destroyed\n");
+            this.setActive(false);
+            if (listener != null) {
+                listener.onPlayerDestroyed();
+            }
         }
     }
 
@@ -188,6 +194,28 @@ public class PlayerShip extends GameObject {
 
         // Update physics and position
         physics.update(deltaTime, getTransform());
+    }
+
+    @Override
+    public void onCollision(GameObject other) {
+        if (other instanceof PowerUp) {
+            /*
+            PowerUp powerUp = (PowerUp) other;
+            if (powerUp.getType() == PowerUpType.HEALTH) {
+                addHealth(50);
+            } else if (powerUp.getType() == PowerUpType.SHIELD) {
+                activateShield();
+            }*/
+        }
+        else if (other instanceof Projectile) {
+            Projectile projectile = (Projectile) other;
+            if (!projectile.isPlayerProjectile()) {
+                takeDamage(projectile.getDamage());
+            }
+        }
+        else if (other instanceof Asteroid) {
+            takeDamage(10); // we should have a getter for an asteroid damage value like we have for projectiles
+        }
     }
 
     // Get the current health value

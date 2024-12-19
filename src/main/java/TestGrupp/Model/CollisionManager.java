@@ -11,7 +11,7 @@ public class CollisionManager {
     public void update(List<GameObject> collidibleObjects) {
         for (int i = 0; i < collidibleObjects.size(); i++) {
             GameObject obj1 = collidibleObjects.get(i);
-
+            System.out.printf("print bool object is asteroid %b\n", obj1 instanceof Asteroid);
             // Skip projectiles as collision "owners" as we dont consider projectiles "collision owners"
             if (obj1 instanceof Projectile) {
                 continue;

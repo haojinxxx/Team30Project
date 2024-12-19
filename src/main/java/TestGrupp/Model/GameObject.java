@@ -1,5 +1,7 @@
 package TestGrupp.Model;
 
+import TestGrupp.Controller.ConfigurationLoader;
+
 import javax.vecmath.Point2d;
 
 public abstract class GameObject {
@@ -15,15 +17,18 @@ public abstract class GameObject {
  *
  * @param position the initial position of the game object
  * @param rotation the initial rotation of the game object
- * @param scaleX the initial scale factor along the X-axis
- * @param scaleY the initial scale factor along the Y-axis
  * @param listener the event listener associated with the game object
  */
-public GameObject(Point2d position, double rotation, double scaleX, double scaleY, GameEventListener listener) {
+public GameObject(Point2d position, double rotation, GameEventListener listener) {
     this.id = System.identityHashCode(this);
     this.active = true;
+    System.out.printf("%s.width\n", this.getClass().getSimpleName());
+    double scaleX = ConfigurationLoader.getProperty(this.getClass().getSimpleName() + ".width");
+    double scaleY = ConfigurationLoader.getProperty(this.getClass().getSimpleName() + ".height");
+
     this.transform = new TransformComponent(position, rotation, scaleX, scaleY);
     this.listener = listener;
+
 }
 
     public int getId() {
