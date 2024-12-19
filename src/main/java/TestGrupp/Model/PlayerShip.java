@@ -16,7 +16,7 @@ public class PlayerShip extends GameObject {
     private int scaleY;
 
     private PhysicsComponent physics;  // Component for movement and physics
-    private boolean hasShield;         // Whether the ship has an active shield
+
     private List<Projectile> shipProjectiles; // Projectiles fired by the ship
 
     private double desiredRotation;    // The target rotation in radians
@@ -24,16 +24,15 @@ public class PlayerShip extends GameObject {
     private boolean rotating;          // Whether the ship is actively rotating
 
     private boolean movingForward;     // Flag for forward movement
-    private boolean hasHealthPowerUp;
-    private boolean hasShieldPowerUp;
+    private List<PowerUp> collectedPowerUps;
+    private boolean hasShield;         // Whether the ship has an active shield
 
-    public PlayerShip(Point2d position, double rotation, int scaleX, int scaleY, GameEventListener listener) {
-        super(position, -Math.PI / 2, scaleX, scaleY, listener); // Call to the parent GameObject class
-        this.scaleX = scaleX;
-        this.scaleY = scaleY;
+    public PlayerShip(Point2d position, double rotation, GameEventListener listener) {
+        super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
+
 
         this.health = new HealthComponent(100); // Start with full health
-        this.projectileDamage = 10; // Set the default projectile damage
+        this.projectileDamage = 100; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
 
@@ -103,7 +102,6 @@ public class PlayerShip extends GameObject {
     }
 
 
-
     // Retrieve all projectiles fired by the ship
     public List<Projectile> getProjectiles() {
         return shipProjectiles;
@@ -111,8 +109,14 @@ public class PlayerShip extends GameObject {
 
     // Take damage, reducing health unless a shield is active
     public void takeDamage(int damage) {
-        if (!hasShield) {
-            health.removeHealth(damage);
+        System.out.printf("Player took %d damage\n", damage);
+        this.health.removeHealth(damage);
+        if (this.health.getHealth() <= 0) {
+            System.out.print("Player destroyed\n");
+            this.setActive(false);
+            if (listener != null) {
+                listener.onPlayerDestroyed();
+            }
         }
     }
 
@@ -182,6 +186,7 @@ public class PlayerShip extends GameObject {
         physics.update(deltaTime, getTransform());
     }
 
+
     private void checkOutofBounds(){
         //Singleton arguments doesn't matter because
         //we only need the screen size, which is set in controller when initializing the game
@@ -200,6 +205,27 @@ public class PlayerShip extends GameObject {
             position.y = maxY;
         } else if (position.y > maxY) {
             position.y = 0;
+
+    @Override
+    public void onCollision(GameObject other) {
+        if (other instanceof PowerUp) {
+            /*
+            PowerUp powerUp = (PowerUp) other;
+            if (powerUp.getType() == PowerUpType.HEALTH) {
+                addHealth(50);
+            } else if (powerUp.getType() == PowerUpType.SHIELD) {
+                activateShield();
+            }*/
+        }
+        else if (other instanceof Projectile) {
+            Projectile projectile = (Projectile) other;
+            if (!projectile.isPlayerProjectile()) {
+                takeDamage(projectile.getDamage());
+            }
+        }
+        else if (other instanceof Asteroid) {
+            takeDamage(10); // we should have a getter for an asteroid damage value like we have for projectiles
+
         }
     }
 
@@ -208,26 +234,27 @@ public class PlayerShip extends GameObject {
         return health.getHealth();
     }
 
-    // Check if the shield is active
-    public boolean isShieldActive() {
-        return hasShield;
-    }
-
     //Power up stuff
-    public void HealthPowerUpStatus(boolean status){
-        hasHealthPowerUp = status;
-    }
-    public void ShieldPowerUpStatus(boolean status){
-        hasShieldPowerUp = status;
-    }
     public void flipShieldStatus(){
         hasShield = !hasShield;
     }
-    public boolean getHealthPowerUpStatus(){
-        return hasHealthPowerUp;
+
+    public void activateStoredPowerUp(int index) {
+        if (index >= 0 && index < collectedPowerUps.size()) {
+            PowerUp powerUp = collectedPowerUps.get(index);
+            powerUp.activatePowerUp(this);
+            collectedPowerUps.remove(index);
+        }
     }
-    public boolean getShieldPowerUpStatus(){
-        return hasShieldPowerUp;
+
+    public void collectPowerUp(PowerUp powerUp, int index) {
+        collectedPowerUps.add(index, powerUp);
+        listener.onPowerUpCollected(powerUp);
     }
+          
+    public void removePowerUp(PowerUp powerUp) {
+        collectedPowerUps.remove(powerUp);
+    }
+
 
 }

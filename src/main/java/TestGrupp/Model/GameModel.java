@@ -21,6 +21,7 @@ public class GameModel implements GameEventListener, Subject  {
     private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
     private Score score;
+    private Random random;
 
     private PowerUp powerup;
 
@@ -42,11 +43,12 @@ public class GameModel implements GameEventListener, Subject  {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
+        this.collisionManager = new CollisionManager(gameObjects);
 
         Properties properties = getGameProperties();
-        int playerWidth = Integer.parseInt(properties.getProperty("player.width"));
-        int playerHeight = Integer.parseInt(properties.getProperty("player.height"));
-        this.playerShip = new PlayerShip(screenCenter, 0, playerWidth, playerHeight, this);
+        int playerWidth = Integer.parseInt(properties.getProperty("PlayerShip.width"));
+        int playerHeight = Integer.parseInt(properties.getProperty("PlayerShip.height"));
+        this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
         this.powerup= new healthPowerUp(new Point2d(200, 200), this);
@@ -58,7 +60,7 @@ public class GameModel implements GameEventListener, Subject  {
         //spawnAsteroid(screenCenter, 2);
 
         EnemyFactory enemyFactory = new EnemyFactory();
-        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
+        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 2, this));
         enemyFactory.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 10, 0, 400, this));
 
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
@@ -126,6 +128,7 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
+        collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore()); */
         score.updateScoreBasedOnTime();
@@ -199,8 +202,9 @@ public class GameModel implements GameEventListener, Subject  {
     public void spawnAsteroid(Point2d position, int childAsteroids) {
         double speed = 300;
         int health = 10;
-
-        Asteroid asteroid = new Asteroid(position, 0.5, 0.5, 0.5, speed, health, childAsteroids, this);
+        // random rotation
+        double rotationAngle = Math.random() * 360;
+        Asteroid asteroid = new Asteroid(position, rotationAngle, speed, health, childAsteroids, this);
         addGameObject(asteroid);
     }
 
@@ -227,6 +231,10 @@ public class GameModel implements GameEventListener, Subject  {
         }
         addGameObject(powerUp);
     }
+    private boolean shouldSpawnPowerUp() {
+        int chance = 20; // 20% chance to spawn a random powerup
+        return random.nextInt(100) < chance;
+    }
 
     @Override
     public void onAsteroidDestroyed(Point2d position, int childAsteroids) {
@@ -248,6 +256,23 @@ public class GameModel implements GameEventListener, Subject  {
     public void onEnemyDestroyed(EnemyShip enemy) {
         removeGameObject(enemy);
         score.addScore(100);
+
+        if (shouldSpawnPowerUp()) {
+            spawnPowerUp(enemy.getTransform().getPosition());
+        }
+        //notifyObservers(); // Notify observers of the event
+    }
+
+    @Override
+    public  void onPowerUpCollected(PowerUp powerUp) {
+        removeGameObject(powerUp);
+        //notifyObservers();
+
+    @Override
+    public void onPlayerDestroyed() {
+        // Do whatever, this is placeholder code
+
+        System.out.println("Player destroyed");
         //notifyObservers(); // Notify observers of the event
     }
 }

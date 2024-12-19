@@ -24,6 +24,7 @@ public class InputProcessor {
         processRotationInput();
         processForwardMovement();
         processFireInput();
+        processPowerUpInput();
     }
 
     private void processRotationInput() {
@@ -55,4 +56,20 @@ public class InputProcessor {
             }
         }
     }
+
+    private void processPowerUpInput() {
+        if (inputHandler.isKeyPressed(KeyEvent.VK_H)) {
+            gameModel.getPlayerShip().activateStoredPowerUp(0);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_J)) {
+            gameModel.getPlayerShip().activateStoredPowerUp(1);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_K)) {
+            gameModel.getPlayerShip().activateStoredPowerUp(2);
+        }
+        if (inputHandler.isKeyPressed(KeyEvent.VK_L)) {
+            gameModel.getPlayerShip().activateStoredPowerUp(3);
+        }
+    }
+
 }
