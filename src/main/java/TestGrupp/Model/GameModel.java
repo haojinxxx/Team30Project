@@ -43,6 +43,7 @@ public class GameModel implements GameEventListener, Subject  {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
+        this.collisionManager = new CollisionManager(gameObjects);
 
         Properties properties = getGameProperties();
         int playerWidth = Integer.parseInt(properties.getProperty("player.width"));
@@ -127,6 +128,7 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
+        collisionManager.update(gameObjects);
         notifyObservers(gameObjectDTOs);
         notifyScoreObservers(score.getScore());
     }

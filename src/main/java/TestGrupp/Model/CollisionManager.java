@@ -28,6 +28,7 @@ public class CollisionManager {
     }
     public static void handleCollision(GameObject owner, GameObject other) {
         // If the owner is a PlayerShip
+        System.out.printf("Received collision between type %s and type %s\n", owner.getClass().getSimpleName(), other.getClass().getSimpleName());
         if (owner instanceof PlayerShip) {
             PlayerShip playerShip = (PlayerShip) owner;
 
@@ -54,6 +55,7 @@ public class CollisionManager {
                 PlayerShip playerShip = (PlayerShip) other;
                 playerShip.takeDamage(5);
             } else if (other instanceof Projectile) {
+                System.out.printf("EnemyShip %d hit by projectile\n", enemyShip.getId());
                 Projectile projectile = (Projectile) other;
                 enemyShip.takeDamage(projectile.getDamage());
             }

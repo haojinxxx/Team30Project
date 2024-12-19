@@ -78,6 +78,7 @@ public class EnemyShip extends GameObject implements Enemy {
      * @param damage The amount of damage to inflict.
      */
     public void takeDamage(int damage) {
+        System.out.printf("Enemy ship took %d damage\n", damage);
         this.health.removeHealth(damage);
         if (this.health.getHealth() <= 0) {
             this.setActive(false);
