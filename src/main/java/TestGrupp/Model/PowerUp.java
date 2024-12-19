@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public abstract class PowerUp extends GameObject {
     //Constructor for powerup
     public PowerUp(Point2d position, GameEventListener listener) {
-        super(position, 0, 1, 1, listener);
+        super(position, 0, listener);
 
     }
     //Abstract method for powerup functionality
@@ -27,6 +27,14 @@ public abstract class PowerUp extends GameObject {
                 task.run();
             }
         }, duration);
+    }
+
+    public void onCollision(GameObject other) {
+        if (other instanceof PlayerShip) {
+
+            this.setActive(false);
+            // Not sure if you want to handle this here or in the playerShip class's onCollision method but the setActive(false) should be here
+        }
     }
 
 

@@ -3,6 +3,7 @@ package TestGrupp.View;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,6 @@ public class EnemyShipSprite extends Sprite {
         }
     }
 
-    @Override
     protected int getSpriteWidth() {
         return shipWidth;
     }
@@ -40,4 +40,3 @@ public class EnemyShipSprite extends Sprite {
         return shipHeight;
     }
 }
-

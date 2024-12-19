@@ -1,5 +1,6 @@
 package TestGrupp.View;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ public class EnemyProjectileSprite extends Sprite {
     }
 
     @Override
+
     protected int getSpriteWidth() {
         return projectileWidth;
     }
@@ -40,5 +42,4 @@ public class EnemyProjectileSprite extends Sprite {
     protected int getSpriteHeight() {
         return projectileHeight;
     }
-
 }
