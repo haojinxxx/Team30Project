@@ -3,15 +3,12 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import TestGrupp.Observer.Observer;
-import TestGrupp.Observer.ObserverScore;
 import TestGrupp.Observer.Subject;
 
 public class GameModel implements GameEventListener, Subject  {
@@ -20,13 +17,14 @@ public class GameModel implements GameEventListener, Subject  {
     private GameEventListener listener;
     private static PlayerShip playerShip;
     private List<Observer> observers;
-    private List<ObserverScore> scoreObservers = new ArrayList<>();
     private Point2d screenCenter;
     private Score score;
+    private Random random;
 
     private PowerUp powerup;
 
     private Properties gameProperties;
+
 
 
 
@@ -43,11 +41,12 @@ public class GameModel implements GameEventListener, Subject  {
         this.gameObjects = new ArrayList<>();
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
+        this.collisionManager = new CollisionManager(gameObjects);
 
         Properties properties = getGameProperties();
-        int playerWidth = Integer.parseInt(properties.getProperty("player.width"));
-        int playerHeight = Integer.parseInt(properties.getProperty("player.height"));
-        this.playerShip = new PlayerShip(screenCenter, 0, playerWidth, playerHeight, this);
+        int playerWidth = Integer.parseInt(properties.getProperty("PlayerShip.width"));
+        int playerHeight = Integer.parseInt(properties.getProperty("PlayerShip.height"));
+        this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
         this.powerup= new healthPowerUp(new Point2d(200, 200), this);
@@ -58,10 +57,20 @@ public class GameModel implements GameEventListener, Subject  {
         addGameObject(this.playerShip);
         //spawnAsteroid(screenCenter, 2);
 
+
+        //EnemyFactory enemyFactory = new EnemyFactory();
+        //enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 2, this));
+        //enemyFactory.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 10, 0, 400, this));
+
+        //EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
+        //enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
+        //enemySpawner.setSpawnRate("EnemyShip", 5000); // Spawn an enemy ship every 5000 milliseconds (5 seconds)
+
         //EnemyFactory enemyFactory = new EnemyFactory();
         //enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 0.5, 10, 0, this));
 
         spawnAsteroid();
+
 
 
 
@@ -93,18 +102,11 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score) {
         for (Observer observer : observers) {
-            observer.update(gameObjectDTOs); // Pass the DTO list to each observer
+            observer.update(gameObjectDTOs);
+            observer.updateScore(score);// Pass the DTO list to each observer
         }
-    }
-    private void notifyScoreObservers(int score) {
-        for (ObserverScore observer : scoreObservers) {
-            observer.updateScore(score);
-        }
-    }
-    public void addScoreObserver(ObserverScore observer) {
-        scoreObservers.add(observer);
     }
 
     public void update(double deltaTime) {
@@ -129,8 +131,15 @@ public class GameModel implements GameEventListener, Subject  {
                     spriteType
             ));
         }
-        notifyObservers(gameObjectDTOs);
-        notifyScoreObservers(score.getScore());
+
+        collisionManager.update(gameObjects);
+        notifyObservers(gameObjectDTOs, score.getScore());
+        score.updateScoreBasedOnTime();
+
+        notifyObservers(gameObjectDTOs, score.getScore());
+  
+
+
     }
 
     private String determineSpriteType(GameObject gameObject) {
@@ -166,11 +175,16 @@ public class GameModel implements GameEventListener, Subject  {
         return playerShip;
     }
 
+    public Point2d getPlayerPosition() {
+        return playerShip.getTransform().getPosition();
+    }
+
     public void setScreenCenter(Point2d center) {
         this.screenCenter = center;
         getPlayerShip().setPos(center);
 
     }
+
 
     public void spawnAsteroid() {
         EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, this);
@@ -180,11 +194,11 @@ public class GameModel implements GameEventListener, Subject  {
         }
 
 
-
     }
 
     public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
-        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 0, 50, this);
+        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 10, 200, this);
+
         addGameObject(enemyShip);
     }
 
@@ -204,6 +218,12 @@ public class GameModel implements GameEventListener, Subject  {
                 throw new IllegalStateException("Unexpected value: " + randomPowerUp);
         }
         addGameObject(powerUp);
+    }
+    private Random random2 = new Random();
+
+    private boolean shouldSpawnPowerUp() {
+        int chance = 20; // 20% chance to spawn a random powerup
+        return random2.nextInt(100) < chance;
     }
 
 
@@ -232,6 +252,24 @@ public class GameModel implements GameEventListener, Subject  {
     public void onEnemyDestroyed(EnemyShip enemy) {
         removeGameObject(enemy);
         score.addScore(100);
+
+        if (shouldSpawnPowerUp()) {
+            spawnPowerUp(enemy.getTransform().getPosition());
+        }
+        //notifyObservers(); // Notify observers of the event
+    }
+
+    @Override
+    public  void onPowerUpCollected(PowerUp powerUp) {
+        removeGameObject(powerUp);
+        //notifyObservers();
+    }
+
+    @Override
+    public void onPlayerDestroyed() {
+        // Do whatever, this is placeholder code
+
+        System.out.println("Player destroyed");
         //notifyObservers(); // Notify observers of the event
     }
 }

@@ -1,17 +1,17 @@
 package TestGrupp.View;
 
+import TestGrupp.Controller.ConfigurationLoader;
 import TestGrupp.Model.GameObjectDTO;
 import TestGrupp.Observer.Observer;
-import TestGrupp.Observer.ObserverScore;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
 import java.util.*;
 import java.util.List;
-import java.util.Properties;
 
-public class View extends JFrame implements Observer, ObserverScore {
+
+public class View extends JFrame implements Observer  {
+    private Properties gameProperties;
     private int widthScreen;
     private int heightScreen;
     private int margin;
@@ -23,9 +23,7 @@ public class View extends JFrame implements Observer, ObserverScore {
     private SpriteFactory spriteFactory;
 
     public View(String title) {
-        String configPath = "src/main/resources/config.properties";
-        ConfigurationLoader configLoader = new ConfigurationLoader(configPath);
-        this.spriteFactory = new SpriteFactory(configLoader);
+        this.spriteFactory = new SpriteFactory();
 
 
         // Initialize screen dimensions
@@ -152,5 +150,9 @@ public class View extends JFrame implements Observer, ObserverScore {
 
     public int getScreenHeight() {
         return heightScreen;
+    }
+
+    public int getBottomPanelHeight() {
+        return bottomPanel.getPreferredSize().height;
     }
 }
