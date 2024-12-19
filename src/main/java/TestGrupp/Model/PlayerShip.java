@@ -32,7 +32,7 @@ public class PlayerShip extends GameObject {
 
 
         this.health = new HealthComponent(100); // Start with full health
-        this.projectileDamage = 10000; // Set the default projectile damage
+        this.projectileDamage = 25; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
 
