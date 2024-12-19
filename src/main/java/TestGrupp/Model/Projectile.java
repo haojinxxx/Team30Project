@@ -46,4 +46,21 @@ public class Projectile extends GameObject {
         super.update(deltaTime);  // Update the base GameObject (position, etc.)
         physics.update(deltaTime, this.getTransform());  // Update the physics and apply velocity
     }
+
+    /**
+     * This method is called when the projectile collides with another GameObject.
+     * If the other GameObject is a PowerUp or a projectile from the same sender, the projectile is not destroyed.
+     * Otherwise, the projectile is deactivated.
+     *
+     * @param other the GameObject that the projectile collides with
+     */
+    public void onCollision(GameObject other) {
+        // We don't want projectiles to be destroyed when hitting a PowerUp, the condition after || is to prevent a projectile from being destroyed by hitting its sender,
+        // Did a trick with the boolean, so it catches both player and enemy projectiles
+        if (other instanceof PowerUp || (other instanceof PlayerShip == isPlayerProjectile)) {
+            return;  // Do nothing if the projectile collides with a PowerUp, and it's a player projectile
+        } else {
+            setActive(false);  // Deactivate the projectile if it collides with anything else
+        }
+    }
 }

@@ -67,6 +67,8 @@ public GameObject(Point2d position, double rotation, double scaleX, double scale
 
     public void update(double deltaTime) {};
 
+    public void onCollision(GameObject other) {};
+
 
 
 }
