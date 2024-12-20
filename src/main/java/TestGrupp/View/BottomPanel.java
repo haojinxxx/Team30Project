@@ -29,7 +29,7 @@ public class BottomPanel extends JPanel {
         this.healthBarView = healthBarView;
         PowerUpView powerUpView = new PowerUpView(margin, buttonWidth);
 
-        powerUpView = new PowerUpView(margin, buttonWidth);
+        this.powerUpView = powerUpView;
 
 
 
