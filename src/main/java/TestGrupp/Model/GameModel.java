@@ -88,12 +88,27 @@ public class GameModel implements GameEventListener, Subject  {
     // Check if any enemies have been spawned and add them to the gameObjects list
     private void checkAndAddSpawnedEnemies(Class<? extends GameObject> enemyClass) {
         List<GameObject> spawnedEnemies = enemySpawner.getSpawnedEnemies();
-        for (GameObject enemy : spawnedEnemies) {
-            if (enemyClass.isInstance(enemy) && !gameObjects.contains(enemy)) {
-                addGameObject(enemy);
-                System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId());
+        for (GameObject enemy : new ArrayList<>(spawnedEnemies)) {
+            if (enemyClass.isInstance(enemy)) {
+                if (!enemy.isActive() || isOutOfBounds(enemy)) {
+                    removeGameObject(enemy);
+                    spawnedEnemies.remove(enemy);
+                    System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId() + " despawned");
+                } else if (!gameObjects.contains(enemy)) {
+                    addGameObject(enemy);
+                    System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId() + " spawned");
+                }
             }
         }
+    }
+
+    private boolean isOutOfBounds(GameObject enemy) {
+        Point2d position = enemy.getTransform().getPosition();
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
+        int maxX = screenData.getWidth();
+        int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
+
+        return position.x < 0 || position.x > maxX || position.y < 0 || position.y > maxY;
     }
 
     public void update(double deltaTime) {
