@@ -25,6 +25,12 @@ public class Score extends Observable {
         notifyObservers();
     }
 
+    public void resetScore() {
+        score = 0;
+        setChanged();
+        notifyObservers();
+    }
+
     public int getScore() {
         return score;
     }

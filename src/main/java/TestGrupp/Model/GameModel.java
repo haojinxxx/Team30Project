@@ -12,7 +12,7 @@ public class GameModel implements GameEventListener, Subject  {
     private List<GameObject> gameObjects;
     private CollisionManager collisionManager;
     private GameEventListener listener;
-    private static PlayerShip playerShip;
+    private PlayerShip playerShip;
     private List<Observer> observers;
     private Point2d screenCenter;
     private Score score;
@@ -48,7 +48,7 @@ public class GameModel implements GameEventListener, Subject  {
 
         ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
 
-        addGameObject(this.playerShip);
+        addGameObject(playerShip);
 
 
         // Initialize the EnemySpawner
@@ -82,6 +82,28 @@ public class GameModel implements GameEventListener, Subject  {
             observer.updateHealth(playerShip.getHealth());
             observer.updatePowerUps(new ArrayList<>(collectedPowerUps.values()));
         }
+    }
+
+    public void resetGame() {
+        // Clear all game objects
+        gameObjects.clear();
+
+        // Reset the score
+        score.resetScore();
+
+        // Respawn the player at the initial position
+        this.playerShip = new PlayerShip(screenCenter, 0, this);
+        playerShip.setPos(screenCenter); // Set player position to center
+        addGameObject(playerShip);
+
+        // Reinitialize the EnemySpawner
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
+        enemySpawner = new EnemySpawner(screenData.getWidth(), screenData.getHeight(), this);
+        enemySpawner.setSpawnRate("Asteroid", 2000);
+        enemySpawner.setSpawnRate("EnemyShip", 5000);
+
+        // Notify observers about the reset state
+        notifyObservers(new ArrayList<>(), score.getScore(), new HashMap<>());
     }
 
 
@@ -264,7 +286,7 @@ public class GameModel implements GameEventListener, Subject  {
     @Override
     public void onPlayerDestroyed() {
         // Do whatever, this is placeholder code
-
+        resetGame();
         System.out.println("Player destroyed");
         //notifyObservers(); // Notify observers of the event
     }
