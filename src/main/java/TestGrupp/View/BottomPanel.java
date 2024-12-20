@@ -3,6 +3,10 @@ package TestGrupp.View;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the bottom panel in the game.
+ * This class handles the layout of the health bar and power-up buttons.
+ */
 public class BottomPanel extends JPanel {
     int buttonWidth;
     public BottomPanel(int widthScreen, int margin) {

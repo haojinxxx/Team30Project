@@ -3,8 +3,17 @@ package TestGrupp.View;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the health bar view in the game.
+ * This class handles the display of the health bar.
+ */
 public class HealthBarView extends JPanel {
 
+    /**
+     * Constructs a new health bar view with the specified margin.
+     *
+     * @param margin the margin of the health bar view
+     */
     public HealthBarView(int margin) {
         GridBagLayout layout = new GridBagLayout();
         setLayout(layout);

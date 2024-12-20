@@ -9,7 +9,10 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-
+/**
+ * The View class is responsible for rendering the game state to the screen.
+ * It implements the Observer interface to receive updates from the model.
+ */
 public class View extends JFrame implements Observer  {
     private Properties gameProperties;
     private int widthScreen;
@@ -71,11 +74,24 @@ public class View extends JFrame implements Observer  {
 
         setVisible(true);
     }
+
+
+    /**
+     * Update the score view with the current score.
+     *
+     * @param score the new score to be displayed
+     */
     @Override
     public void updateScore(int score) {
         scoreView.updateScore(score);
     }
 
+
+    /**
+     * Update the view with the latest game object data.
+     *
+     * @param gameObjectDTOs the list of game objects to be rendered
+     */
     @Override
     public void update(List<GameObjectDTO> gameObjectDTOs) {
         Set<Integer> seenIds = new HashSet<>();
@@ -97,12 +113,25 @@ public class View extends JFrame implements Observer  {
     }
 
 
+    /**
+     * Render the view to the screen.
+     */
     public void render() {
      //   System.out.println("Rendering view...");
         layeredPane.revalidate();
         layeredPane.repaint();
     }
 
+
+    /**
+     * Update or create a sprite based on the given parameters.
+     *
+     * @param id the unique identifier of the game object
+     * @param x the x-coordinate of the game object
+     * @param y the y-coordinate of the game object
+     * @param rotation the rotation of the game object
+     * @param spriteType the type of sprite to be created or updated
+     */
     private void updateOrCreateSprite(int id, double x, double y, double rotation, String spriteType) {
         Sprite sprite = gameObjectSprites.get(id);
         if (sprite == null) {
@@ -122,6 +151,11 @@ public class View extends JFrame implements Observer  {
         }
     }
 
+    /**
+     * Remove sprites that are not part of the current update.
+     *
+     * @param seenIds the set of IDs of game objects that are part of the current update
+     */
     private void removeSpritesNotIn(Set<Integer> seenIds) {
         List<Integer> idsToRemove = new ArrayList<>();
         for (Integer id : gameObjectSprites.keySet()) {
@@ -136,6 +170,11 @@ public class View extends JFrame implements Observer  {
         }
     }
 
+    /**
+     * Remove a sprite from the view with the given ID.
+     *
+     * @param id the unique identifier of the sprite to be removed
+     */
     private void removeSprite(int id) {
         Sprite sprite = gameObjectSprites.remove(id);
         if (sprite != null) {
