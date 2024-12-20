@@ -192,8 +192,10 @@ public class PlayerShip extends GameObject {
     private void checkOutofBounds() {
         //Singleton arguments doesn't matter because
         //we only need the screen size, which is set in controller when initializing the game
-        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
+        //ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
 
+        // ^^ I understand it worked in this instance, but when used for asteroids it did not, so moving initialization to main seems appropriate
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
         int maxX = screenData.getWidth();
         int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
 

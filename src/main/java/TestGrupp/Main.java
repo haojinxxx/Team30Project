@@ -10,6 +10,7 @@ import TestGrupp.View.View;
 public class Main {
     public static void main(String[] args) {
         View view = new View("Cosmic Shooter");
+        ScreenDataSingleton.initialize(view.getScreenWidth(), view.getScreenHeight(), view.getBottomPanelHeight());
         GameModel gm = new GameModel();
         gm.addObserver(view); // Register the view as an observer
         Controller controller = new Controller(gm, view);
