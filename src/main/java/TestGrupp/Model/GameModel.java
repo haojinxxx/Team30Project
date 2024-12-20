@@ -46,12 +46,13 @@ public class GameModel implements GameEventListener, Subject  {
 
         this.powerup= new healthPowerUp(new Point2d(700, 700), this);
 
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
 
         addGameObject(this.playerShip);
 
 
         // Initialize the EnemySpawner
-        this.enemySpawner = new EnemySpawner(1920, 1080, this);
+        this.enemySpawner = new EnemySpawner(screenData.getWidth(), screenData.getHeight(), this);
         this.enemySpawner.setSpawnRate("Asteroid", 2000);   //Start spawning asteroids
         this.enemySpawner.setSpawnRate("EnemyShip", 5000); //Start spawning enemy ships
 
@@ -88,7 +89,7 @@ public class GameModel implements GameEventListener, Subject  {
         List<GameObject> spawnedEnemies = enemySpawner.getSpawnedEnemies();
         for (GameObject enemy : new ArrayList<>(spawnedEnemies)) {
             if (enemyClass.isInstance(enemy)) {
-                if (!enemy.isActive() || isOutOfBounds(enemy)) {
+                if (!enemy.isActive()) {
                     removeGameObject(enemy);
                     spawnedEnemies.remove(enemy);
                     System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId() + " despawned");
@@ -100,14 +101,6 @@ public class GameModel implements GameEventListener, Subject  {
         }
     }
 
-    private boolean isOutOfBounds(GameObject enemy) {
-        Point2d position = enemy.getTransform().getPosition();
-        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
-        int maxX = screenData.getWidth();
-        int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
-
-        return position.x < 0 || position.x > maxX || position.y < 0 || position.y > maxY;
-    }
 
     public void update(double deltaTime) {
         score.updateScoreBasedOnTime();
