@@ -1,5 +1,7 @@
 package TestGrupp.View;
 
+import TestGrupp.Model.Score;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,6 +12,7 @@ import java.awt.*;
 public class BottomPanel extends JPanel {
     private final HealthBarView healthBarView;
     int buttonWidth;
+    private PowerUpView powerUpView;
     public BottomPanel(int widthScreen, int margin) {
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
@@ -26,11 +29,17 @@ public class BottomPanel extends JPanel {
         this.healthBarView = healthBarView;
         PowerUpView powerUpView = new PowerUpView(margin, buttonWidth);
 
+        powerUpView = new PowerUpView(margin, buttonWidth);
+
+
 
         add(healthBarView, BorderLayout.CENTER);
         add(powerUpView, BorderLayout.EAST);
 
 
+    }
+    public PowerUpView getPowerUpView() {
+        return this.powerUpView;
     }
 
     public int getButtonWidth(){return buttonWidth;}

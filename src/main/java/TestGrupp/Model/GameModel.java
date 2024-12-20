@@ -3,10 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.Subject;
@@ -20,11 +17,9 @@ public class GameModel implements GameEventListener, Subject  {
     private Point2d screenCenter;
     private Score score;
     private Random random;
-
     private PowerUp powerup;
-
     private Properties gameProperties;
-
+    private EnemySpawner enemySpawner;
 
 
 
@@ -49,28 +44,18 @@ public class GameModel implements GameEventListener, Subject  {
         this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
-        this.powerup= new healthPowerUp(new Point2d(200, 200), this);
+        this.powerup= new healthPowerUp(new Point2d(700, 700), this);
 
-        //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
-        //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
 
         addGameObject(this.playerShip);
-        //spawnAsteroid(screenCenter, 2);
 
-        EnemyFactory enemyFactory = new EnemyFactory();
-        enemyFactory.registerEnemy("Asteroid", new Asteroid(new Point2d(), 0, 1, 1, 2, this));
-        enemyFactory.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 10, 0, 400, this));
 
-        EnemySpawner enemySpawner = new EnemySpawner(this, 1920, 1080, enemyFactory);
-        enemySpawner.setSpawnRate("Asteroid", 2000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
-        enemySpawner.setSpawnRate("EnemyShip", 5000); // Spawn an enemy ship every 5000 milliseconds (5 seconds)
+        // Initialize the EnemySpawner
+        this.enemySpawner = new EnemySpawner(screenData.getWidth(), screenData.getHeight(), this);
+        this.enemySpawner.setSpawnRate("Asteroid", 2000);   //Start spawning asteroids
+        this.enemySpawner.setSpawnRate("EnemyShip", 5000); //Start spawning enemy ships
 
-        EnemyFactory enemyFactory2 = new EnemyFactory();
-        enemyFactory2.registerEnemy("EnemyShip", new EnemyShip(new Point2d(), 0, 800, 50, 20, 50, this));
-
-        EnemySpawner enemySpawner2 = new EnemySpawner(this, 1920, 1080, enemyFactory2);
-        enemySpawner2.setSpawnRate("EnemyShip", 5000); // Spawn an asteroid every 2000 milliseconds (2 seconds)
-        addGameObject(this.powerup);
 
 
     }
@@ -90,11 +75,30 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score, Map<Integer, PowerUp> collectedPowerUps) {
         for (Observer observer : observers) {
             observer.update(gameObjectDTOs);
             observer.updateScore(score);// Pass the DTO list to each observer
             observer.updateHealth(playerShip.getHealth());
+            observer.updatePowerUps(new ArrayList<>(collectedPowerUps.values()));
+        }
+    }
+
+
+    // Check if any enemies have been spawned and add them to the gameObjects list
+    private void checkAndAddSpawnedEnemies(Class<? extends GameObject> enemyClass) {
+        List<GameObject> spawnedEnemies = enemySpawner.getSpawnedEnemies();
+        for (GameObject enemy : new ArrayList<>(spawnedEnemies)) {
+            if (enemyClass.isInstance(enemy)) {
+                if (!enemy.isActive()) {
+                    removeGameObject(enemy);
+                    spawnedEnemies.remove(enemy);
+                    System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId() + " despawned");
+                } else if (!gameObjects.contains(enemy)) {
+                    addGameObject(enemy);
+                    System.out.println(enemyClass.getSimpleName().toLowerCase() + " id: " + enemy.getId() + " spawned");
+                }
+            }
         }
     }
 
@@ -123,11 +127,17 @@ public class GameModel implements GameEventListener, Subject  {
             ));
         }
 
+        checkAndAddSpawnedEnemies(Asteroid.class);
+        checkAndAddSpawnedEnemies(EnemyShip.class);
+
+
+
+
         collisionManager.update(gameObjects);
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
         score.updateScoreBasedOnTime();
 
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
   
 
 
@@ -176,25 +186,13 @@ public class GameModel implements GameEventListener, Subject  {
 
     }
 
-    public void spawnAsteroid(Point2d position, int childAsteroids) {
-        double speed = 300;
-        int health = 10;
-        // random rotation
-        double rotationAngle = Math.random() * 360;
-        Asteroid asteroid = new Asteroid(position, rotationAngle, speed, health, childAsteroids, this);
-        addGameObject(asteroid);
-    }
 
-    public void createEnemyShip(Point2d pos, double rotation, double maxSpeed, int health) {
-        EnemyShip enemyShip = new EnemyShip(pos, rotation, maxSpeed, health, 10, 200, this);
 
-        addGameObject(enemyShip);
-    }
 
     public void spawnPowerUp(Point2d position) {
         /*PowerUp powerUp;
         Random random = new Random();
-        int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
+        int randomPowerUp = random.nextInt(1); // Assuming we have 3 types of PowerUps
 
         switch (randomPowerUp) {
             case 0:
@@ -216,14 +214,20 @@ public class GameModel implements GameEventListener, Subject  {
         return random2.nextInt(100) < chance;
     }
 
+
     @Override
     public void onAsteroidDestroyed(Point2d position, int childAsteroids) {
+        /*
         for (int i = 0; i < childAsteroids; i++) {
             spawnAsteroid(position, childAsteroids);
         }
         score.addScore(50);
         //notifyObservers(); // Notify observers of the event
+
+         */
     }
+
+
 
     @Override
     public void onProjectileFired(Point2d position, Vector2d velocity, double rotation, double speed, int damage, boolean isPlayerProjectile) {
@@ -248,6 +252,7 @@ public class GameModel implements GameEventListener, Subject  {
         removeGameObject(powerUp);
         //notifyObservers();
     }
+
 
     @Override
     public void onPlayerHealthChanged(int health) {

@@ -1,13 +1,22 @@
 package TestGrupp.View;
 
+import TestGrupp.Model.PowerUp;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Represents the power-up view in the game.
  * This class handles the layout and appearance of the power-up buttons.
  */
 public class PowerUpView extends JPanel {
+
+    private JButton powerUp1;
+    private JButton powerUp2;
+    private JButton powerUp3;
+    private JButton powerUp4;
+
 
     /**
      * Constructs a new power-up view with the specified margin and button width.
@@ -20,12 +29,12 @@ public class PowerUpView extends JPanel {
         setOpaque(false); // Make the panel transparent
 
         // Create buttons
-        JButton powerUp1 = createCustomButton("PowerUp 1");
-        JButton powerUp2 = createCustomButton("PowerUp 2");
-        JButton powerUp3 = createCustomButton("PowerUp 3");
-        JButton powerUp4 = createCustomButton("PowerUp 4");
+        powerUp1 = createCustomButton("", "src/main/resources/images/HealthPowerUp.png");
+        powerUp2 = createCustomButton("", "src/main/resources/images/ShieldPowerUp.png");
+        powerUp3 = createCustomButton("", "src/main/resources/images/SpeedPowerUp.png");
+        powerUp4 = createCustomButton("", "src/main/resources/images/DamagePowerUp.png");
 
-        //Set preferred size for buttons
+        // Set preferred size for buttons
         Dimension buttonSize = new Dimension(buttonWidth, buttonWidth);
         powerUp1.setPreferredSize(buttonSize);
         powerUp2.setPreferredSize(buttonSize);
@@ -38,18 +47,21 @@ public class PowerUpView extends JPanel {
         gbc.anchor = GridBagConstraints.EAST;  // Anchor to the right
 
         gbc.gridx = 0;
-        add(powerUp1, gbc);
+        add(createButtonWithLabel(powerUp1, "H"), gbc);
 
         gbc.gridx = 1;
-        add(powerUp2, gbc);
+        add(createButtonWithLabel(powerUp2, "J"), gbc);
 
         gbc.gridx = 2;
-        add(powerUp3, gbc);
+        add(createButtonWithLabel(powerUp3, "K"), gbc);
 
         gbc.gridx = 3;
         gbc.insets = new Insets(10, 5, 10, margin); // Add more padding to the right
-        add(powerUp4, gbc);
+        add(createButtonWithLabel(powerUp4, "L"), gbc);
     }
+
+
+
 
     /**
      * Create a custom button with the specified text.
@@ -57,13 +69,67 @@ public class PowerUpView extends JPanel {
      * @param text the text to display on the button
      * @return the custom button
      */
-    private JButton createCustomButton(String text) {
+
+   private JButton createCustomButton(String text, String imagePath) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setBackground(Color.decode("#4C4568"));
+        button.setBackground(Color.decode("#261F34"));
         button.setForeground(Color.decode("#9D9EF8"));
-        button.setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));;
+        button.setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));
+        if (imagePath != null) {
+            ImageIcon icon = new ImageIcon(imagePath);
+            Image image = icon.getImage(); // transform it
+            Image newimg = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            icon = new ImageIcon(newimg);  // transform it back
+            button.setIcon(icon);
+        }
         return button;
     }
 
+    private JLayeredPane createButtonWithLabel(JButton button, String labelText) {
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(button.getPreferredSize());
+
+        button.setBounds(0, 0, button.getPreferredSize().width, button.getPreferredSize().height);
+        layeredPane.add(button, JLayeredPane.DEFAULT_LAYER);
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Monospaced", Font.BOLD, 14));
+        label.setForeground(Color.WHITE);
+        label.setBounds(10, 5, 20, 20); // Position the label in the top left corner
+        layeredPane.add(label, JLayeredPane.PALETTE_LAYER);
+
+        return layeredPane;
+    }
+
+    private void highlightButton(JButton button, Color color) {
+        button.setBackground(color);
+    }
+
+    public void highlightPowerUps(List<PowerUp> collectedPowerUps) {
+        resetButtonColors();
+        for (PowerUp powerUp : collectedPowerUps) {
+            switch (powerUp.getType()) {
+                case "Health":
+                    highlightButton(powerUp1, Color.decode("#6A6494"));
+                    break;
+                case "Shield":
+                    highlightButton(powerUp2, Color.decode("#6A6494"));
+                    break;
+                case "Speed":
+                    highlightButton(powerUp3, Color.decode("#6A6494"));
+                    break;
+                case "Damage":
+                    highlightButton(powerUp4, Color.decode("#6A6494"));
+                    break;
+            }
+        }
+    }
+
+    private void resetButtonColors() {
+        powerUp1.setBackground(Color.decode("#261F34"));
+        powerUp2.setBackground(Color.decode("#261F34"));
+        powerUp3.setBackground(Color.decode("#261F34"));
+        powerUp4.setBackground(Color.decode("#261F34"));
+    }
 }

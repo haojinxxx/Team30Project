@@ -3,7 +3,9 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerShip extends GameObject {
     private double maxSpeed;           // Maximum speed of the ship
@@ -24,13 +26,13 @@ public class PlayerShip extends GameObject {
     private boolean rotating;          // Whether the ship is actively rotating
 
     private boolean movingForward;     // Flag for forward movement
-    private List<PowerUp> collectedPowerUps;
+    private Map<Integer, PowerUp> collectedPowerUps;
     private boolean hasShield;         // Whether the ship has an active shield
 
     public PlayerShip(Point2d position, double rotation, GameEventListener listener) {
         super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
 
-        this.collectedPowerUps = new ArrayList<PowerUp>();
+        this.collectedPowerUps = new HashMap<>();
         this.health = new HealthComponent(100); // Start with full health
         this.projectileDamage = 100; // Set the default projectile damage
         this.shipProjectiles = new ArrayList<>();
@@ -199,8 +201,10 @@ public class PlayerShip extends GameObject {
     private void checkOutofBounds() {
         //Singleton arguments doesn't matter because
         //we only need the screen size, which is set in controller when initializing the game
-        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
+        //ScreenDataSingleton screenData = ScreenDataSingleton.getInstance(0, 0, 0);
 
+        // ^^ I understand it worked in this instance, but when used for asteroids it did not, so moving initialization to main seems appropriate
+        ScreenDataSingleton screenData = ScreenDataSingleton.getInstance();
         int maxX = screenData.getWidth();
         int maxY = screenData.getHeight() - screenData.getBottomBarHeight();
 
@@ -253,20 +257,25 @@ public class PlayerShip extends GameObject {
     }
 
     public void activateStoredPowerUp(int index) {
-        if (index >= 0 && index < collectedPowerUps.size()) {
-            PowerUp powerUp = collectedPowerUps.get(index);
+        PowerUp powerUp = collectedPowerUps.get(index);
+        if (powerUp != null) {
             powerUp.activatePowerUp(this);
             collectedPowerUps.remove(index);
         }
     }
 
     public void collectPowerUp(PowerUp powerUp, int index) {
-        collectedPowerUps.add(index, powerUp);
+        collectedPowerUps.put(index, powerUp);
         listener.onPowerUpCollected(powerUp);
     }
-          
+
+
     public void removePowerUp(PowerUp powerUp) {
-        collectedPowerUps.remove(powerUp);
+        collectedPowerUps.values().remove(powerUp);
+    }
+
+    public Map<Integer, PowerUp> getCollectedPowerUps() {
+        return collectedPowerUps;
     }
 
 

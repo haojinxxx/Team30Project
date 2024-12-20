@@ -2,11 +2,14 @@ package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
-public class Asteroid extends GameObject implements Enemy {
+public class Asteroid extends GameObject {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
+    private final ScreenDataSingleton screenDataSingleton;
     private GameEventListener listener;
 
     // Constructor
@@ -14,6 +17,7 @@ public class Asteroid extends GameObject implements Enemy {
         super(position, rotation, listener);
         this.childAsteroids = childAsteroids;
         this.listener = listener;
+        this.screenDataSingleton = ScreenDataSingleton.getInstance();
 
         TransformComponent transform = this.getTransform();
         transform.setPosition(position);
@@ -30,8 +34,16 @@ public class Asteroid extends GameObject implements Enemy {
     }
 
 
-    // Methods
+    private boolean isOnMap() {
+        Rectangle mapArea = screenDataSingleton.getMapArea();
+        Rectangle2D.Float boundingBox = this.getTransform().getBoundingBox();
+        return mapArea.intersects(boundingBox);
+    }
+
     public void update(double deltaTime) {
+        if (!isOnMap()) {
+            setActive(false);
+        }
         physics.update(deltaTime, this.getTransform());
     }
 
@@ -48,19 +60,14 @@ public class Asteroid extends GameObject implements Enemy {
                 listener.onAsteroidDestroyed(this.getTransform().getPosition(), 0);
             }
         }
-        this.setActive(false);
+        //this.setActive(false);
     }
+
 
     public void onCollision(GameObject other) {
         if (other instanceof Projectile) {
             Projectile projectile = (Projectile) other;
             takeDamage(projectile.getDamage());
         }
-    }
-
-
-    @Override
-    public void spawn(GameModel gameModel, Point2d pos) {
-        gameModel.spawnAsteroid(pos, childAsteroids);
     }
 }
