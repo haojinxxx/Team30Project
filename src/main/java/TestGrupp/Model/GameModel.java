@@ -92,7 +92,7 @@ public class GameModel implements GameEventListener, Subject  {
         score.resetScore();
 
         // Respawn the player at the initial position
-        playerShip = new PlayerShip(screenCenter, 0, this);
+        this.playerShip = new PlayerShip(screenCenter, 0, this);
         playerShip.setPos(screenCenter); // Set player position to center
         addGameObject(playerShip);
 
