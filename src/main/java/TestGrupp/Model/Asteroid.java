@@ -36,11 +36,10 @@ public class Asteroid extends GameObject {
 
     private boolean isOnMap() {
         Rectangle mapArea = screenDataSingleton.getMapArea();
-        Rectangle2D.Float boundingBOx = this.getTransform().getBoundingBox();
-        return mapArea.contains(boundingBOx);
-
-
+        Rectangle2D.Float boundingBox = this.getTransform().getBoundingBox();
+        return mapArea.intersects(boundingBox);
     }
+
     public void update(double deltaTime) {
         if (!isOnMap()) {
             setActive(false);
