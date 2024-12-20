@@ -1,7 +1,10 @@
 package TestGrupp.Model;
 
+import java.awt.*;
+
 public final class ScreenDataSingleton {
     private static volatile ScreenDataSingleton instance;
+    private final Rectangle mapArea;
 
     private int width;
     private int height;
@@ -13,6 +16,7 @@ public final class ScreenDataSingleton {
         this.width = width;
         this.height = height;
         this.bottomBarHeight = bottomBarHeight;
+        this.mapArea = new Rectangle(0, 0, width, height - bottomBarHeight);
 
     }
 
@@ -38,5 +42,8 @@ public final class ScreenDataSingleton {
     }
     public int getBottomBarHeight() {
         return bottomBarHeight;
+    }
+    public Rectangle getMapArea() {
+        return mapArea;
     }
 }

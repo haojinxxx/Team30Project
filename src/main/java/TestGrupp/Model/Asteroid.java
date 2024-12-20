@@ -2,11 +2,14 @@ package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class Asteroid extends GameObject implements Enemy {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
+    private final ScreenDataSingleton screenDataSingleton;
     private GameEventListener listener;
 
     // Constructor
@@ -14,7 +17,10 @@ public class Asteroid extends GameObject implements Enemy {
         super(position, rotation, listener);
         this.childAsteroids = childAsteroids;
         this.listener = listener;
-
+        this.screenDataSingleton = ScreenDataSingleton.getInstance(0, 0, 0);
+        // This does not work, we are not able to access the singleton from multiple places in the codebase which is a problem
+        // The issue seems to be with that we are using lazy initialization where you pass arguments to the getInstance method (currently done in the Controller class)
+        // which then calls the private constructor. I think we need to redesign it a bit to be able to use it throughout the codebase.
         TransformComponent transform = this.getTransform();
         transform.setPosition(position);
         transform.setRotation(rotation);
@@ -30,8 +36,17 @@ public class Asteroid extends GameObject implements Enemy {
     }
 
 
-    // Methods
+    private boolean isOnMap() {
+        Rectangle mapArea = screenDataSingleton.getMapArea();
+        Rectangle2D.Float boundingBOx = this.getTransform().getBoundingBox();
+        return mapArea.contains(boundingBOx);
+
+
+    }
     public void update(double deltaTime) {
+        if (!isOnMap()) {
+            setActive(false);
+        }
         physics.update(deltaTime, this.getTransform());
     }
 
@@ -48,7 +63,7 @@ public class Asteroid extends GameObject implements Enemy {
                 listener.onAsteroidDestroyed(this.getTransform().getPosition(), 0);
             }
         }
-        this.setActive(false);
+        //this.setActive(false);
     }
 
     public void onCollision(GameObject other) {
