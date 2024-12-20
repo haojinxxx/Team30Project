@@ -2,13 +2,21 @@ package TestGrupp.View;
 
 import TestGrupp.Controller.ConfigurationLoader;
 
-public class SpriteFactory {
 
+/**
+ * Factory class for creating sprites
+ */
+public class SpriteFactory {
 
     public SpriteFactory() {
 
     }
 
+    /**
+     * Creates a sprite based on the spriteType
+     * @param spriteType the type of sprite to create
+     * @return the created sprite
+     */
     public Sprite createSprite(String spriteType) {
         System.out.println("createSprite called with spriteType: " + spriteType);
         switch (spriteType) {
