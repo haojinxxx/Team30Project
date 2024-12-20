@@ -1,17 +1,20 @@
 
 package TestGrupp.View;
 
-import TestGrupp.Model.Score;
-import TestGrupp.Observer.Observer;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Observable;
 
+/**
+ * Represents the score view in the game.
+ * This class displays the player's current score.
+ */
 public class ScoreView extends JPanel {
     private JLabel scoreLabel;
 
+    /**
+     * Constructs a new score view.
+     */
     public ScoreView() {
         setLayout(new FlowLayout(FlowLayout.LEFT)); // Change alignment to left
         setOpaque(false); // Make the panel transparent
@@ -30,6 +33,11 @@ public class ScoreView extends JPanel {
         add(scoreLabel);
     }
 
+    /**
+     * Update the score displayed in the view.
+     *
+     * @param score the new score to display
+     */
     public void updateScore(int score) {
         scoreLabel.setText(Integer.toString(score));
     }

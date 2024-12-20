@@ -8,6 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Represents the enemy ship sprite in the game.
+ * This class handles loading the image and providing the dimensions for the enemy ship.
+ */
 public class EnemyShipSprite extends Sprite {
     private BufferedImage playerShipImage;
     private int shipWidth;
@@ -20,7 +24,9 @@ public class EnemyShipSprite extends Sprite {
         initializeSprite();
     }
 
-
+    /**
+     * Load the image for the enemy ship sprite.
+     */
     @Override
     protected void loadImage() {
         try {
@@ -31,10 +37,20 @@ public class EnemyShipSprite extends Sprite {
         }
     }
 
+    /**
+     * Get the width of the enemy ship sprite.
+     *
+     * @return the width of the enemy ship sprite
+     */
     protected int getSpriteWidth() {
         return shipWidth;
     }
 
+    /**
+     * Get the height of the enemy ship sprite.
+     *
+     * @return the height of the enemy ship sprite
+     */
     @Override
     protected int getSpriteHeight() {
         return shipHeight;

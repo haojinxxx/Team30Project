@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Represents the power-up view in the game.
+ * This class handles the layout and appearance of the power-up buttons.
+ */
 public class PowerUpView extends JPanel {
 
     private JButton powerUp1;
@@ -13,6 +17,13 @@ public class PowerUpView extends JPanel {
     private JButton powerUp3;
     private JButton powerUp4;
 
+
+    /**
+     * Constructs a new power-up view with the specified margin and button width.
+     *
+     * @param margin the margin between the buttons
+     * @param buttonWidth the width of the buttons
+     */
     public PowerUpView(int margin, int buttonWidth) {
         setLayout(new GridBagLayout());
         setOpaque(false); // Make the panel transparent
@@ -49,7 +60,17 @@ public class PowerUpView extends JPanel {
         add(createButtonWithLabel(powerUp4, "L"), gbc);
     }
 
-    private JButton createCustomButton(String text, String imagePath) {
+
+
+
+    /**
+     * Create a custom button with the specified text.
+     *
+     * @param text the text to display on the button
+     * @return the custom button
+     */
+
+   private JButton createCustomButton(String text, String imagePath) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setBackground(Color.decode("#261F34"));

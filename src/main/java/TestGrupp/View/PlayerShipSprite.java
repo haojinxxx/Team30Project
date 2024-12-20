@@ -1,17 +1,25 @@
 package TestGrupp.View;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Represents the player's ship sprite in the game.
+ * This class handles loading the image and providing the dimensions for the player's ship.
+ */
 public class PlayerShipSprite extends Sprite {
     private BufferedImage playerShipImage;
     private int shipWidth;
     private int shipHeight;
 
+    /**
+     * Constructs a new player ship sprite with the specified dimensions.
+     *
+     * @param shipWidth the width of the player ship
+     * @param shipHeight the height of the player ship
+     */
     public PlayerShipSprite(int shipWidth, int shipHeight) {
         super();
         this.shipWidth = shipWidth;
@@ -19,7 +27,9 @@ public class PlayerShipSprite extends Sprite {
         initializeSprite();
     }
 
-
+    /**
+     * Load the image for the player ship sprite.
+     */
     @Override
     protected void loadImage() {
         try {
@@ -30,11 +40,21 @@ public class PlayerShipSprite extends Sprite {
         }
     }
 
+    /**
+     * Get the width of the player ship sprite.
+     *
+     * @return the width of the player ship sprite
+     */
     @Override
     protected int getSpriteWidth() {
         return shipWidth;
     }
 
+    /**
+     * Get the height of the player ship sprite.
+     *
+     * @return the height of the player ship sprite
+     */
     @Override
     protected int getSpriteHeight() {
         return shipHeight;
