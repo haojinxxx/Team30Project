@@ -6,6 +6,7 @@ public class healthPowerUp extends PowerUp {
 
     public healthPowerUp(Point2d position, GameEventListener listener) {
         super(position, listener);
+        setType("Health");
     }
 
     public void PowerUp(PlayerShip playerShip) {

@@ -3,10 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.Subject;
@@ -49,7 +46,7 @@ public class GameModel implements GameEventListener, Subject  {
         this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
-        this.powerup= new healthPowerUp(new Point2d(200, 200), this);
+        this.powerup= new healthPowerUp(new Point2d(700, 700), this);
 
         //this.playerShip = new PlayerShip(new Point2d(1920/2,1080/2), 0, 1, 1, this);
         //this.playerShip = new PlayerShip(new Point2d((double) 1920 /2, (double) 1080 /2), 0, 1, 1, this);
@@ -90,11 +87,11 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score, List<PowerUp> collectedPowerUps) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score, Map<Integer, PowerUp> collectedPowerUps) {
         for (Observer observer : observers) {
             observer.update(gameObjectDTOs);// Pass the DTO list to each observer
             observer.updateScore(score);
-            observer.updatePowerUps(collectedPowerUps);
+            observer.updatePowerUps(new ArrayList<>(collectedPowerUps.values()));
         }
     }
 

@@ -4,6 +4,7 @@ import TestGrupp.Model.GameObjectDTO;
 import TestGrupp.Model.PowerUp;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 public interface Observer {

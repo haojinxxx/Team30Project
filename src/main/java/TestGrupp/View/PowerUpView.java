@@ -52,7 +52,7 @@ public class PowerUpView extends JPanel {
     private JButton createCustomButton(String text, String imagePath) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setBackground(Color.decode("#4C4568"));
+        button.setBackground(Color.decode("#261F34"));
         button.setForeground(Color.decode("#9D9EF8"));
         button.setBorder(BorderFactory.createLineBorder(Color.decode("#9D9EF8"), 5));
         if (imagePath != null) {
@@ -65,31 +65,35 @@ public class PowerUpView extends JPanel {
         return button;
     }
 
+    private void highlightButton(JButton button, Color color) {
+        button.setBackground(color);
+    }
+
     public void highlightPowerUps(List<PowerUp> collectedPowerUps) {
         resetButtonColors();
-        for (int i = 0; i < collectedPowerUps.size(); i++) {
-            switch (i) {
-                case 0:
-                    powerUp1.setBackground(Color.BLACK);
+        for (PowerUp powerUp : collectedPowerUps) {
+            switch (powerUp.getType()) {
+                case "Health":
+                    highlightButton(powerUp1, Color.decode("#6A6494"));
                     break;
-                case 1:
-                    powerUp2.setBackground(Color.YELLOW);
+                case "Shield":
+                    highlightButton(powerUp2, Color.decode("#6A6494"));
                     break;
-                case 2:
-                    powerUp3.setBackground(Color.YELLOW);
+                case "Speed":
+                    highlightButton(powerUp3, Color.decode("#6A6494"));
                     break;
-                case 3:
-                    powerUp4.setBackground(Color.YELLOW);
+                case "Damage":
+                    highlightButton(powerUp4, Color.decode("#6A6494"));
                     break;
             }
         }
     }
 
     private void resetButtonColors() {
-        powerUp1.setBackground(Color.decode("#4C4568"));
-        powerUp2.setBackground(Color.decode("#4C4568"));
-        powerUp3.setBackground(Color.decode("#4C4568"));
-        powerUp4.setBackground(Color.decode("#4C4568"));
+        powerUp1.setBackground(Color.decode("#261F34"));
+        powerUp2.setBackground(Color.decode("#261F34"));
+        powerUp3.setBackground(Color.decode("#261F34"));
+        powerUp4.setBackground(Color.decode("#261F34"));
     }
 
 
