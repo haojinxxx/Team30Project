@@ -19,9 +19,9 @@ public class PowerUpView extends JPanel {
 
         // Create buttons
         powerUp1 = createCustomButton("", "src/main/resources/images/HealthPowerUp.png");
-        powerUp2 = createCustomButton("PowerUp 2", null);
-        powerUp3 = createCustomButton("PowerUp 3", null);
-        powerUp4 = createCustomButton("PowerUp 4", null);
+        powerUp2 = createCustomButton("", "src/main/resources/images/ShieldPowerUp.png");
+        powerUp3 = createCustomButton("", "src/main/resources/images/SpeedPowerUp.png");
+        powerUp4 = createCustomButton("", "src/main/resources/images/DamagePowerUp.png");
 
         // Set preferred size for buttons
         Dimension buttonSize = new Dimension(buttonWidth, buttonWidth);
@@ -36,17 +36,17 @@ public class PowerUpView extends JPanel {
         gbc.anchor = GridBagConstraints.EAST;  // Anchor to the right
 
         gbc.gridx = 0;
-        add(powerUp1, gbc);
+        add(createButtonWithLabel(powerUp1, "H"), gbc);
 
         gbc.gridx = 1;
-        add(powerUp2, gbc);
+        add(createButtonWithLabel(powerUp2, "J"), gbc);
 
         gbc.gridx = 2;
-        add(powerUp3, gbc);
+        add(createButtonWithLabel(powerUp3, "K"), gbc);
 
         gbc.gridx = 3;
         gbc.insets = new Insets(10, 5, 10, margin); // Add more padding to the right
-        add(powerUp4, gbc);
+        add(createButtonWithLabel(powerUp4, "L"), gbc);
     }
 
     private JButton createCustomButton(String text, String imagePath) {
@@ -63,6 +63,22 @@ public class PowerUpView extends JPanel {
             button.setIcon(icon);
         }
         return button;
+    }
+
+    private JLayeredPane createButtonWithLabel(JButton button, String labelText) {
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(button.getPreferredSize());
+
+        button.setBounds(0, 0, button.getPreferredSize().width, button.getPreferredSize().height);
+        layeredPane.add(button, JLayeredPane.DEFAULT_LAYER);
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Monospaced", Font.BOLD, 14));
+        label.setForeground(Color.WHITE);
+        label.setBounds(10, 5, 20, 20); // Position the label in the top left corner
+        layeredPane.add(label, JLayeredPane.PALETTE_LAYER);
+
+        return layeredPane;
     }
 
     private void highlightButton(JButton button, Color color) {
@@ -95,6 +111,4 @@ public class PowerUpView extends JPanel {
         powerUp3.setBackground(Color.decode("#261F34"));
         powerUp4.setBackground(Color.decode("#261F34"));
     }
-
-
 }
