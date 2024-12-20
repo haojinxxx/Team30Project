@@ -12,7 +12,7 @@ public class EnemyFactory {
                 Asteroid asteroid = new Asteroid(new Point2d(), randomRotation,600,1,2,gameEventListener);
                 return asteroid;
             case "EnemyShip":
-                EnemyShip enemyShip = new EnemyShip(new Point2d(), 0, 500, 10, 0, 400, gameEventListener);
+                EnemyShip enemyShip = new EnemyShip(new Point2d(), 0, 500, 10, 10, 400, gameEventListener);
                 return enemyShip;
             default:
                 throw new IllegalArgumentException("Invalid enemy type: " + type);
