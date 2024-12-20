@@ -8,6 +8,7 @@ import java.awt.*;
  * This class handles the layout of the health bar and power-up buttons.
  */
 public class BottomPanel extends JPanel {
+    private final HealthBarView healthBarView;
     int buttonWidth;
     public BottomPanel(int widthScreen, int margin) {
         BorderLayout layout = new BorderLayout();
@@ -21,6 +22,8 @@ public class BottomPanel extends JPanel {
 
         // Create and add the Healthbar and PowerUp panels to the bottom panel
         HealthBarView healthBarView = new HealthBarView(margin);
+
+        this.healthBarView = healthBarView;
         PowerUpView powerUpView = new PowerUpView(margin, buttonWidth);
 
 
@@ -31,5 +34,10 @@ public class BottomPanel extends JPanel {
     }
 
     public int getButtonWidth(){return buttonWidth;}
+
+    public HealthBarView getHealthBarView(){
+
+        return healthBarView;
+    }
 
 }

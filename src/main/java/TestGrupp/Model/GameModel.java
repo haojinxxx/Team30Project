@@ -94,8 +94,11 @@ public class GameModel implements GameEventListener, Subject  {
         for (Observer observer : observers) {
             observer.update(gameObjectDTOs);
             observer.updateScore(score);// Pass the DTO list to each observer
+            observer.updateHealth(playerShip.getHealth());
         }
     }
+
+
 
     public void update(double deltaTime) {
         score.updateScoreBasedOnTime();
@@ -244,6 +247,13 @@ public class GameModel implements GameEventListener, Subject  {
     public  void onPowerUpCollected(PowerUp powerUp) {
         removeGameObject(powerUp);
         //notifyObservers();
+    }
+
+    @Override
+    public void onPlayerHealthChanged(int health) {
+        // Do whatever, this is placeholder code
+        System.out.println("Player health changed to: " + health);
+        //notifyObservers(); // Notify observers of the event
     }
 
     @Override
