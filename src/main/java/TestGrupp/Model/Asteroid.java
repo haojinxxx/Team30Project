@@ -17,10 +17,8 @@ public class Asteroid extends GameObject implements Enemy {
         super(position, rotation, listener);
         this.childAsteroids = childAsteroids;
         this.listener = listener;
-        this.screenDataSingleton = ScreenDataSingleton.getInstance(0, 0, 0);
-        // This does not work, we are not able to access the singleton from multiple places in the codebase which is a problem
-        // The issue seems to be with that we are using lazy initialization where you pass arguments to the getInstance method (currently done in the Controller class)
-        // which then calls the private constructor. I think we need to redesign it a bit to be able to use it throughout the codebase.
+        this.screenDataSingleton = ScreenDataSingleton.getInstance();
+
         TransformComponent transform = this.getTransform();
         transform.setPosition(position);
         transform.setRotation(rotation);

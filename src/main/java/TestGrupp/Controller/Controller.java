@@ -18,7 +18,7 @@ public class Controller {
     public Controller(GameModel gm, View view) {
         this.gm = gm;
         this.view = view;
-        this.screenDataSingleton = ScreenDataSingleton.getInstance(view.getScreenWidth(), view.getScreenHeight(), view.getBottomPanelHeight());
+        this.screenDataSingleton = ScreenDataSingleton.getInstance();
 
         InputHandler ih = new InputHandler();
         // Assuming you make SoundManager a singleton
