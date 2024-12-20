@@ -11,6 +11,5 @@ public interface Observer {
     void update(List<GameObjectDTO> gameObjectDTOs);
     void updateScore(int score);
     void updateHealth(int health); // New method for health updates
-}
     void updatePowerUps(List<PowerUp> collectedPowerUps);
 }

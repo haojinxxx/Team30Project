@@ -39,7 +39,7 @@ public class BottomPanel extends JPanel {
 
     }
     public PowerUpView getPowerUpView() {
-        return this.powerUpView;
+        return powerUpView;
     }
 
     public int getButtonWidth(){return buttonWidth;}
