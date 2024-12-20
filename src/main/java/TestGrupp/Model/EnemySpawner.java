@@ -1,30 +1,29 @@
 package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class EnemySpawner {
-    private final GameModel gameModel;
+    private final GameEventListener gameEventListener;
     private final int screenWidth;
     private final int screenHeight;
     private final Random random;
     private final EnemyFactory enemyFactory;
     private final Map<String, Integer> spawnRates;
     private final Map<String, Timer> timers;
+    private ArrayList<GameObject> spawnedEnemies;
+
 
     // Constructor
-    public EnemySpawner(GameModel gameModel, int screenWidth, int screenHeight, EnemyFactory enemyFactory) {
-        this.gameModel = gameModel;
+    public EnemySpawner(int screenWidth, int screenHeight, GameEventListener gameEventListener) {
+        this.gameEventListener = gameEventListener;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.random = new Random();
-        this.enemyFactory = enemyFactory;
+        this.enemyFactory = new EnemyFactory();
         this.spawnRates = new HashMap<>();
         this.timers = new HashMap<>();
+        this.spawnedEnemies = new ArrayList<>();
     }
 
     // Set spawn rate for enemy type
@@ -72,9 +71,18 @@ public class EnemySpawner {
             default:
                 throw new IllegalStateException("Unexpected value: " + edge);
         }
-        Enemy enemy = enemyFactory.createEnemy(enemyType);
+        GameObject enemy = enemyFactory.createEnemy(enemyType, gameEventListener);
         if (enemy != null) {
-            enemy.spawn(gameModel, pos);
+            enemy.getTransform().setPosition(pos);
+            spawnedEnemies.add(enemy);
+        } else {
+            throw new IllegalStateException("Enemy could not be spawned");
         }
     }
+
+    // Return the list of spawned enemies
+    public List<GameObject> getSpawnedEnemies() {
+        return new ArrayList<>(spawnedEnemies);
+    }
+
 }

@@ -1,16 +1,22 @@
 package TestGrupp.Model;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.vecmath.Point2d;
+
 
 public class EnemyFactory {
-    private final Map<String, Enemy> enemyMap = new HashMap<>();
 
-    public void registerEnemy(String type, Enemy enemy) {
-        enemyMap.put(type, enemy);
-    }
+    public GameObject createEnemy(String type, GameEventListener gameEventListener) {
+        switch (type) {
+            case "Asteroid":
+                double randomRotation = Math.random() * 360;
+                Asteroid asteroid = new Asteroid(new Point2d(), randomRotation,600,1,2,gameEventListener);
+                return asteroid;
+            case "EnemyShip":
+                EnemyShip enemyShip = new EnemyShip(new Point2d(), 0, 500, 10, 0, 400, gameEventListener);
+                return enemyShip;
+            default:
+                throw new IllegalArgumentException("Invalid enemy type: " + type);
+        }
 
-    public Enemy createEnemy(String type) {
-        return enemyMap.get(type);
     }
 }
