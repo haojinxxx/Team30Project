@@ -2,6 +2,7 @@ package TestGrupp.View;
 
 import TestGrupp.Controller.ConfigurationLoader;
 import TestGrupp.Model.GameObjectDTO;
+import TestGrupp.Model.PowerUp;
 import TestGrupp.Observer.Observer;
 
 import javax.swing.*;
@@ -92,6 +93,11 @@ public class View extends JFrame implements Observer  {
      *
      * @param gameObjectDTOs the list of game objects to be rendered
      */
+    @Override
+    public void updatePowerUps(List<PowerUp> collectedPowerUps) {
+        bottomPanel.getPowerUpView().highlightPowerUps(collectedPowerUps);
+    }
+
     @Override
     public void update(List<GameObjectDTO> gameObjectDTOs) {
         Set<Integer> seenIds = new HashSet<>();

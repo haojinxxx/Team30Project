@@ -3,10 +3,7 @@ package TestGrupp.Model;
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 import TestGrupp.Observer.Observer;
 import TestGrupp.Observer.Subject;
@@ -47,7 +44,7 @@ public class GameModel implements GameEventListener, Subject  {
         this.playerShip = new PlayerShip(screenCenter, 0, this);
         this.score = new Score();
 
-        this.powerup= new healthPowerUp(new Point2d(200, 200), this);
+        this.powerup= new healthPowerUp(new Point2d(700, 700), this);
 
 
         addGameObject(this.playerShip);
@@ -77,10 +74,11 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     @Override
-    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score) {
+    public void notifyObservers(List<GameObjectDTO> gameObjectDTOs, int score, Map<Integer, PowerUp> collectedPowerUps) {
         for (Observer observer : observers) {
-            observer.update(gameObjectDTOs);
-            observer.updateScore(score);// Pass the DTO list to each observer
+            observer.update(gameObjectDTOs);// Pass the DTO list to each observer
+            observer.updateScore(score);
+            observer.updatePowerUps(new ArrayList<>(collectedPowerUps.values()));
         }
     }
 
@@ -141,10 +139,10 @@ public class GameModel implements GameEventListener, Subject  {
 
 
         collisionManager.update(gameObjects);
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
         score.updateScoreBasedOnTime();
 
-        notifyObservers(gameObjectDTOs, score.getScore());
+        notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
   
 
 
@@ -199,7 +197,7 @@ public class GameModel implements GameEventListener, Subject  {
     public void spawnPowerUp(Point2d position) {
         /*PowerUp powerUp;
         Random random = new Random();
-        int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
+        int randomPowerUp = random.nextInt(1); // Assuming we have 3 types of PowerUps
 
         switch (randomPowerUp) {
             case 0:
@@ -259,6 +257,7 @@ public class GameModel implements GameEventListener, Subject  {
         removeGameObject(powerUp);
         //notifyObservers();
     }
+
 
     @Override
     public void onPlayerDestroyed() {

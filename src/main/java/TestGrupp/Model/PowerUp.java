@@ -5,10 +5,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class PowerUp extends GameObject {
-    //Constructor for powerup
+
+    private String type;
     public PowerUp(Point2d position, GameEventListener listener) {
         super(position, 0, listener);
-
     }
     //Abstract method for powerup functionality
     public abstract void PowerUp(PlayerShip playerShip);
@@ -35,6 +35,13 @@ public abstract class PowerUp extends GameObject {
             this.setActive(false);
             // Not sure if you want to handle this here or in the playerShip class's onCollision method but the setActive(false) should be here
         }
+    }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 

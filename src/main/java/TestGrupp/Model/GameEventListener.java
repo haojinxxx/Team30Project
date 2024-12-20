@@ -2,6 +2,7 @@ package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
+import java.util.List;
 
 public interface GameEventListener {
     void onAsteroidDestroyed(Point2d position, int childAsteroids);
@@ -9,6 +10,7 @@ public interface GameEventListener {
     void onEnemyDestroyed(EnemyShip enemy);
     void onPowerUpCollected(PowerUp powerUp);
     void onPlayerDestroyed();
+
 
     Point2d getPlayerPosition();
 }

@@ -6,6 +6,7 @@ public class shieldPowerUp extends PowerUp {
 
     public shieldPowerUp(Point2d position, GameEventListener listener) {
         super(position, listener);
+        setType("Shield");
     }
 
     public void PowerUp(PlayerShip playerShip) {
