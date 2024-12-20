@@ -92,16 +92,16 @@ public class View extends JFrame implements Observer  {
     }
 
 
+
+    @Override
+    public void updatePowerUps(List<PowerUp> collectedPowerUps) {
+        bottomPanel.getPowerUpView().highlightPowerUps(collectedPowerUps);
+    }
     /**
      * Update the view with the latest game object data.
      *
      * @param gameObjectDTOs the list of game objects to be rendered
      */
-    @Override
-    public void updatePowerUps(List<PowerUp> collectedPowerUps) {
-        bottomPanel.getPowerUpView().highlightPowerUps(collectedPowerUps);
-    }
-
     @Override
     public void update(List<GameObjectDTO> gameObjectDTOs) {
         Set<Integer> seenIds = new HashSet<>();
