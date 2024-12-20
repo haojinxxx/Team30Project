@@ -189,7 +189,7 @@ public class GameModel implements GameEventListener, Subject  {
     }
 
     public void spawnPowerUp(Point2d position) {
-        PowerUp powerUp;
+        /*PowerUp powerUp;
         Random random = new Random();
         int randomPowerUp = random.nextInt(2); // Assuming we have 3 types of PowerUps
 
@@ -202,7 +202,8 @@ public class GameModel implements GameEventListener, Subject  {
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + randomPowerUp);
-        }
+        }*/
+        PowerUp powerUp = new healthPowerUp(position, this);
         addGameObject(powerUp);
     }
     private Random random2 = new Random();
