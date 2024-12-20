@@ -10,6 +10,7 @@ public interface GameEventListener {
     void onEnemyDestroyed(EnemyShip enemy);
     void onPowerUpCollected(PowerUp powerUp);
     void onPlayerDestroyed();
+    void onPlayerHealthChanged(int health);
 
 
     Point2d getPlayerPosition();

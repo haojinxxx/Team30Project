@@ -76,7 +76,11 @@ public class View extends JFrame implements Observer  {
         setVisible(true);
     }
 
-
+    @Override
+    public void updateHealth(int health) {
+        HealthBarView healthBarView = bottomPanel.getHealthBarView();
+        healthBarView.updateHealth(health);
+    }
     /**
      * Update the score view with the current score.
      *

@@ -123,9 +123,18 @@ public class PlayerShip extends GameObject {
     }
 
     // Add health to the ship
+
     public void addHealth(int healthPoints) {
-        this.health.addHealth(healthPoints);
+        health.addHealth(healthPoints);
+        notifyHealthObservers();
     }
+
+    private void notifyHealthObservers() {
+        if (listener != null) {
+            listener.onPlayerHealthChanged(health.getHealth());
+        }
+    }
+
 
     // Activate the ship's shield
     public void activateShield() {
