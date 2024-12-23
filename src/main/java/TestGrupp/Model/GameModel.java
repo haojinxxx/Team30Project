@@ -1,3 +1,5 @@
+
+
 package TestGrupp.Model;
 
 import javax.vecmath.Point2d;
@@ -37,6 +39,7 @@ public class GameModel implements GameEventListener, Subject  {
         this.screenCenter = new Point2d(0, 0);
         this.observers = new ArrayList<>();
         this.collisionManager = new CollisionManager(gameObjects);
+
 
         Properties properties = getGameProperties();
         int playerWidth = Integer.parseInt(properties.getProperty("PlayerShip.width"));
@@ -92,8 +95,10 @@ public class GameModel implements GameEventListener, Subject  {
         score.resetScore();
 
         // Respawn the player at the initial position
-        this.playerShip = new PlayerShip(screenCenter, 0, this);
-        playerShip.setPos(screenCenter); // Set player position to center
+        Point2d startPos = new Point2d(screenCenter);
+        this.playerShip = new PlayerShip(startPos, 0, this);
+        System.out.printf("Screencenter: %s\n", screenCenter);
+        //playerShip.setPos(screenCenter); // Set player position to center
         addGameObject(playerShip);
 
         // Reinitialize the EnemySpawner
@@ -160,7 +165,7 @@ public class GameModel implements GameEventListener, Subject  {
         score.updateScoreBasedOnTime();
 
         notifyObservers(gameObjectDTOs, score.getScore(), playerShip.getCollectedPowerUps());
-  
+
 
 
     }
@@ -204,7 +209,8 @@ public class GameModel implements GameEventListener, Subject  {
 
     public void setScreenCenter(Point2d center) {
         this.screenCenter = center;
-        getPlayerShip().setPos(center);
+        Point2d startPos = new Point2d(center);
+        getPlayerShip().setPos(startPos);
 
     }
 
