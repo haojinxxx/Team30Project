@@ -1,23 +1,21 @@
 package TestGrupp.Model;
 
+import TestGrupp.Model.EntityComponents.OutOfBoundsDespawn;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class Asteroid extends GameObject {
     private final int childAsteroids;
     private final PhysicsComponent physics;
     private final HealthComponent health;
-    private final ScreenDataSingleton screenDataSingleton;
+    private final OutOfBoundsDespawn outOfBoundsDespawn;
     private GameEventListener listener;
 
-    // Constructor
     public Asteroid(Point2d position, double rotation, double speed, int health, int childAsteroids, GameEventListener listener) {
         super(position, rotation, listener);
         this.childAsteroids = childAsteroids;
         this.listener = listener;
-        this.screenDataSingleton = ScreenDataSingleton.getInstance();
 
         TransformComponent transform = this.getTransform();
         transform.setPosition(position);
@@ -31,20 +29,13 @@ public class Asteroid extends GameObject {
         this.physics.setVelocity(initialVelocity);
 
         this.physics.setIsProjectile(true); // Asteroids should be treated as projectiles
-    }
 
-
-    private boolean isOnMap() {
-        Rectangle mapArea = screenDataSingleton.getMapArea();
-        Rectangle2D.Float boundingBox = this.getTransform().getBoundingBox();
-        return mapArea.intersects(boundingBox);
+        this.outOfBoundsDespawn = new OutOfBoundsDespawn();
     }
 
     public void update(double deltaTime) {
-        if (!isOnMap()) {
-            setActive(false);
-        }
         physics.update(deltaTime, this.getTransform());
+        outOfBoundsDespawn.update(this);
     }
 
     public void takeDamage(int damage) {
@@ -60,9 +51,7 @@ public class Asteroid extends GameObject {
                 listener.onAsteroidDestroyed(this.getTransform().getPosition(), 0);
             }
         }
-        //this.setActive(false);
     }
-
 
     public void onCollision(GameObject other) {
         if (other instanceof Projectile) {
