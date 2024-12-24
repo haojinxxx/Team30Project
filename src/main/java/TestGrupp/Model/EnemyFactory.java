@@ -12,11 +12,14 @@ public class EnemyFactory {
     int enemyHealth = ConfigurationLoader.getProperty("EnemyShip.health");
     int enemySpeed = ConfigurationLoader.getProperty("EnemyShip.speed");
 
+    int asteroidHealth = ConfigurationLoader.getProperty("Asteroid.health");
+    int asteroidSpeed = ConfigurationLoader.getProperty("Asteroid.speed");
+
     public GameObject createEnemy(String type, GameEventListener gameEventListener) {
         switch (type) {
             case "Asteroid":
                 double randomRotation = Math.random() * 360;
-                Asteroid asteroid = new Asteroid(new Point2d(), randomRotation,600,1,2,gameEventListener);
+                Asteroid asteroid = new Asteroid(new Point2d(), randomRotation,asteroidSpeed,asteroidHealth,2,gameEventListener);
                 return asteroid;
             case "EnemyShip":
                 EnemyShip enemyShip = new EnemyShip(new Point2d(), 0, enemySpeed, enemyHealth, enemyDamage, enemyFiringRange, gameEventListener, enemyCooldown);
