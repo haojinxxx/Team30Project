@@ -8,7 +8,7 @@ import javax.vecmath.Point2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyShip extends GameObject {
+public class    EnemyShip extends GameObject {
 
     private final GameEventListener listener;
     private final List<Component> components;
@@ -16,7 +16,7 @@ public class EnemyShip extends GameObject {
     private final HealthComponent health;
     private final int firingRange;
 
-    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener) {
+    public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener, int cooldown) {
         super(position, rotation, listener);
         this.listener = listener;
         this.firingRange = firingRange;
@@ -32,7 +32,7 @@ public class EnemyShip extends GameObject {
 
 
         this.components.add(new FacePlayer());
-        this.components.add(new FireAtPlayer(listener, projectileDamage, firingRange, 2));
+        this.components.add(new FireAtPlayer(listener, projectileDamage, firingRange, cooldown));
     }
 
     private Double distanceToPlayer(Point2d playerPosition) {
