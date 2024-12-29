@@ -1,6 +1,5 @@
 package TestGrupp.Model.EntityComponents;
 
-
 import TestGrupp.Model.GameEventListener;
 import TestGrupp.Model.PhysicsComponent;
 import TestGrupp.Model.TransformComponent;
@@ -12,8 +11,8 @@ public class FireAtPlayer implements Component {
     private final GameEventListener listener;
     private final int projectileDamage;
     private final int firingRange;
-    private final double cooldown; // Cooldown period in seconds
-    private double timeSinceLastShot; // Time since the last shot
+    private final double cooldown; // Cooldown period in milliseconds
+    private double timeSinceLastShot; // Time since the last shot in milliseconds
 
     public FireAtPlayer(GameEventListener listener, int projectileDamage, int firingRange, double cooldown) {
         this.listener = listener;
@@ -22,8 +21,6 @@ public class FireAtPlayer implements Component {
         this.cooldown = cooldown;
         this.timeSinceLastShot = cooldown; // Initialize to allow immediate firing
     }
-
-
 
     /**
      * Updates the component to fire at the player if within range and cooldown period has elapsed.
@@ -35,7 +32,7 @@ public class FireAtPlayer implements Component {
      */
     @Override
     public void update(double deltaTime, TransformComponent transform, PhysicsComponent physics, Point2d playerPosition) {
-        timeSinceLastShot += deltaTime; // Update the time since the last shot
+        timeSinceLastShot += deltaTime * 1000; // Convert deltaTime to milliseconds
 
         Vector2d directionToPlayer = new Vector2d(
                 playerPosition.getX() - transform.getPosition().getX(),
