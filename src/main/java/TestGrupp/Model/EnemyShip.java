@@ -16,6 +16,7 @@ public class    EnemyShip extends GameObject {
     private final HealthComponent health;
     private final int firingRange;
 
+
     public EnemyShip(Point2d position, double rotation, double maxSpeed, int health, int projectileDamage, int firingRange, GameEventListener listener, int cooldown) {
         super(position, rotation, listener);
         this.listener = listener;

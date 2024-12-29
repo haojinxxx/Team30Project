@@ -6,7 +6,7 @@ import javax.vecmath.Point2d;
 
 
 public class EnemyFactory {
-    int enemyCooldown = ConfigurationLoader.getProperty("EnemyShip.cooldown");
+    int enemyCooldown = ConfigurationLoader.getProperty("EnemyShip.fireRate");
     int enemyFiringRange = ConfigurationLoader.getProperty("EnemyShip.range");
     int enemyDamage = ConfigurationLoader.getProperty("EnemyShip.damage");
     int enemyHealth = ConfigurationLoader.getProperty("EnemyShip.health");

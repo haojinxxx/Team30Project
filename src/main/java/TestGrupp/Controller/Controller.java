@@ -27,7 +27,7 @@ public class Controller {
                 this.gm,
                 ih,
                 SoundManager.getInstance(),  // Assuming you make SoundManager a singleton
-                500  // Fire cooldown in milliseconds
+                ConfigurationLoader.getProperty("PlayerShip.fireRate")  // Fire cooldown in milliseconds
         );
 
         this.loop = new GameLoop(this.gm, this.view, ih, inputProcessor);
