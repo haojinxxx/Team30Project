@@ -1,5 +1,7 @@
 package TestGrupp.Model;
 
+import TestGrupp.Controller.ConfigurationLoader;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 import java.util.ArrayList;
@@ -33,16 +35,19 @@ public class PlayerShip extends GameObject {
         super(position, -Math.PI / 2, listener); // Call to the parent GameObject class
 
         this.collectedPowerUps = new HashMap<>();
-        this.health = new HealthComponent(100); // Start with full health
-        this.projectileDamage = 100; // Set the default projectile damage
+
+        int healthVal = ConfigurationLoader.getProperty("PlayerShip.health");
+        this.health = new HealthComponent(healthVal); // Start with full health
+
+        this.projectileDamage = ConfigurationLoader.getProperty("PlayerShip.damage");
         this.shipProjectiles = new ArrayList<>();
         this.hasShield = false;
 
         // Default movement and rotation settings
         this.rotationSpeed = Math.toRadians(200); // Convert degrees/sec to radians/sec
         this.desiredRotation = rotation;
-        this.acceleration = 2000; // Increase the acceleration factor
-        this.maxSpeed = 250.0;   // Increase the max speed for faster movement
+        this.acceleration = ConfigurationLoader.getProperty("PlayerShip.acceleration"); // Increase the acceleration factor
+        this.maxSpeed = ConfigurationLoader.getProperty("PlayerShip.speed");   // Increase the max speed for faster movement
         this.friction = 0.001;    // Decrease friction for slower deceleration
         this.rotating = false;
         this.movingForward = false;
