@@ -1,11 +1,14 @@
 package TestGrupp.Model;
 
+import TestGrupp.Model.EntityComponents.OutOfBoundsDespawn;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Vector2d;
 
 public class Projectile extends GameObject {
 
     private final PhysicsComponent physics;
+    private final OutOfBoundsDespawn outOfBoundsDespawn;
     private int damage;
 
     private boolean isPlayerProjectile;
@@ -17,6 +20,7 @@ public class Projectile extends GameObject {
         this.isPlayerProjectile = playerProjectile;
         this.getTransform().setPosition(initialPosition);
         this.getTransform().setRotation(rotation);
+        this.outOfBoundsDespawn = new OutOfBoundsDespawn();
 
         // Calculate velocity based on the rotation and speed
         double velocityX = Math.cos(rotation) * speed;
@@ -45,6 +49,7 @@ public class Projectile extends GameObject {
     public void update(double deltaTime) {
         super.update(deltaTime);  // Update the base GameObject (position, etc.)
         physics.update(deltaTime, this.getTransform());  // Update the physics and apply velocity
+        outOfBoundsDespawn.update(this);
     }
 
     /**
