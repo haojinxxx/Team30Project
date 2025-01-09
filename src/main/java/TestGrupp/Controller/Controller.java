@@ -1,19 +1,23 @@
+// src/main/java/TestGrupp/Controller/Controller.java
 package TestGrupp.Controller;
 
 import TestGrupp.Model.GameModel;
+import TestGrupp.Model.GameObjectDTO;
+import TestGrupp.Model.PowerUp;
 import TestGrupp.Model.ScreenDataSingleton;
+import TestGrupp.Observer.Observer;
 import TestGrupp.View.View;
 
 import javax.vecmath.Point2d;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class Controller {
+public class Controller implements Observer {
     private final GameModel gm;
     private final GameLoop loop;
     private final View view;
     private ScreenDataSingleton screenDataSingleton;
-
-
-    private Point2d screenCenter;
 
     public Controller(GameModel gm, View view) {
         this.gm = gm;
@@ -21,49 +25,60 @@ public class Controller {
         this.screenDataSingleton = ScreenDataSingleton.getInstance();
 
         InputHandler ih = new InputHandler();
-        // Assuming you make SoundManager a singleton
-        // Fire cooldown in milliseconds
         InputProcessor inputProcessor = new InputProcessor(
                 this.gm,
                 ih,
-                SoundManager.getInstance(),  // Assuming you make SoundManager a singleton
-                ConfigurationLoader.getProperty("PlayerShip.fireRate")  // Fire cooldown in milliseconds
+                SoundManager.getInstance(),
+                ConfigurationLoader.getProperty("PlayerShip.fireRate")
         );
 
         this.loop = new GameLoop(this.gm, this.view, ih, inputProcessor);
 
-
-        // Set up the panel to listen for key events
         this.view.setFocusable(true);
         this.view.requestFocusInWindow();
         this.view.addKeyListener(ih);
 
-        // Register the panel as an observer
-        this.gm.addObserver(this.view);
+        // Register the controller as an observer to the model
+        this.gm.addObserver(this);
     }
 
     public void initializeModelWithScreenCenter() {
-        int screenWidth = view.getScreenWidth(); // Add a getter in the View
-        int screenHeight = view.getScreenHeight(); // Add a getter in the View
+        int screenWidth = view.getScreenWidth();
+        int screenHeight = view.getScreenHeight();
 
         int centerX = screenWidth / 2;
         int centerY = screenHeight / 2;
         Point2d screenCenter = new Point2d(centerX, centerY);
 
-        gm.setScreenCenter(screenCenter); // Add this method in GameModel
-
+        gm.setScreenCenter(screenCenter);
     }
 
-
-    // Method to start the game loop
     public void startGame() {
         initializeModelWithScreenCenter();
-
-        loop.start();  // This calls the start() method on the GameLoop instance
+        loop.start();
     }
 
-    // Method to stop the game loop (if needed)
     public void stopGame() {
         loop.stop();
+    }
+
+    @Override
+    public void update(List<GameObjectDTO> gameObjectDTOs) {
+        view.update(gameObjectDTOs);
+    }
+
+    @Override
+    public void updateScore(int score) {
+        view.updateScore(score);
+    }
+
+    @Override
+    public void updateHealth(int health) {
+        view.updateHealth(health);
+    }
+
+    @Override
+    public void updatePowerUps(List<PowerUp> collectedPowerUps) {
+        view.updatePowerUps(collectedPowerUps);
     }
 }
