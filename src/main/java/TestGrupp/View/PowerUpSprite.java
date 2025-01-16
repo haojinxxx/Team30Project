@@ -34,7 +34,7 @@ public class PowerUpSprite extends Sprite{
     @Override
     protected void loadImage() {
         try {
-            powerUpImage = ImageIO.read(new File("src/main/resources/images/HealthPowerUp.png"));
+            powerUpImage = ImageIO.read(new File("src/main/resources/images/PowerUp-Health-Bubble.png"));
             setImage(powerUpImage);
         } catch (IOException e) {
             e.printStackTrace();
