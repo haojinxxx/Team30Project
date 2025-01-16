@@ -29,10 +29,10 @@ public class PowerUpView extends JPanel {
         setOpaque(false); // Make the panel transparent
 
         // Create buttons
-        powerUp1 = createCustomButton("", "src/main/resources/images/HealthPowerUp.png");
-        powerUp2 = createCustomButton("", "src/main/resources/images/ShieldPowerUp.png");
-        powerUp3 = createCustomButton("", "src/main/resources/images/SpeedPowerUp.png");
-        powerUp4 = createCustomButton("", "src/main/resources/images/DamagePowerUp.png");
+        powerUp1 = createCustomButton("", "src/main/resources/images/PowerUp-Health.png");
+        powerUp2 = createCustomButton("", "src/main/resources/images/PowerUp-Shield.png");
+        powerUp3 = createCustomButton("", "src/main/resources/images/PowerUp-Speed.png");
+        powerUp4 = createCustomButton("", "src/main/resources/images/PowerUp-Damage.png");
 
         // Set preferred size for buttons
         Dimension buttonSize = new Dimension(buttonWidth, buttonWidth);
