@@ -41,6 +41,11 @@ public class PowerUpView extends JPanel {
         powerUp3.setPreferredSize(buttonSize);
         powerUp4.setPreferredSize(buttonSize);
 
+        powerUp1.setFocusable(false);
+        powerUp2.setFocusable(false);
+        powerUp3.setFocusable(false);
+        powerUp4.setFocusable(false);
+
         // Add buttons to the panel with specific positions
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 5, 10, 5); // Add some padding
