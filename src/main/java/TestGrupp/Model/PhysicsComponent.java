@@ -40,31 +40,6 @@ public class PhysicsComponent {
         this.acceleration.set(x, y);
     }
 
-    // Getter for Friction
-    public double getFriction() {
-        return friction;
-    }
-
-    // Setter for Friction
-    public void setFriction(double friction) {
-        if (friction < 0 || friction > 1) {
-            throw new IllegalArgumentException("Friction must be between 0 and 1.");
-        }
-        this.friction = friction;
-    }
-
-    // Getter for Max Speed
-    public double getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    // Setter for Max Speed
-    public void setMaxSpeed(double maxSpeed) {
-        if (maxSpeed < 0) {
-            throw new IllegalArgumentException("Max speed must be a positive value.");
-        }
-        this.maxSpeed = maxSpeed;
-    }
 
     // Set the flag to indicate if the object is a projectile
     public void setIsProjectile(boolean isProjectile) {
@@ -98,7 +73,7 @@ public class PhysicsComponent {
                 velocity.scale(friction);
             } else {
                 // Apply a reduced friction when not accelerating (gliding)
-                double glideFriction = 0.98; // Reduced friction when no acceleration
+                double glideFriction = friction * 0.98; // Reduced friction when no acceleration
                 velocity.scale(glideFriction); // Glide effect
             }
         }
